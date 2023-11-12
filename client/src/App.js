@@ -1,34 +1,17 @@
-// import logo from "./assets/logo.svg";
 import "./App.css";
+import currentMap from "./assets/currentMap.json";
+import currentUser from "./assets/currentUser.json";
 import SplashScreen from "./screens/SplashScreen";
+import CommentSection from "./components/CommentSection.js";
 
 function App() {
   return (
     <div className="App">
-      <header
-      // className="App-header"
-      >
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@800&display=swap"
-          rel="stylesheet"
-        />
-        {/* <img src={logo} className="App-logo" alt="logo" />
-        <p>MapArtisan</p>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
-      </header>
       <SplashScreen />
+      <CommentSection
+        comments={currentMap.comments}
+        currentUser={currentUser}
+      />
     </div>
   );
 }
