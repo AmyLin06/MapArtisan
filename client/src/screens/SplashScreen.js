@@ -4,11 +4,16 @@ import Banner from "../components/Banner";
 
 const SplashScreen = () => {
   return (
-    <div>
-      <Banner />
-      {/* <div className="backgroundPicture"></div> */}
-      SplashScreen
-    </div>
+    <>
+      <div>
+        <Banner />
+      </div>
+
+      <div className="sloganText">
+        The world is a canvas and you hold the brush
+      </div>
+      <div class="nagivationText">Explore. Create. Map -&gt;</div>
+    </>
   );
 };
 
