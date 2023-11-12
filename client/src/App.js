@@ -1,10 +1,11 @@
 import logo from "./assets/logo.svg";
 import "./App.css";
+import SplashScreen from "./screens/SplashScreen";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>MapArtisan</p>
         <p>
@@ -18,7 +19,8 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
+      <SplashScreen />
     </div>
   );
 }

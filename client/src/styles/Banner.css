@@ -1,0 +1,19 @@
+.banner{
+    padding:10px;
+    display: grid;
+    justify-content: flex-start;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.loginMenu{
+    /* display: flex; */
+    justify-content: end;
+    grid-column: 2;
+    /* width: 50%; */
+}
+.logo{
+    display: flex;
+    vertical-align: center;
+    grid-column: 1;
+    /* width: 50%; */
+}
