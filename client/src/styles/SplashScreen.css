@@ -1,0 +1,10 @@
+body{
+    background-color: #FFFDF3;
+}
+
+.backgroundPicture{
+    background-image: url("../assets/SplashScreenMap.png");
+    width: 80%;
+    height: 80%;
+
+}
