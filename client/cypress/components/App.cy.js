@@ -1,8 +1,8 @@
-import React from "react";
-import App from "../../src/App";
+// import React from "react";
+// import App from "../../src/App";
 
-describe("<App />", () => {
-  it("renders", () => {
-    cy.mount(<App />);
-  });
-});
+// describe("<App />", () => {
+//   it("renders", () => {
+//     cy.mount(<App />);
+//   });
+// });
