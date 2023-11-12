@@ -7,21 +7,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomButton from "../CustomButton";
-
-const ConfirmModalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "45%",
-  transform: "translate(-50%, -50%)",
-  width: "25%",
-  height: "20%",
-  backgroundSize: "contain",
-  backgroundColor: "#FFFDF3",
-  border: "none",
-  boxShadow: "none",
-  color: "#000000",
-  padding: "20px",
-};
+import { ConfirmModalStyle } from "../../styles/ConfirmModalStyle";
 
 //Modal that displays in the middle of the screen asking the user to confirm the change they initialized
 //Example of a way to create a ConfirmModal, see ModalTypes.js for definition of "ConfirmModalTypes.DELETE_LAYER"

@@ -1,4 +1,5 @@
 // import { useContext } from "react";
+import { useLayoutEffect } from "react";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -15,7 +16,6 @@ export default function InputModal(props) {
   // const { store } = useContext(GlobalStoreContext);
   const { modalType } = props;
 
-  const heightValue = modalType.name === "RENAME_MAP" ? "20%" : "50%";
   const InputModalStyle = {
     position: "absolute",
     top: "50%",
