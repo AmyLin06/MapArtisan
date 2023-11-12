@@ -7,7 +7,7 @@ const LoginMenu = () => {
   return (
     <Stack className="loginMenu" spacing={1} direction="row">
       <CustomButton text="Continue as Guest" />
-      <CustomButton text="Login" type="contained" />
+      <CustomButton text="Login" />
       <CustomButton text="Register" />
     </Stack>
   );
