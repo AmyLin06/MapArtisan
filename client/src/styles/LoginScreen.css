@@ -1,9 +1,6 @@
 
-
 .main{   
-    background-color: #FFFDF3;
-    width:100vw;
-    height:100vh;
+
     background-image: url("../assets/LoginScreenMap.png");
     background-repeat: no-repeat;
     background-position-x:  100%;
@@ -68,4 +65,5 @@
 
 .copyright{
     padding: 5%;
+    text-align: center;
 }
