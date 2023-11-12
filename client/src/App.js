@@ -1,7 +1,5 @@
 import "./App.css";
 import SplashScreen from "./screens/SplashScreen";
-import MapDetailsScreen from "./screens/MapDetailsScreen";
-import currentMap from "./assets/currentMap.json";
 function App() {
   return (
     <div className="App">
