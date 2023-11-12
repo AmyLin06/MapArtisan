@@ -1,6 +1,8 @@
 {
     "mapTitle": "HeatMap",
     "mapPicture": "https://developers.arcgis.com/documentation/static/display-a-map-b4974c7cfef498eb43e99ab60191cbaf.png",
+    "likes": 123,
+    "forks": 321,
     "ownerUsername": "TomTilly",
     "comments": [
         {
