@@ -1,4 +1,3 @@
-// import logo from "./assets/logo.svg";
 import "./App.css";
 import LoginScreen from "./screens/LoginScreen";
 
@@ -8,6 +7,7 @@ function App() {
       <header
       // className="App-header"
       >
+        {/*Do not remove these links, these links are use to set the font for the app*/}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
