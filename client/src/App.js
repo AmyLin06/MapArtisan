@@ -1,5 +1,6 @@
 // import logo from "./assets/logo.svg";
 import "./App.css";
+import MapCard from "./components/MapCard";
 import SplashScreen from "./screens/SplashScreen";
 
 function App() {
@@ -28,7 +29,8 @@ function App() {
           Learn React
         </a> */}
       </header>
-      <SplashScreen />
+      {/* <SplashScreen /> */}
+      <MapCard></MapCard>
     </div>
   );
 }
