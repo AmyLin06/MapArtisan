@@ -34,12 +34,12 @@ const CustomButton = ({
     <>
       {type === "outlined" ? (
         <OutlinedStyledButton variant={type} fontSize={fontSize}>
-          <Icon sx={{ fontSize: fontSize, marginRight: 1 }} />
+          {Icon && <Icon sx={{ fontSize: fontSize, marginRight: 1 }} />}
           {text}
         </OutlinedStyledButton>
       ) : (
         <ContainedStyledButton variant={type} fontSize={fontSize}>
-          <Icon sx={{ fontSize: fontSize, marginRight: 1 }} />
+          {Icon && <Icon sx={{ fontSize: fontSize, marginRight: 1 }} />}
           {text}
         </ContainedStyledButton>
       )}
