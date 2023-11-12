@@ -1,6 +1,5 @@
 import { List, Box, Typography, Avatar, TextField } from "@mui/material";
 import CommentCard from "./CommentCard";
-import Banner from "./Banner";
 
 const CommentSection = (props) => {
   const { comments, currentUser } = props;
