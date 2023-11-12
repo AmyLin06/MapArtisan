@@ -1,10 +1,42 @@
+
 body{
     background-color: #FFFDF3;
-}
-
-.backgroundPicture{
     background-image: url("../assets/SplashScreenMap.png");
-    width: 80%;
-    height: 80%;
-
+    background-repeat: no-repeat;
+    background-position-x:  85%;
+    background-position-y: -50%;
+    background-size: 57%;
 }
+.sloganText{
+    width: 340px;
+    height: 415px;
+    margin-left: 8%; 
+    font-family: 'Sansita Swashed';
+    font-size: 50px;
+    font-weight: 800;
+    text-align: left;
+    line-height: 80px; /* 142.857% */
+    letter-spacing: 7px;
+    text-transform: capitalize;
+    color: #FFFDF3;
+    text-shadow: -3px 3px 3px #195083, 
+				  3px 3px 3px #195083,
+				 3px -3px 3px #195083,
+				-3px -3px 3px #195083;
+}
+
+
+
+.nagivationText {
+    position: absolute;
+    bottom: 10%;
+    right: 0;
+    margin-right: 5%;
+    color: #195083;
+    font-family: 'Sansita Swashed';
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%;
+}
+

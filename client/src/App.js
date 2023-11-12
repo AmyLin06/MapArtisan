@@ -5,8 +5,16 @@ import SplashScreen from "./screens/SplashScreen";
 function App() {
   return (
     <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+      <header
+      // className="App-header"
+      >
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@800&display=swap"
+          rel="stylesheet"
+        />
+        {/* <img src={logo} className="App-logo" alt="logo" />
         <p>MapArtisan</p>
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -18,8 +26,8 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
-        </a>
-      </header> */}
+        </a> */}
+      </header>
       <SplashScreen />
     </div>
   );
