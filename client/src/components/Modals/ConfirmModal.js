@@ -1,0 +1,115 @@
+// import { useContext } from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import CloseIcon from "@mui/icons-material/Close";
+import CustomButton from "../CustomButton";
+
+const ConfirmModalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "45%",
+  transform: "translate(-50%, -50%)",
+  width: "25%",
+  height: "20%",
+  backgroundSize: "contain",
+  backgroundColor: "#FFFDF3",
+  border: "none",
+  boxShadow: "none",
+  color: "#000000",
+  padding: "20px",
+};
+
+//Modal that displays in the middle of the screen asking the user to confirm the change they initialized
+//Example of a way to create a ConfirmModal, see ModalTypes.js for definition of "ConfirmModalTypes.DELETE_LAYER"
+//<ConfirmModal modalType={ConfirmModalTypes.DELETE_LAYER}></ConfirmModal>
+export default function ConfirmModal(props) {
+  const { modalType } = props;
+
+  //TODO: onClick() functionality
+  //TODO: add map/layer name to typography in return, using map from store??
+  //TODO: change confirm and cancel buttons to use the reusable component button
+
+  return (
+    <Modal
+      //TODO: conditionally open modal
+      //   open={store.listMarkedForDeletion !== null}
+      open={true}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      sx={{ boxShadow: "none" }}
+    >
+      <Box sx={ConfirmModalStyle}>
+        <Typography
+          sx={{ border: "none", fontWeight: "bold" }}
+          id="modal-modal-title"
+          variant="h6"
+          component="h2"
+        >
+          {modalType.title}
+        </Typography>
+        <Box sx={{ position: "absolute", top: "0px", right: "0px" }}>
+          <Button>
+            <CloseIcon
+              style={{ fontSize: "2.5vw", color: "#000000" }}
+              onClick={modalType.cancelAction}
+            />
+          </Button>
+        </Box>
+        <Divider
+          sx={{
+            borderBottomWidth: 3,
+            p: "5px",
+            transform: "translate(-5.5%, 0%)",
+            width: "45%",
+          }}
+        />
+        <Box>
+          <Typography
+            id="modal-modal-description"
+            variant="h7"
+            sx={{ mt: 1, marginBottom: 2 }}
+          >
+            {modalType.text}
+            <Typography
+              display="inline"
+              id="modal-modal-description"
+              variant="h7"
+              sx={{ fontStyle: "italic" }}
+            >
+              {"MYMAP"}
+            </Typography>{" "}
+          </Typography>
+
+          <Typography
+            sx={{ fontSize: "small", color: "gray", marginTop: 1 }}
+            id="modal-modal-subtext"
+            variant="body2"
+          >
+            {modalType.warning}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "5%",
+            gap: "3%",
+          }}
+        >
+          <CustomButton
+            text={"Confirm"}
+            onPress={modalType.confirmAction}
+          ></CustomButton>
+          <CustomButton
+            text={"Cancel"}
+            onPress={modalType.cancelAction}
+          ></CustomButton>
+        </Box>
+      </Box>
+    </Modal>
+  );
+}
