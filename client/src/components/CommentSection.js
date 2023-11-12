@@ -1,5 +1,6 @@
 import { List, Box, Typography, Avatar, TextField } from "@mui/material";
 import CommentCard from "./CommentCard";
+import Banner from "./Banner";
 
 const CommentSection = (props) => {
   const { comments, currentUser } = props;
@@ -10,7 +11,7 @@ const CommentSection = (props) => {
   ));
 
   return (
-    <Box sx={{ padding: 1 }}>
+    <Box sx={{ paddingTop: 1 }}>
       <Typography fontWeight="bold" variant="h5" sx={{ marginBottom: 2 }}>
         {comments.length} Comments
       </Typography>
