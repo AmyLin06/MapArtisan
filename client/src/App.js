@@ -1,12 +1,17 @@
 import "./App.css";
-import CommentCard from "./components/CommentCard.js";
 import currentMap from "./assets/currentMap.json";
+import currentUser from "./assets/currentUser.json";
+import SplashScreen from "./screens/SplashScreen";
+import CommentSection from "./components/CommentSection.js";
 
 function App() {
   return (
     <div className="App">
-      <p>MapArtisan</p>
-      <CommentCard comment={currentMap.comments[0]} />
+      <SplashScreen />
+      <CommentSection
+        comments={currentMap.comments}
+        currentUser={currentUser}
+      />
     </div>
   );
 }
