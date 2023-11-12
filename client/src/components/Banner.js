@@ -13,15 +13,13 @@ const LoginMenu = () => {
   );
 };
 
-const Banner = () => {
+const Banner = ({ loginMenu = true }) => {
   return (
     <div className="banner">
       <div className="logo">
         <CustomButton text="U should see a logo here" />
       </div>
-      <div>
-        <LoginMenu />
-      </div>
+      <div>{loginMenu && <LoginMenu />}</div>
     </div>
   );
 };

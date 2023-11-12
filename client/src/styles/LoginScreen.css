@@ -1,0 +1,71 @@
+
+
+.main{   
+    background-color: #FFFDF3;
+    width:100vw;
+    height:100vh;
+    background-image: url("../assets/LoginScreenMap.png");
+    background-repeat: no-repeat;
+    background-position-x:  100%;
+    background-position-y: 100%;
+    background-size: 64%;
+    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
+}
+
+.bannerBox{
+    padding-top: 1%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.banner{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+}
+
+.login{
+    color:#195083;
+    font-size: 55px;
+    font-weight: 700;
+    text-align: center;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+}
+
+.content{
+    color:#195083;
+
+    width: 50%;
+    padding-left:10%;
+    padding-top:5%;
+
+}
+
+.loginBox{
+    display: flex;
+    flex-direction: column;
+    vertical-align: center;
+    width: 65%;
+}
+
+.label {
+    text-align: left;
+    width: 100%; /* Ensure the labels take up the full width */
+}
+
+.loginBox > *:not(.label) {
+    text-align: center;
+    width: 100%;
+}
+
+.textfield{
+    border-radius: 100px; 
+}
+
+.copyright{
+    padding: 5%;
+}

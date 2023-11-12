@@ -1,6 +1,6 @@
 // import logo from "./assets/logo.svg";
 import "./App.css";
-import SplashScreen from "./screens/SplashScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
           Learn React
         </a> */}
       </header>
-      <SplashScreen />
+      <LoginScreen />
     </div>
   );
 }
