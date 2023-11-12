@@ -1,7 +1,6 @@
 import React from "react";
 import "../styles/SplashScreen.css";
 import Banner from "../components/Banner";
-import { createTheme, ThemeProvider, Typography } from "@mui/material";
 
 const theme = createTheme({
   typography: {
