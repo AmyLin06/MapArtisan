@@ -8,6 +8,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import CustomButton from "../CustomButton";
 
+//Modal that displays in the middle of the screen allowing the user to enter input
+//Example of a way to create a InputModal, see ModalTypes.js for definition of "InputModalTypes.MESSAGE_MODAL"
+//<InputModal modalType={InputModalTypes.MESSAGE_MODAL}></InputModal>
 export default function InputModal(props) {
   // const { store } = useContext(GlobalStoreContext);
   const { modalType } = props;
