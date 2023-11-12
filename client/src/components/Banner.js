@@ -16,8 +16,8 @@ const LoginMenu = () => {
 const Banner = () => {
   return (
     <div className="banner">
-      <div>
-        <CustomButton className="logo" text="U should see a logo here" />
+      <div className="logo">
+        <CustomButton text="U should see a logo here" />
       </div>
       <div>
         <LoginMenu />
