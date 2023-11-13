@@ -1,6 +1,7 @@
 import "./App.css";
-import MapList from "./components/MapList";
+import ProfileScreen from "./screens/ProfileScreen";
 import SplashScreen from "./screens/SplashScreen";
+import currentUser from "./assets/currentUser.json";
 import maps from "./assets/maps.json";
 
 function App() {
@@ -14,8 +15,8 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      <SplashScreen />
-      <MapList maps={maps.maps} />
+      {/* <SplashScreen /> */}
+      <ProfileScreen currentUser={currentUser} maps={maps.maps} />
     </div>
   );
 }
