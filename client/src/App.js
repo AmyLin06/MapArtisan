@@ -1,8 +1,5 @@
 import "./App.css";
-import ProfileScreen from "./screens/ProfileScreen";
 import SplashScreen from "./screens/SplashScreen";
-import currentUser from "./assets/currentUser.json";
-import maps from "./assets/maps.json";
 
 function App() {
   return (
@@ -14,9 +11,12 @@ function App() {
           href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@800&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Londrina+Outline&display=swap"
+          rel="stylesheet"
+        />
       </header>
-      {/* <SplashScreen /> */}
-      <ProfileScreen currentUser={currentUser} maps={maps.maps} />
+      <SplashScreen />
     </div>
   );
 }

@@ -2,13 +2,14 @@ import { Avatar, Box, Typography, Stack } from "@mui/material";
 import MapList from "../components/MapList";
 import CustomButton from "../components/CustomButton";
 import ForumIcon from "@mui/icons-material/Forum";
-import { grey } from "@mui/material/colors";
+import Banner from "../components/Banner";
 
 function ProfileScreen(props) {
   const { currentUser, maps } = props;
 
   return (
     <Box sx={{ padding: 2 }}>
+      <Banner screen={"PROFILE"}></Banner>
       <Box display="flex">
         <Avatar
           src={currentUser.profilePic}
