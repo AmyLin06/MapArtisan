@@ -1,7 +1,7 @@
 .main{   
-    background-image: url("../assets/LoginScreenMap.png");
+    background-image: url("../assets/RegisterScreenMap.png");
     background-repeat: no-repeat;
-    background-position-x:  100%;
+    background-position-x:  110%;
     background-position-y: 100%;
     background-size: 64%;
     grid-template-columns: repeat(2, 1fr);
@@ -10,7 +10,7 @@
 }
 
 .bannerBox{
-    padding-top: 1%;
+    padding-bottom: 4%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 }
@@ -19,6 +19,7 @@
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 1;
+    
 }
 
 .login{
@@ -36,7 +37,7 @@
 
     width: 50%;
     padding-left:10%;
-    padding-top:5%;
+    padding-top:1%;
 
 }
 
