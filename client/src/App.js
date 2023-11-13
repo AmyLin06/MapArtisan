@@ -1,4 +1,5 @@
 import "./App.css";
+import ProfileScreen from "./screens/ProfileScreen";
 import SplashScreen from "./screens/SplashScreen";
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      <SplashScreen />
+      <ProfileScreen />
       {/* <MapDetailsScreen map={currentMap} /> */}
     </div>
   );
