@@ -9,11 +9,11 @@ import { TextField,Grid,InputLabel,Box} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import CustomButton from "../components/CustomButton";
 
-const ProfileScreen = () => {
+const AccountViewScreen = () => {
     return (
       <div className="main">
         <div>
-          <Banner />
+          <Banner screen = "ACCOUNT_DETAIL"/>
         </div>
         <div className="profile-container">
             <img
@@ -210,4 +210,4 @@ const ProfileScreen = () => {
   };
 
 
-export default ProfileScreen;
+export default AccountViewScreen;
