@@ -32,7 +32,7 @@ export default function MapCard(props) {
     subtextArea = (
       <Grid item container alignItems="center">
         <Typography variant="h7" color="textSecondary">
-          {"@BobBilly"}
+          @{currentMap.ownerUsername}
           <br />
           <Grid item container alignContent="center">
             {currentMap.isPublished && (
@@ -46,11 +46,11 @@ export default function MapCard(props) {
   }
 
   return (
-    <Card sx={{ maxWidth: "30%" }}>
+    <Card sx={{ maxWidth: "100%" }}>
       <CardMedia
         component="img"
         height="40%"
-        image={currentMap.mapPicture}
+        image={currentMap.mapPic}
         alt="Map of the US"
       />
       <Box display="flex">
@@ -61,7 +61,7 @@ export default function MapCard(props) {
           alignItems="baseline"
         >
           <Grid item xs={12}>
-            <Typography variant="h6">{currentMap.mapTitle}</Typography>
+            <Typography variant="h6">{currentMap.name}</Typography>
           </Grid>
           {subtextArea}
         </Grid>
