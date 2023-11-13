@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ForkRightIcon from "@mui/icons-material/ForkRight";
 
 //menu that opens and displays options for the map card in home screen and community screen
@@ -26,7 +26,7 @@ export default function MapCardMenuList(props) {
   if (screen === "HOME") {
     return (
       <>
-        <IconButton onClick={handleOpen}>
+        <IconButton onClick={handleOpen} sx={{ borderRadius: "50%" }}>
           <MoreVertIcon style={{ marginTop: 10, fontSize: "2rem" }} />
         </IconButton>
         <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
@@ -54,7 +54,7 @@ export default function MapCardMenuList(props) {
       <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
         {
           <MenuItem onClick={handleClose}>
-            <FavoriteIcon style={{ marginRight: 4 }} />
+            <FavoriteBorderIcon style={{ marginRight: 4 }} />
             {"Like"}
           </MenuItem>
         }

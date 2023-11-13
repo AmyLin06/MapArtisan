@@ -130,7 +130,7 @@ export default function Banner(props) {
       break;
   }
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{ paddingBottom: 3 }}>
       <Grid item xs={2}>
         <CustomButton text="Logo here" />
       </Grid>

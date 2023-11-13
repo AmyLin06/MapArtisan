@@ -1,6 +1,5 @@
 import "./App.css";
-import CommunityScreen from "./screens/CommunityScreen";
-import SplashScreen from "./screens/SplashScreen";
+import AccountViewScreen from "./screens/AccountViewScreen";
 
 function App() {
   return (
