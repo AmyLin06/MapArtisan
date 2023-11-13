@@ -10,7 +10,7 @@ const CommentSection = (props) => {
   ));
 
   return (
-    <Box sx={{ padding: 1 }}>
+    <Box sx={{ paddingTop: 1 }}>
       <Typography fontWeight="bold" variant="h5" sx={{ marginBottom: 2 }}>
         {comments.length} Comments
       </Typography>

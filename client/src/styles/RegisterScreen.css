@@ -9,18 +9,7 @@
     flex-direction: column;
 }
 
-.bannerBox{
-    padding-bottom: 4%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-}
 
-.banner{
-    grid-column-start: 1;
-    grid-column-end: 3;
-    grid-row-start: 1;
-    
-}
 
 .login{
     color:#195083;
