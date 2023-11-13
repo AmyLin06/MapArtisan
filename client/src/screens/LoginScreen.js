@@ -79,8 +79,6 @@ const LoginScreen = () => {
           </Stack>
         </div>
         <br />
-        <br />
-
         <div className="copyright">
           <Copyright />
         </div>
