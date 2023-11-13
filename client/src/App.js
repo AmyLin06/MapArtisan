@@ -1,6 +1,6 @@
 import "./App.css";
-import AccountViewScreen from "./screens/AccountViewScreen";
-
+import QuickAccessToolbar from "./components/QuickAccessToolbar";
+import SplashScreen from "./screens/SplashScreen";
 
 function App() {
   return (
@@ -17,8 +17,8 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      <AccountViewScreen />
-      {/* <MapDetailsScreen map={currentMap} /> */}
+      {/* <SplashScreen /> */}
+      <QuickAccessToolbar />
     </div>
   );
 }
