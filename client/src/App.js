@@ -1,5 +1,5 @@
 import "./App.css";
-import AccountViewScreen from "./screens/AccountViewScreen";
+import HomeScreen from "./screens/HomeScreen";
 
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      <AccountViewScreen />
+      <HomeScreen />
       {/* <MapDetailsScreen map={currentMap} /> */}
     </div>
   );
