@@ -13,10 +13,11 @@ export default function Banner(props) {
   var middleOfBanner = <></>;
   var rightOfBanner = <></>;
 
-  const customFontStyle = {
+  const communityScreenStyle = {
     fontFamily: "Londrina Outline, sans-serif",
     fontSize: "40px",
     fontWeight: "bold",
+    color: "#246BAD",
     display: "flex",
     justifyContent: "center",
   };
@@ -121,7 +122,9 @@ export default function Banner(props) {
           </Avatar>
         </Stack>
       );
-      middleOfBanner = <div style={customFontStyle}>MapArtisan Community</div>;
+      middleOfBanner = (
+        <div style={communityScreenStyle}>MapArtisan Community</div>
+      );
       break;
     default:
       break;
