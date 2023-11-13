@@ -14,7 +14,13 @@ const HomeScreen = (props) => {
       <br></br>
       <div className="content-container">
       <div className="blue-area">
-        <p>This is the blue area content.</p>
+        <Box sx={{ paddingTop: 2 }}>
+            <Typography variant="h5" fontWeight="bold">
+              Templates
+            </Typography>
+            <hr />
+            
+          </Box>
       </div>
       <div className="white-area">
         <Box sx={{ paddingTop: 2 }}>

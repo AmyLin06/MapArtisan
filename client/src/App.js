@@ -1,5 +1,7 @@
 import "./App.css";
 import HomeScreen from "./screens/HomeScreen";
+import maps from "./assets/maps.json"
+import currentUser from "./assets/currentUser.json"
 
 
 function App() {
@@ -17,7 +19,7 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      <HomeScreen />
+      <HomeScreen currentUser={currentUser} maps={maps.maps}/>
       {/* <MapDetailsScreen map={currentMap} /> */}
     </div>
   );
