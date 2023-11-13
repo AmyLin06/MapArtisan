@@ -1,58 +1,25 @@
-// import React from "react";
-// import CustomButton from "./CustomButton";
-// import { Stack, Typography } from "@mui/material";
-// import "../styles/Banner.css";
-
-// const SplashScreenMenu = () => {
-//   return (
-//     <Stack className="loginMenu" spacing={1} direction="row">
-//       <CustomButton text="Continue as Guest" />
-//       <CustomButton text="Login" />
-//       <CustomButton text="Register" />
-//     </Stack>
-//   );
-// };
-// const CreateAccountMenu = () => {
-//   return (
-//     <div
-//       style={{
-//         display: "flex",
-//         justifyContent: "center",
-//         alignItems: "center",
-//       }}
-//     >
-//       <Typography
-//         sx={{ fontWeight: "bold", color: "#246BAD", fontSize: "2em" }}
-//       >
-//         {"Create Your Account"}
-//       </Typography>
-//     </div>
-//   );
-// };
-// const Banner = () => {
-//   return (
-//     <div className="banner">
-//       <div className="logo">
-//         <CustomButton text="U should see a logo here" />
-//       </div>
-//       <div>
-//         {/* <SplashScreenMenu /> */}
-//         <CreateAccountMenu />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Banner;
-
 import React from "react";
 import CustomButton from "./CustomButton";
-import { Stack, Typography, Grid } from "@mui/material";
+import { Stack, Typography, Grid, Box } from "@mui/material";
+import { red } from "@mui/material/colors";
+import Avatar from "@mui/material/Avatar";
+import GroupsIcon from "@mui/icons-material/Groups";
+import SearchBar from "./SearchBar";
 
+//need to pass a "screen" prop to Banner
+//Example: <Banner screen={"COMMUNITY"} />
 export default function Banner(props) {
   const { screen } = props;
   var middleOfBanner = <></>;
   var rightOfBanner = <></>;
+
+  const customFontStyle = {
+    fontFamily: "Londrina Outline, sans-serif",
+    fontSize: "40px",
+    fontWeight: "bold",
+    display: "flex",
+    justifyContent: "center",
+  };
 
   switch (screen) {
     case "WELCOME":
@@ -64,25 +31,9 @@ export default function Banner(props) {
         </Stack>
       );
       break;
-    case "LOGIN":
-      break;
-  }
-  if (screen === "WELCOME") {
-    rightOfBanner = (
-      <Stack spacing={1.5} direction="row">
-        <CustomButton text="Continue as Guest" />
-        <CustomButton text="Login" />
-        <CustomButton text="Register" />
-      </Stack>
-    );
-  }
-  return (
-    <Grid container spacing={2}>
-      <Grid item xs={2}>
-        <CustomButton text="Logo here" />
-      </Grid>
-      <Grid item xs={6}>
-        {/* <Typography
+    case "REGISTER":
+      middleOfBanner = (
+        <Typography
           sx={{
             fontWeight: "bold",
             color: "#246BAD",
@@ -92,7 +43,74 @@ export default function Banner(props) {
           }}
         >
           {"Create Your Account"}
-        </Typography> */}
+        </Typography>
+      );
+      break;
+    case "LOGIN":
+      middleOfBanner = (
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            color: "#246BAD",
+            fontSize: "2em",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {"Login"}
+        </Typography>
+      );
+      break;
+    case "ACCOUNT_DETAIL":
+
+    case "PROFILE":
+
+    case "MAP_DETAILS":
+      rightOfBanner = (
+        <Stack spacing={2.5} direction="row">
+          <Avatar sx={{ bgcolor: "#246BAD" }}>
+            <GroupsIcon style={{ fontSize: "2rem" }} />
+          </Avatar>
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            R
+          </Avatar>
+        </Stack>
+      );
+      break;
+    case "HOME":
+      rightOfBanner = (
+        <Stack spacing={2.5} direction="row">
+          <Avatar sx={{ bgcolor: "#246BAD" }}>
+            <GroupsIcon style={{ fontSize: "2rem" }} />
+          </Avatar>
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            R
+          </Avatar>
+        </Stack>
+      );
+      middleOfBanner = <SearchBar></SearchBar>;
+      break;
+    case "COMMUNITY":
+      rightOfBanner = (
+        <Stack spacing={2.5} direction="row">
+          <Avatar sx={{ bgcolor: "#246BAD" }}>
+            <GroupsIcon style={{ fontSize: "2rem" }} />
+          </Avatar>
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            R
+          </Avatar>
+        </Stack>
+      );
+      middleOfBanner = <div style={customFontStyle}>MapArtisan Community</div>;
+      break;
+  }
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={2}>
+        <CustomButton text="Logo here" />
+      </Grid>
+      <Grid item xs={6}>
+        {middleOfBanner}
       </Grid>
       <Grid
         item
@@ -103,11 +121,6 @@ export default function Banner(props) {
           alignItems: "center",
         }}
       >
-        {/* <Stack spacing={1.5} direction="row">
-          <CustomButton text="Continue as Guest" />
-          <CustomButton text="Login" />
-          <CustomButton text="Register" />
-        </Stack> */}
         {rightOfBanner}
       </Grid>
     </Grid>

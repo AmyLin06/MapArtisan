@@ -1,6 +1,4 @@
 import "./App.css";
-import FilterMenuList from "./components/FIlterMenuList";
-import CommunityScreen from "./screens/CommunityScreen";
 import SplashScreen from "./screens/SplashScreen";
 function App() {
   return (
@@ -12,10 +10,12 @@ function App() {
           href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@800&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Londrina+Outline&display=swap"
+          rel="stylesheet"
+        />
       </header>
-      {/* <SplashScreen /> */}
-      {/* <FilterMenuList></FilterMenuList> */}
-      <CommunityScreen></CommunityScreen>
+      <SplashScreen />
     </div>
   );
 }
