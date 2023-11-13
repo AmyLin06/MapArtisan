@@ -21,10 +21,7 @@ const LoginScreen = () => {
   return (
     <>
       <div className="main">
-        <div className="bannerBox">
-          <Banner className="banner" loginMenu={false} />
-          <Grid className="login">Sign in</Grid>
-        </div>
+        <Banner className="banner" screen="LOGIN" />
         <div className="content">
           <Stack className="loginBox" spacing={2} direction="column">
             <div className="label">Email Address</div>
