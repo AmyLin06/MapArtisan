@@ -1,5 +1,6 @@
 import "./App.css";
-import SplashScreen from "./screens/SplashScreen";
+import AccountViewScreen from "./screens/AccountViewScreen";
+
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      <SplashScreen />
+      <AccountViewScreen />
+      {/* <MapDetailsScreen map={currentMap} /> */}
     </div>
   );
 }
