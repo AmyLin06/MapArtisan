@@ -1,5 +1,5 @@
 import "./App.css";
-import SplashScreen from "./screens/SplashScreen.js";
+import SplashScreen from "./screens/SplashScreen";
 
 function App() {
   return (
