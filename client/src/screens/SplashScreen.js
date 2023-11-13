@@ -6,7 +6,7 @@ const SplashScreen = () => {
   return (
     <div className="main">
       <div>
-        <Banner />
+        <Banner screen={"WELCOME"} />
       </div>
 
       <div className="sloganText">

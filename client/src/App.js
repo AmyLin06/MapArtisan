@@ -1,4 +1,6 @@
 import "./App.css";
+import FilterMenuList from "./components/FIlterMenuList";
+import CommunityScreen from "./screens/CommunityScreen";
 import SplashScreen from "./screens/SplashScreen";
 function App() {
   return (
@@ -11,8 +13,9 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      <SplashScreen />
-      {/* <MapDetailsScreen map={currentMap} /> */}
+      {/* <SplashScreen /> */}
+      {/* <FilterMenuList></FilterMenuList> */}
+      <CommunityScreen></CommunityScreen>
     </div>
   );
 }

@@ -5,8 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
 //menu that opens and displays options to filter search results
-export default function FilterMenuList(props) {
-  const { isPublished, screen } = props;
+export default function FilterMenuList() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleOpen = (event) => {
