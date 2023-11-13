@@ -1,7 +1,5 @@
 import "./App.css";
-import MapList from "./components/MapList";
 import SplashScreen from "./screens/SplashScreen";
-import maps from "./assets/maps.json";
 
 function App() {
   return (

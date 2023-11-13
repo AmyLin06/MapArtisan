@@ -1,12 +1,12 @@
 import React from "react";
 import CustomButton from "./CustomButton";
-import { Stack, Typography, Grid, Box } from "@mui/material";
+import { Stack, Typography, Grid } from "@mui/material";
 import { red } from "@mui/material/colors";
 import Avatar from "@mui/material/Avatar";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SearchBar from "./SearchBar";
 
-//need to pass a "screen" prop to Banner
+//need to pass a "screen" prop to Banner, note that ACCOUNT_DETAIL, PROFILE, and MAP_DETAIL have the same banner
 //Example: <Banner screen={"COMMUNITY"} />
 export default function Banner(props) {
   const { screen } = props;
@@ -62,10 +62,30 @@ export default function Banner(props) {
       );
       break;
     case "ACCOUNT_DETAIL":
-
+      rightOfBanner = (
+        <Stack spacing={2.5} direction="row">
+          <Avatar sx={{ bgcolor: "#246BAD" }}>
+            <GroupsIcon style={{ fontSize: "2rem" }} />
+          </Avatar>
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            R
+          </Avatar>
+        </Stack>
+      );
+      break;
     case "PROFILE":
-
-    case "MAP_DETAILS":
+      rightOfBanner = (
+        <Stack spacing={2.5} direction="row">
+          <Avatar sx={{ bgcolor: "#246BAD" }}>
+            <GroupsIcon style={{ fontSize: "2rem" }} />
+          </Avatar>
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            R
+          </Avatar>
+        </Stack>
+      );
+      break;
+    case "MAP_DETAIL":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
           <Avatar sx={{ bgcolor: "#246BAD" }}>
@@ -102,6 +122,8 @@ export default function Banner(props) {
         </Stack>
       );
       middleOfBanner = <div style={customFontStyle}>MapArtisan Community</div>;
+      break;
+    default:
       break;
   }
   return (
