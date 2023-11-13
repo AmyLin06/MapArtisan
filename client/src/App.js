@@ -1,5 +1,4 @@
 import "./App.css";
-import QuickAccessToolbar from "./components/QuickAccessToolbar";
 import SplashScreen from "./screens/SplashScreen";
 
 function App() {
@@ -17,8 +16,7 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      {/* <SplashScreen /> */}
-      <QuickAccessToolbar />
+      <SplashScreen />
     </div>
   );
 }
