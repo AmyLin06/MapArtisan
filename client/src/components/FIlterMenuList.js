@@ -21,7 +21,9 @@ export default function FilterMenuList() {
   return (
     <>
       <IconButton onClick={handleOpen}>
-        <FilterListIcon style={{ marginTop: 10, fontSize: "1.5rem" }} />
+        <FilterListIcon
+          style={{ marginTop: 10, fontSize: "1.5rem", color: "#246BAD" }}
+        />
       </IconButton>
       <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
         <MenuItem onClick={handleClose}>{"Alphabetical order"}</MenuItem>

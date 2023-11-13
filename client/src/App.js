@@ -1,4 +1,5 @@
 import "./App.css";
+import CommunityScreen from "./screens/CommunityScreen";
 import SplashScreen from "./screens/SplashScreen";
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      <SplashScreen />
+      {/* <SplashScreen /> */}
+      <CommunityScreen />
     </div>
   );
 }
