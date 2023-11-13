@@ -1,5 +1,5 @@
 import "./App.css";
-import AccountViewScreen from "./screens/AccountViewScreen";
+import SplashScreen from "./screens/SplashScreen.js";
 
 function App() {
   return (
@@ -16,8 +16,7 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      {/* <SplashScreen /> */}
-      <CommunityScreen />
+      <SplashScreen />
     </div>
   );
 }
