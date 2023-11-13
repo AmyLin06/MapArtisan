@@ -1,5 +1,5 @@
 import "./App.css";
-import SplashScreen from "./screens/SplashScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      <SplashScreen />
+      <LoginScreen />
     </div>
   );
 }
