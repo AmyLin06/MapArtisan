@@ -2,8 +2,8 @@ import "../styles/RegisterScreen.css";
 import React, { useState, useEffect, useRef } from "react";
 import Banner from "../components/Banner";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import { Stack } from "@mui/material";
+import { Link } from "react-router-dom";
+import { Stack, Typography } from "@mui/material";
 import Copyright from "../components/CopyRight";
 import CustomButton from "../components/CustomButton";
 import Button from "@mui/material/Button";
@@ -45,7 +45,7 @@ const LoginScreen = () => {
 
   return (
     <>
-      <div className="main">
+      <div className="register-container">
         <Banner className="banner" loginMenu={false} screen="REGISTER" />
         <div className="content">
           <Stack className="loginBox" spacing={2} direction="column">
@@ -119,15 +119,15 @@ const LoginScreen = () => {
               </Button>
               .
             </div>
-            <CustomButton
-              // type="submit"
-              text={"Sign up Now!"}
-              type="contained"
-            />
+            <Link to="/home">
+              <CustomButton text={"Sign up Now!"} type="contained" />
+            </Link>
             <br />
             <div>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in -&gt;
+              <Link to="/login">
+                <Typography variant="body2">
+                  Already have an account? Sign in
+                </Typography>
               </Link>
             </div>
           </Stack>

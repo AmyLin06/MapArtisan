@@ -1,8 +1,14 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import RegisterScreen from "./screens/RegisterScreen";
+import SplashScreen from "./screens/SplashScreen";
+import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
-import maps from "./assets/maps.json"
-import currentUser from "./assets/currentUser.json"
-
+import CommunityScreen from "./screens/CommunityScreen";
+import homeMaps from "./assets/currentUserMaps.json";
+import MapDetailsScreen from "./screens/MapDetailsScreen";
+import AccountViewScreen from "./screens/AccountViewScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 function App() {
   return (
@@ -19,8 +25,21 @@ function App() {
           rel="stylesheet"
         />
       </header>
-      <HomeScreen currentUser={currentUser} maps={maps.maps}/>
-      {/* <MapDetailsScreen map={currentMap} /> */}
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="/">
+            <Route index element={<SplashScreen />} />
+            <Route path="login" element={<LoginScreen />} />
+            <Route path="register" element={<RegisterScreen />} />
+            <Route path="home" element={<HomeScreen maps={homeMaps.maps} />} />
+            <Route path="community" element={<CommunityScreen />} />
+            <Route path="map-details" element={<MapDetailsScreen />} />
+            <Route path="account-setting" element={<AccountViewScreen />} />
+            <Route path="profile" element={<ProfileScreen />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

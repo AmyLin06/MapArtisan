@@ -2,8 +2,8 @@ import "../styles/LoginScreen.css";
 import React from "react";
 import Banner from "../components/Banner";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import { Stack } from "@mui/material";
+import { Link } from "react-router-dom";
+import { Stack, Typography } from "@mui/material";
 import Copyright from "../components/CopyRight";
 import CustomButton from "../components/CustomButton";
 
@@ -19,7 +19,7 @@ import CustomButton from "../components/CustomButton";
 const LoginScreen = () => {
   return (
     <>
-      <div className="main">
+      <div className="login-container">
         <Banner className="banner" screen="LOGIN" />
 
         <div className="content">
@@ -64,21 +64,19 @@ const LoginScreen = () => {
               </Link>
             </div>
             <div>
-              <Link href="#" variant="body2">
-                Don't have an account? Sign Up
+              <Link to="/register">
+                <Typography variant="body2">
+                  Don't have an account? Sign Up
+                </Typography>
               </Link>
             </div>
-            <CustomButton
-              // type="submit"
-              text={"Sign in"}
-              type="contained"
-            />
+            <Link to="/home">
+              <CustomButton text={"Sign in"} type="contained" />
+            </Link>
           </Stack>
         </div>
         <br />
-        {/* <div className="copyright"> */}
         <Copyright />
-        {/* </div> */}
       </div>
     </>
   );

@@ -17,8 +17,9 @@ export default function MapCardMenuList(props) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (event) => {
     setAnchorEl(null);
+    event.stopPropagation();
   };
 
   const open = Boolean(anchorEl);
@@ -47,7 +48,7 @@ export default function MapCardMenuList(props) {
 
   //screen==="COMMUNITY"
   return (
-    <>
+    <div>
       <IconButton onClick={handleOpen}>
         <MoreVertIcon style={{ marginTop: 10, fontSize: "2rem" }} />
       </IconButton>
@@ -63,6 +64,6 @@ export default function MapCardMenuList(props) {
           {"Duplicate"}
         </MenuItem>
       </Popover>
-    </>
+    </div>
   );
 }

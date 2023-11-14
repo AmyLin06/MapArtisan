@@ -3,29 +3,29 @@ import MapList from "../components/MapList";
 import CustomButton from "../components/CustomButton";
 import ForumIcon from "@mui/icons-material/Forum";
 import Banner from "../components/Banner";
+import sampleMaps from "../assets/maps.json";
+import sampleUser from "../assets/currentUser.json";
 
-function ProfileScreen(props) {
-  const { currentUser, maps } = props;
-
+function ProfileScreen() {
   return (
     <Box sx={{ padding: 2 }}>
       <Banner screen={"PROFILE"}></Banner>
       <Box display="flex">
         <Avatar
-          src={currentUser.profilePic}
+          src={sampleUser.profilePic}
           alt="profile-pic"
           sx={{ width: 200, height: 200, marginRight: 2 }}
         />
         <Stack direction="column" sx={{ paddingTop: 1 }}>
           <Typography variant="h2" fontWeight="bold">
-            {currentUser.firstName} {currentUser.lastName}
+            {sampleUser.firstName} {sampleUser.lastName}
           </Typography>
           <Typography
             variant="h5"
             color="textSecondary"
             sx={{ marginBottom: 5 }}
           >
-            @{currentUser.username}
+            @{sampleUser.username}
           </Typography>
           <CustomButton text={"Message"} icon={ForumIcon} />
         </Stack>
@@ -36,7 +36,7 @@ function ProfileScreen(props) {
           Maps
         </Typography>
         <hr />
-        <MapList maps={maps} />
+        <MapList maps={sampleMaps.maps} screen={"COMMUNITY"} />
       </Box>
     </Box>
   );

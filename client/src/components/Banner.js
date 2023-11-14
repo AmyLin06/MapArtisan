@@ -1,15 +1,17 @@
 import React from "react";
 import CustomButton from "./CustomButton";
 import { Stack, Typography, Grid } from "@mui/material";
-import { red } from "@mui/material/colors";
 import Avatar from "@mui/material/Avatar";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
+import ProfileMenuList from "./MenuLists/ProfileMenuList";
 
 //need to pass a "screen" prop to Banner, note that ACCOUNT_DETAIL, PROFILE, and MAP_DETAIL have the same banner
 //Example: <Banner screen={"COMMUNITY"} />
 export default function Banner(props) {
   const { screen } = props;
+
   var middleOfBanner = <></>;
   var rightOfBanner = <></>;
   var bannerColor = "transparent";
@@ -27,9 +29,15 @@ export default function Banner(props) {
     case "WELCOME":
       rightOfBanner = (
         <Stack spacing={1.5} direction="row">
-          <CustomButton text="Continue as Guest" />
-          <CustomButton text="Login" />
-          <CustomButton text="Register" />
+          <Link to="/home">
+            <CustomButton text="Continue as Guest" />
+          </Link>
+          <Link to="/login">
+            <CustomButton text="Login" />
+          </Link>
+          <Link to="/register">
+            <CustomButton text="Register" />
+          </Link>
         </Stack>
       );
       break;
@@ -69,9 +77,7 @@ export default function Banner(props) {
           <Avatar sx={{ bgcolor: "#246BAD" }}>
             <GroupsIcon style={{ fontSize: "2rem" }} />
           </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <ProfileMenuList />
         </Stack>
       );
       break;
@@ -81,33 +87,31 @@ export default function Banner(props) {
           <Avatar sx={{ bgcolor: "#246BAD" }}>
             <GroupsIcon style={{ fontSize: "2rem" }} />
           </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <ProfileMenuList />
         </Stack>
       );
       break;
     case "MAP_DETAIL":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
-          <Avatar sx={{ bgcolor: "#246BAD" }}>
-            <GroupsIcon style={{ fontSize: "2rem" }} />
-          </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <Link to="/community">
+            <Avatar sx={{ bgcolor: "#246BAD" }}>
+              <GroupsIcon style={{ fontSize: "2rem" }} />
+            </Avatar>
+          </Link>
+          <ProfileMenuList />
         </Stack>
       );
       break;
     case "HOME":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
-          <Avatar sx={{ bgcolor: "#246BAD" }}>
-            <GroupsIcon style={{ fontSize: "2rem" }} />
-          </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <Link to="/community">
+            <Avatar sx={{ bgcolor: "#246BAD" }}>
+              <GroupsIcon style={{ fontSize: "2rem" }} />
+            </Avatar>
+          </Link>
+          <ProfileMenuList />
         </Stack>
       );
       middleOfBanner = <SearchBar></SearchBar>;
@@ -118,9 +122,7 @@ export default function Banner(props) {
           <Avatar sx={{ bgcolor: "#246BAD" }}>
             <GroupsIcon style={{ fontSize: "2rem" }} />
           </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <ProfileMenuList />
         </Stack>
       );
       middleOfBanner = (
@@ -133,9 +135,7 @@ export default function Banner(props) {
           <Avatar sx={{ bgcolor: "#246BAD" }}>
             <GroupsIcon style={{ fontSize: "2rem" }} />
           </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <ProfileMenuList />
         </Stack>
       );
       bannerColor = "#246BAD";
@@ -143,6 +143,14 @@ export default function Banner(props) {
     default:
       break;
   }
+
+  const logoTo =
+    window.location.pathname === "/login" ||
+    window.location.pathname === "/register" ||
+    window.location.pathname === "/"
+      ? "/"
+      : "/home";
+
   return (
     <Grid
       container
@@ -150,7 +158,9 @@ export default function Banner(props) {
       sx={{ paddingBottom: 3, backgroundColor: bannerColor }}
     >
       <Grid item xs={2}>
-        <CustomButton text="Logo here" />
+        <Link to={logoTo}>
+          <CustomButton text="Logo here" />
+        </Link>
       </Grid>
       <Grid item xs={6}>
         {middleOfBanner}
