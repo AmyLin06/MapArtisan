@@ -1,10 +1,7 @@
 import * as React from "react";
-import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Box, Grid } from "@mui/material/";
+import { Grid } from "@mui/material/";
 
 //TODO: may need to make changes later so that function that handles deleting a layer has necessary info
 export default function LayerCard(props) {

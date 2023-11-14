@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import LayerList from "./LayerList";
 import currentMap from "../assets/currentMap.json";
 import CustomButton from "./CustomButton";
+import ToolTab from "./ToolTab";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -51,7 +52,7 @@ export default function SideMenu() {
           <LayerList layers={currentMap.layers} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <Typography>Tools</Typography>
+          <ToolTab />
         </CustomTabPanel>
       </Box>
       <Box
