@@ -53,7 +53,7 @@ export default function MapCard(props) {
     if (currentMap.isPublished) {
       navigate("/map-details");
     } else {
-      navigate("/map-details");
+      navigate("/edit");
     }
   }
 

@@ -159,7 +159,7 @@ export default function Banner(props) {
     >
       <Grid item xs={2}>
         <Link to={logoTo}>
-          <CustomButton text="Logo here" />
+          <CustomButton text="MapArtisan" />
         </Link>
       </Grid>
       <Grid item xs={6}>

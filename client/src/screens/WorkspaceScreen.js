@@ -6,9 +6,7 @@ import SideMenu from "../components/SideMenu";
 const WorkspaceScreen = () => {
   return (
     <div className="workspace-main">
-      <div className="workspace-banner">
-        <Banner />
-      </div>
+      <Banner screen={"EDIT"} />
       <div className="workspace-content">
         <div className="sidebar">
           <SideMenu />
