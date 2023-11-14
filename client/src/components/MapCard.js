@@ -4,7 +4,6 @@ import CardMedia from "@mui/material/CardMedia";
 import { Box, Typography, Grid } from "@mui/material";
 import MapCardMenuList from "./MapCardMenuList";
 import GroupsIcon from "@mui/icons-material/Groups";
-import { Button } from "@mui/base";
 
 //Example (currentMap is mock data for a map)
 //  (screen is either "HOME" by default or "COMMMUNITY", representing which screen the map card is for):

@@ -1,0 +1,25 @@
+.main{
+    background-color: #FFFDF3;
+    background-repeat: no-repeat;
+    background-position-x:  85%;
+    background-position-y: -50%;
+    background-size: 57%;
+}
+.content-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .blue-area {
+    flex: 1;
+    background-color: #B4CEE5;
+    padding: 20px;
+    color: white; /* Text color in the blue area */
+  }
+  
+  .white-area {
+    flex: 1;
+    background-color: #FFFDF3;
+    padding: 20px;
+    color: black; /* Text color in the white area */
+  }

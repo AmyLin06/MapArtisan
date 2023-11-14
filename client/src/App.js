@@ -1,6 +1,8 @@
 import "./App.css";
+import HomeScreen from "./screens/HomeScreen";
+import maps from "./assets/maps.json"
+import currentUser from "./assets/currentUser.json"
 
-import RegisterScreen from "./screens/RegisterScreen";
 
 function App() {
   return (
@@ -17,8 +19,8 @@ function App() {
           rel="stylesheet"
         />
       </header>
-
-      <RegisterScreen />
+      <HomeScreen currentUser={currentUser} maps={maps.maps}/>
+      {/* <MapDetailsScreen map={currentMap} /> */}
     </div>
   );
 }
