@@ -1,6 +1,8 @@
 import "./App.css";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RegisterScreen from "./screens/RegisterScreen";
+import SplashScreen from "./screens/SplashScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 function App() {
   return (
@@ -18,7 +20,15 @@ function App() {
         />
       </header>
 
-      <RegisterScreen />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/">
+            <Route index element={<SplashScreen />} />
+            <Route path="login" element={<LoginScreen />} />
+            <Route path="register" element={<RegisterScreen />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

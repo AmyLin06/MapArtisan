@@ -5,11 +5,13 @@ import { red } from "@mui/material/colors";
 import Avatar from "@mui/material/Avatar";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
 
 //need to pass a "screen" prop to Banner, note that ACCOUNT_DETAIL, PROFILE, and MAP_DETAIL have the same banner
 //Example: <Banner screen={"COMMUNITY"} />
 export default function Banner(props) {
   const { screen } = props;
+
   var middleOfBanner = <></>;
   var rightOfBanner = <></>;
   var bannerColor = "transparent";
@@ -28,8 +30,12 @@ export default function Banner(props) {
       rightOfBanner = (
         <Stack spacing={1.5} direction="row">
           <CustomButton text="Continue as Guest" />
-          <CustomButton text="Login" />
-          <CustomButton text="Register" />
+          <Link to="/login">
+            <CustomButton text="Login" />
+          </Link>
+          <Link to="/register">
+            <CustomButton text="Register" />
+          </Link>
         </Stack>
       );
       break;
@@ -143,6 +149,14 @@ export default function Banner(props) {
     default:
       break;
   }
+
+  const logoTo =
+    window.location.pathname === "/login" ||
+    window.location.pathname === "/register" ||
+    window.location.pathname === "/"
+      ? "/"
+      : "/home";
+
   return (
     <Grid
       container
@@ -150,7 +164,9 @@ export default function Banner(props) {
       sx={{ paddingBottom: 3, backgroundColor: bannerColor }}
     >
       <Grid item xs={2}>
-        <CustomButton text="Logo here" />
+        <Link to={logoTo}>
+          <CustomButton text="Logo here" />
+        </Link>
       </Grid>
       <Grid item xs={6}>
         {middleOfBanner}
