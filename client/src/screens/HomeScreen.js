@@ -27,7 +27,7 @@ const HomeScreen = (props) => {
   };
 
   return (
-    <Box className="main">
+    <Box className="home-container">
       <div>
         <Banner screen={"HOME"} />
       </div>

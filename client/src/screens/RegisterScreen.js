@@ -45,7 +45,7 @@ const LoginScreen = () => {
 
   return (
     <>
-      <div className="main">
+      <div className="register-container">
         <Banner className="banner" loginMenu={false} screen="REGISTER" />
         <div className="content">
           <Stack className="loginBox" spacing={2} direction="column">

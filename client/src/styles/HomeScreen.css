@@ -1,9 +1,8 @@
-.main{
+.home-container{
+    width: 100vw;
+    height: 100vh;
     background-color: #FFFDF3;
-    background-repeat: no-repeat;
-    background-position-x:  85%;
-    background-position-y: -50%;
-    background-size: 57%;
+
 }
 .content-container {
     display: flex;

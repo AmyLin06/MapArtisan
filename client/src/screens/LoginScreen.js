@@ -19,7 +19,7 @@ import CustomButton from "../components/CustomButton";
 const LoginScreen = () => {
   return (
     <>
-      <div className="main">
+      <div className="login-container">
         <Banner className="banner" screen="LOGIN" />
 
         <div className="content">
