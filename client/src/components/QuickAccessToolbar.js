@@ -6,8 +6,8 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Typography, Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import ImportMenuList from "./ImportMenuList";
-import ExportMenuList from "./ExportMenuList";
+import ImportMenuList from "./MenuLists/ImportMenuList";
+import ExportMenuList from "./MenuLists/ExportMenuList";
 
 export default function QuickAccessToolbar() {
   const handleSave = () => {
@@ -39,6 +39,7 @@ export default function QuickAccessToolbar() {
         sx={{
           borderRadius: "70px 0 0 70px",
           border: "1px solid black",
+          height: "30px",
         }}
       >
         <IconButton onClick={handleSave}>
@@ -59,6 +60,7 @@ export default function QuickAccessToolbar() {
         aria-label="undo"
         sx={{
           border: "1px solid black",
+          height: "30px",
         }}
       >
         <IconButton onClick={handleUndo}>
@@ -79,6 +81,7 @@ export default function QuickAccessToolbar() {
         aria-label="redo"
         sx={{
           border: "1px solid black",
+          height: "30px",
         }}
       >
         <IconButton onClick={handleRedo}>
@@ -99,6 +102,7 @@ export default function QuickAccessToolbar() {
         aria-label="import"
         sx={{
           border: "1px solid black",
+          height: "30px",
         }}
       >
         <ImportMenuList />
@@ -106,7 +110,11 @@ export default function QuickAccessToolbar() {
       <ToggleButton
         value="export"
         aria-label="export"
-        sx={{ borderRadius: "0 70px 70px 0", border: "1px solid black" }}
+        sx={{
+          borderRadius: "0 70px 70px 0",
+          border: "1px solid black",
+          height: "30px",
+        }}
       >
         <ExportMenuList />
       </ToggleButton>

@@ -57,14 +57,18 @@ export default function SideMenu() {
       </Box>
       <Box
         sx={{
-          position: "absolute",
+          position: "relative",
           bottom: 0,
-          left: "50%",
-          transform: "translateX(-50%)",
-          paddingBottom: "1rem",
+          marginTop: "125%",
+          display: "flex",
+          justifyContent: "center",
         }}
       >
-        <CustomButton text="Publish" onPress={handlePublish} />
+        <CustomButton
+          className="publish"
+          text="Publish"
+          onPress={handlePublish}
+        />
       </Box>
     </Box>
   );
