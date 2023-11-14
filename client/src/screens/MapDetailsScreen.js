@@ -5,32 +5,34 @@ import { Avatar, Box, Typography } from "@mui/material";
 import CustomButton from "../components/CustomButton";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ForkRightIcon from "@mui/icons-material/ForkRight";
+import sampleMap from "../assets/currentMap.json";
+import Banner from "../components/Banner";
 
-function MapDetailsScreen(props) {
-  const { map } = props;
+function MapDetailsScreen() {
   return (
-    <Box sx={{ padding: 3 }}>
-      <img id="map-details-img" src={map.mapPicture} alt="map-img" />
+    <Box sx={{ padding: 2 }}>
+      <Banner screen={"MAP_DETAIL"} />
+      <img id="map-details-img" src={sampleMap.mapPicture} alt="map-img" />
       <Box display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h4" fontWeight="bold">
-            {map.mapTitle}
+            {sampleMap.mapTitle}
           </Typography>
           <Box display="flex">
-            <Avatar src={map.profilePic} sx={{ marginRight: 1 }} />
+            <Avatar src={sampleMap.profilePic} sx={{ marginRight: 1 }} />
             <Typography
               variant="h6"
               color="textSecondary"
               sx={{ paddingTop: 0.5 }}
             >
-              @{map.ownerUsername}
+              @{sampleMap.ownerUsername}
             </Typography>
           </Box>
         </Box>
         <Box sx={{ display: "flex", gap: "5%" }}>
           <CustomButton
             icon={ThumbUpOffAltIcon}
-            text={map.likes}
+            text={sampleMap.likes}
             fontSize="25px"
           />
           <CustomButton
@@ -43,11 +45,11 @@ function MapDetailsScreen(props) {
 
       <Box sx={{ marginTop: 1, marginBottom: 1 }}>
         <Typography>
-          {map.publishedDate} {map.forks} duplicates
+          {sampleMap.publishedDate} {sampleMap.forks} duplicates
         </Typography>
       </Box>
 
-      <CommentSection comments={map.comments} currentUser={currentUser} />
+      <CommentSection comments={sampleMap.comments} currentUser={currentUser} />
     </Box>
   );
 }

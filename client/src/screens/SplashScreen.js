@@ -4,7 +4,7 @@ import Banner from "../components/Banner";
 
 const SplashScreen = () => {
   return (
-    <div className="main">
+    <div className="splash-container">
       <div>
         <Banner screen={"WELCOME"} />
       </div>

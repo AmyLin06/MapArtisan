@@ -2,12 +2,12 @@ import { Box, List, Grid } from "@mui/material";
 import MapCard from "./MapCard";
 
 const MapList = (props) => {
-  const { maps } = props;
+  const { maps, screen } = props;
 
   let mapcards = "";
   mapcards = maps.map((m, index) => (
     <Grid item xs={4} key={"grid" + index} sx={{ paddingBottom: 1 }}>
-      <MapCard id={"map" + index} currentMap={m} screen={"COMMUNITY"} />
+      <MapCard id={"map" + index} currentMap={m} screen={screen} />
     </Grid>
   ));
 

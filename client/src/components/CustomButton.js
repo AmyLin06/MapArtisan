@@ -37,7 +37,7 @@ const CustomButton = ({
         <OutlinedStyledButton
           variant={type}
           fontSize={fontSize}
-          // onClick={onPress}
+          onClick={onPress}
         >
           {Icon && <Icon sx={{ fontSize: fontSize, marginRight: 1 }} />}
           {text}
@@ -46,7 +46,7 @@ const CustomButton = ({
         <ContainedStyledButton
           variant={type}
           fontSize={fontSize}
-          // onClick={onPress}
+          onClick={onPress}
         >
           {Icon && <Icon sx={{ fontSize: fontSize, marginRight: 1 }} />}
           {text}

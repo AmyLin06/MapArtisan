@@ -1,20 +1,17 @@
-// import { useContext } from "react";
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import React, { useContext } from "react";
+import { Box, Modal, Typography, Button, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import TextField from "@mui/material/TextField";
 import CustomButton from "../CustomButton";
+import { GlobalStoreContext } from "../../store/GlobalStore";
 
 //Modal that displays in the middle of the screen allowing the user to enter input
 //Example of a way to create a InputModal, see ModalTypes.js for definition of "InputModalTypes.MESSAGE_MODAL"
 //<InputModal modalType={InputModalTypes.MESSAGE_MODAL}></InputModal>
+
 export default function InputModal(props) {
-  // const { store } = useContext(GlobalStoreContext);
+  const { store } = useContext(GlobalStoreContext);
   const { modalType } = props;
-  const heightValue = modalType.name === "RENAME_MAP" ? "20%" : "50%";
+  const heightValue = modalType.name === "RENAME_MAP" ? 150 : 450;
   const InputModalStyle = {
     position: "absolute",
     top: "50%",
@@ -27,6 +24,11 @@ export default function InputModal(props) {
     color: "#000000",
     border: "3px solid #FFFDF3",
     padding: "20px",
+  };
+
+  const handleClose = (event) => {
+    event.stopPropagation();
+    store.hideModals();
   };
 
   var InputField = (
@@ -70,9 +72,17 @@ export default function InputModal(props) {
     <Modal
       //TODO: conditionally open modal
       //   open={store.listMarkedForDeletion !== null}
-      open={true}
+      open={store.currentModal === modalType.name}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      slotProps={{
+        backdrop: {
+          sx: {
+            //Your style here....
+            backgroundColor: "rgba(0,0,0,0.05)",
+          },
+        },
+      }}
     >
       <Box sx={InputModalStyle}>
         <Box
@@ -85,7 +95,7 @@ export default function InputModal(props) {
           <Button>
             <CloseIcon
               style={{ fontSize: "2.5vw", color: "#000000" }}
-              onClick={modalType.confirmAction}
+              onClick={handleClose}
             />
           </Button>
         </Box>
@@ -115,14 +125,8 @@ export default function InputModal(props) {
             gap: "15px",
           }}
         >
-          <CustomButton
-            text={"Confirm"}
-            onPress={modalType.confirmAction}
-          ></CustomButton>
-          <CustomButton
-            text={"Cancel"}
-            onPress={modalType.cancelAction}
-          ></CustomButton>
+          <CustomButton text={"Confirm"} onPress={handleClose}></CustomButton>
+          <CustomButton text={"Cancel"} onPress={handleClose}></CustomButton>
         </Box>
       </Box>
     </Modal>
