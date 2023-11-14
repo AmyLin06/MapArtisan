@@ -1,7 +1,7 @@
 .main{   
-    background-image: url("../assets/LoginScreenMap.png");
+    background-image: url("../assets/RegisterScreenMap.png");
     background-repeat: no-repeat;
-    background-position-x:  100%;
+    background-position-x:  110%;
     background-position-y: 100%;
     background-size: 64%;
     grid-template-columns: repeat(2, 1fr);
@@ -10,11 +10,6 @@
 }
 
 
-.banner{
-    width: 100vw;
-    justify-content: center;
-
-}
 
 .login{
     color:#195083;
@@ -31,7 +26,7 @@
 
     width: 50%;
     padding-left:10%;
-    padding-top:5%;
+    padding-top:1%;
 
 }
 

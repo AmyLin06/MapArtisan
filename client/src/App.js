@@ -1,5 +1,7 @@
 import "./App.css";
+
 import LoginScreen from "./screens/LoginScreen";
+
 
 function App() {
   return (
@@ -16,7 +18,9 @@ function App() {
           rel="stylesheet"
         />
       </header>
+
       <LoginScreen />
+
     </div>
   );
 }
