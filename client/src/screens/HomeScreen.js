@@ -27,7 +27,7 @@ const HomeScreen = (props) => {
   };
 
   return (
-    <Box className="home-container">
+    <Box className="home-container" sx={{ padding: 2 }}>
       <div>
         <Banner screen={"HOME"} />
       </div>
@@ -46,7 +46,6 @@ const HomeScreen = (props) => {
                 </Button>
               </Box>
             </Link>
-            <hr />
             <br></br>
             {currentPage === 1 && (
               <div>
@@ -121,7 +120,6 @@ const HomeScreen = (props) => {
             <Typography variant="h5" fontWeight="bold">
               Maps
             </Typography>
-            <hr />
             <MapList maps={maps} screen={"HOME"} />
           </Box>
         </div>

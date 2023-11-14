@@ -1,24 +1,17 @@
-.home-container{
-    width: 100vw;
-    height: 100vh;
-    background-color: #FFFDF3;
-
-}
 .content-container {
     display: flex;
     flex-direction: column;
   }
   
-  .blue-area {
-    flex: 1;
-    background-color: #B4CEE5;
-    padding: 20px;
-    color: white; /* Text color in the blue area */
-  }
-  
-  .white-area {
-    flex: 1;
-    background-color: #FFFDF3;
-    padding: 20px;
-    color: black; /* Text color in the white area */
-  }
+.blue-area {
+  flex: 1;
+  background-color: #B4CEE5;
+  padding: 20px;
+  color: white; /* Text color in the blue area */
+}
+
+.white-area {
+  flex: 1;
+  background-color: #FFFDF3;
+  color: black; /* Text color in the white area */
+}
