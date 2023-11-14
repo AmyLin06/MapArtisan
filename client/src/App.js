@@ -9,7 +9,6 @@ import homeMaps from "./assets/currentUserMaps.json";
 import MapDetailsScreen from "./screens/MapDetailsScreen";
 import AccountViewScreen from "./screens/AccountViewScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import WorkspaceScreen from "./screens/WorkspaceScreen";
 
 function App() {
   return (
@@ -30,7 +29,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route index element={<WorkspaceScreen />} />
+            <Route index element={<SplashScreen />} />
             <Route path="login" element={<LoginScreen />} />
             <Route path="register" element={<RegisterScreen />} />
             <Route path="home" element={<HomeScreen maps={homeMaps.maps} />} />
