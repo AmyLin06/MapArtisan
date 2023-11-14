@@ -19,7 +19,7 @@ export default function MapCard(props) {
     <Card sx={{ maxWidth: "100%" ,height: "300px" }}>
       <CardMedia
         component="img"
-        height="80%"
+        height="75%"
         alt="Map of the US"
         image={TemplatePic}
       />
