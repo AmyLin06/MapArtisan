@@ -3,7 +3,6 @@ import React from "react";
 import Banner from "../components/Banner";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import { Stack } from "@mui/material";
 import Copyright from "../components/CopyRight";
 import CustomButton from "../components/CustomButton";
@@ -21,10 +20,9 @@ const LoginScreen = () => {
   return (
     <>
       <div className="main">
-        <div className="bannerBox">
-          <Banner className="banner" loginMenu={false} />
-          <Grid className="login">Sign in</Grid>
-        </div>
+
+        <Banner className="banner" screen="LOGIN" />
+
         <div className="content">
           <Stack className="loginBox" spacing={2} direction="column">
             <div className="label">Email Address</div>
