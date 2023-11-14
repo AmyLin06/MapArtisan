@@ -6,6 +6,7 @@ import Avatar from "@mui/material/Avatar";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
+import ProfileMenuList from "./MenuLists/ProfileMenuList";
 
 //need to pass a "screen" prop to Banner, note that ACCOUNT_DETAIL, PROFILE, and MAP_DETAIL have the same banner
 //Example: <Banner screen={"COMMUNITY"} />
@@ -29,7 +30,9 @@ export default function Banner(props) {
     case "WELCOME":
       rightOfBanner = (
         <Stack spacing={1.5} direction="row">
-          <CustomButton text="Continue as Guest" />
+          <Link to="/home">
+            <CustomButton text="Continue as Guest" />
+          </Link>
           <Link to="/login">
             <CustomButton text="Login" />
           </Link>
@@ -75,9 +78,7 @@ export default function Banner(props) {
           <Avatar sx={{ bgcolor: "#246BAD" }}>
             <GroupsIcon style={{ fontSize: "2rem" }} />
           </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <ProfileMenuList />
         </Stack>
       );
       break;
@@ -87,33 +88,31 @@ export default function Banner(props) {
           <Avatar sx={{ bgcolor: "#246BAD" }}>
             <GroupsIcon style={{ fontSize: "2rem" }} />
           </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <ProfileMenuList />
         </Stack>
       );
       break;
     case "MAP_DETAIL":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
-          <Avatar sx={{ bgcolor: "#246BAD" }}>
-            <GroupsIcon style={{ fontSize: "2rem" }} />
-          </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <Link to="/community">
+            <Avatar sx={{ bgcolor: "#246BAD" }}>
+              <GroupsIcon style={{ fontSize: "2rem" }} />
+            </Avatar>
+          </Link>
+          <ProfileMenuList />
         </Stack>
       );
       break;
     case "HOME":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
-          <Avatar sx={{ bgcolor: "#246BAD" }}>
-            <GroupsIcon style={{ fontSize: "2rem" }} />
-          </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <Link to="/community">
+            <Avatar sx={{ bgcolor: "#246BAD" }}>
+              <GroupsIcon style={{ fontSize: "2rem" }} />
+            </Avatar>
+          </Link>
+          <ProfileMenuList />
         </Stack>
       );
       middleOfBanner = <SearchBar></SearchBar>;
@@ -124,9 +123,7 @@ export default function Banner(props) {
           <Avatar sx={{ bgcolor: "#246BAD" }}>
             <GroupsIcon style={{ fontSize: "2rem" }} />
           </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <ProfileMenuList />
         </Stack>
       );
       middleOfBanner = (
@@ -139,9 +136,7 @@ export default function Banner(props) {
           <Avatar sx={{ bgcolor: "#246BAD" }}>
             <GroupsIcon style={{ fontSize: "2rem" }} />
           </Avatar>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <ProfileMenuList />
         </Stack>
       );
       bannerColor = "#246BAD";

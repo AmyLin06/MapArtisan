@@ -5,11 +5,15 @@ import { Avatar, Box, Typography } from "@mui/material";
 import CustomButton from "../components/CustomButton";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ForkRightIcon from "@mui/icons-material/ForkRight";
+import sampleMap from "../assets/currentMap.json";
+import { useState } from "react";
+import Banner from "../components/Banner";
 
-function MapDetailsScreen(props) {
-  const { map } = props;
+function MapDetailsScreen() {
+  const [map, setMap] = useState(sampleMap);
   return (
-    <Box sx={{ padding: 3 }}>
+    <Box sx={{ padding: 2 }}>
+      <Banner screen={"MAP_DETAIL"} />
       <img id="map-details-img" src={map.mapPicture} alt="map-img" />
       <Box display="flex" justifyContent="space-between">
         <Box>

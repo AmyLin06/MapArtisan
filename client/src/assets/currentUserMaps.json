@@ -1,0 +1,54 @@
+{
+    "maps":[
+        {
+            "id": "1",
+            "name": "Map of the World",
+            "ownerUsername": "timmy",
+            "mapPic": "https://cdn.britannica.com/37/245037-050-79129D52/world-map-continents-oceans.jpg",
+            "likes": 45,
+            "forks": 3,
+            "isPublished": false,
+            "publishedDate": "Nov 9, 2022"
+        },
+        {
+            "id": "2",
+            "name": "Map Lover",
+            "ownerUsername": "timmy",
+            "mapPic": "https://cdn.britannica.com/37/245037-050-79129D52/world-map-continents-oceans.jpg",
+            "likes": 126,
+            "forks": 24,
+            "isPublished": true,
+            "publishedDate": "Jan 2, 2020"
+        },
+        {
+            "id": "3",
+            "name": "Map Lover",
+            "ownerUsername": "timmy",
+            "mapPic": "https://cdn.britannica.com/37/245037-050-79129D52/world-map-continents-oceans.jpg",
+            "likes": 126,
+            "forks": 24,
+            "isPublished": true,
+            "publishedDate": "Nov 2, 2021"
+        },
+        {
+            "id": "4",
+            "name": "Map Lover",
+            "ownerUsername": "timmy",
+            "mapPic": "https://cdn.britannica.com/37/245037-050-79129D52/world-map-continents-oceans.jpg",
+            "likes": 126,
+            "forks": 24,
+            "isPublished": false,
+            "publishedDate": "Nov 9, 2022"
+        },
+        {
+            "id": "5",
+            "name": "Map Lover",
+            "ownerUsername": "timmy",
+            "mapPic": "https://cdn.britannica.com/37/245037-050-79129D52/world-map-continents-oceans.jpg",
+            "likes": 126,
+            "forks": 24,
+            "isPublished": true,
+            "publishedDate": "Nov 9, 2022"
+        }
+    ]
+}

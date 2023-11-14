@@ -3,9 +3,13 @@ import MapList from "../components/MapList";
 import CustomButton from "../components/CustomButton";
 import ForumIcon from "@mui/icons-material/Forum";
 import Banner from "../components/Banner";
+import sampleMaps from "../assets/maps.json";
+import sampleUser from "../assets/currentUser.json";
+import { useState } from "react";
 
-function ProfileScreen(props) {
-  const { currentUser, maps } = props;
+function ProfileScreen() {
+  const [maps, setMaps] = useState(sampleMaps.maps);
+  const [currentUser, setCurrentUser] = useState(sampleUser);
 
   return (
     <Box sx={{ padding: 2 }}>
@@ -36,7 +40,7 @@ function ProfileScreen(props) {
           Maps
         </Typography>
         <hr />
-        <MapList maps={maps} />
+        <MapList maps={maps} screen={"COMMUNITY"} />
       </Box>
     </Box>
   );

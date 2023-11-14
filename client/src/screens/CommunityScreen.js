@@ -3,7 +3,7 @@ import Banner from "../components/Banner";
 import SearchBar from "../components/SearchBar";
 import { Box, Grid } from "@mui/material";
 import CustomButton from "../components/CustomButton";
-import FilterMenuList from "../components/FIlterMenuList";
+import FilterMenuList from "../components/MenuLists/FIlterMenuList";
 import MapList from "../components/MapList";
 import sampleMaps from "../assets/maps.json";
 
@@ -11,7 +11,7 @@ export default function CommunityScreen() {
   const [search, setSearch] = useState("Maps");
   const [maps, setMaps] = useState(sampleMaps.maps);
   return (
-    <Box>
+    <Box sx={{ padding: 2 }}>
       <Banner screen={"COMMUNITY"} />
       <Grid container spacing={5} marginBottom={4}>
         <Grid item xs={6}>
@@ -20,7 +20,6 @@ export default function CommunityScreen() {
         <Grid
           item
           xs={4}
-          spacing={2}
           style={{
             display: "flex",
             justifyContent: "flex-start",
@@ -73,7 +72,7 @@ export default function CommunityScreen() {
           <FilterMenuList />
         </Grid>
       </Grid>
-      <MapList maps={maps} />
+      <MapList maps={maps} screen={"COMMUNITY"} />
     </Box>
   );
 }
