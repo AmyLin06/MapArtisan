@@ -4,6 +4,7 @@ import CardMedia from "@mui/material/CardMedia";
 import { Box, Typography, Grid } from "@mui/material";
 import MapCardMenuList from "./MapCardMenuList";
 import GroupsIcon from "@mui/icons-material/Groups";
+import InputModal from "./Modals/InputModal";
 
 //Example (currentMap is mock data for a map)
 //  (screen is either "HOME" by default or "COMMMUNITY", representing which screen the map card is for):
@@ -15,7 +16,11 @@ export default function MapCard(props) {
 
   //By default, leftIcons and subtextArea are set to values necessary for Home Screen
   var leftIcons = (
-    <MapCardMenuList isPublished={currentMap.isPublished} screen={screen} />
+    <MapCardMenuList
+      isPublished={currentMap.isPublished}
+      screen={screen}
+      map={currentMap}
+    />
   );
   var subtextArea = (
     <Grid item container alignItems="center">
@@ -46,33 +51,35 @@ export default function MapCard(props) {
   }
 
   return (
-    <Card
-      sx={{
-        maxWidth: "100%",
-        backgroundColor: "transparent",
-      }}
-    >
-      <CardMedia
-        component="img"
-        height="40%"
-        image={currentMap.mapPic}
-        alt="Map of the US"
-      />
-      <Box display="flex">
-        <Grid
-          container
-          spacing={1}
-          sx={{ margin: 0, marginBottom: 2 }}
-          alignItems="baseline"
-        >
-          <Grid item xs={12}>
-            <Typography variant="h6">{currentMap.name}</Typography>
+    <>
+      <Card
+        sx={{
+          maxWidth: "100%",
+          backgroundColor: "transparent",
+        }}
+      >
+        <CardMedia
+          component="img"
+          height="40%"
+          image={currentMap.mapPic}
+          alt="Map of the US"
+        />
+        <Box display="flex">
+          <Grid
+            container
+            spacing={1}
+            sx={{ margin: 0, marginBottom: 2 }}
+            alignItems="baseline"
+          >
+            <Grid item xs={12}>
+              <Typography variant="h6">{currentMap.name}</Typography>
+            </Grid>
+            {subtextArea}
           </Grid>
-          {subtextArea}
-        </Grid>
-        {leftIcons}
-      </Box>
-    </Card>
+          {leftIcons}
+        </Box>
+      </Card>
+    </>
   );
 }
 

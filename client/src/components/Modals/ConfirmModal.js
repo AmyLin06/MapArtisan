@@ -1,5 +1,6 @@
 // import { useContext } from "react";
-import * as React from "react";
+import React, { useContext } from "react";
+import { GlobalStoreContext } from "../../store/GlobalStore";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
@@ -13,8 +14,12 @@ import { ConfirmModalStyle } from "../../styles/ConfirmModalStyle";
 //Example of a way to create a ConfirmModal, see ModalTypes.js for definition of "ConfirmModalTypes.DELETE_LAYER"
 //<ConfirmModal modalType={ConfirmModalTypes.DELETE_LAYER}></ConfirmModal>
 export default function ConfirmModal(props) {
+  const { store } = useContext(GlobalStoreContext);
   const { modalType } = props;
 
+  const handleClose = () => {
+    store.hideModals();
+  };
   //TODO: onClick() functionality
   //TODO: add map/layer name to typography in return, using map from store??
   //TODO: change confirm and cancel buttons to use the reusable component button
@@ -23,10 +28,18 @@ export default function ConfirmModal(props) {
     <Modal
       //TODO: conditionally open modal
       //   open={store.listMarkedForDeletion !== null}
-      open={true}
+      open={store.currentModal == modalType.name}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{ boxShadow: "none" }}
+      slotProps={{
+        backdrop: {
+          sx: {
+            //Your style here....
+            backgroundColor: "rgba(0,0,0,0.05)",
+          },
+        },
+      }}
     >
       <Box sx={ConfirmModalStyle}>
         <Typography
@@ -41,7 +54,7 @@ export default function ConfirmModal(props) {
           <Button>
             <CloseIcon
               style={{ fontSize: "2.5vw", color: "#000000" }}
-              onClick={modalType.cancelAction}
+              onClick={handleClose}
             />
           </Button>
         </Box>
@@ -86,14 +99,8 @@ export default function ConfirmModal(props) {
             gap: "3%",
           }}
         >
-          <CustomButton
-            text={"Confirm"}
-            onPress={modalType.confirmAction}
-          ></CustomButton>
-          <CustomButton
-            text={"Cancel"}
-            onPress={modalType.cancelAction}
-          ></CustomButton>
+          <CustomButton text={"Confirm"} onPress={handleClose}></CustomButton>
+          <CustomButton text={"Cancel"} onPress={handleClose}></CustomButton>
         </Box>
       </Box>
     </Modal>
