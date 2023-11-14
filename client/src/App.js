@@ -1,5 +1,6 @@
 import "./App.css";
-
+import SideMenu from "./components/SideMenu";
+import currentMap from "./assets/currentMap.json";
 import RegisterScreen from "./screens/RegisterScreen";
 
 function App() {
@@ -18,7 +19,8 @@ function App() {
         />
       </header>
 
-      <RegisterScreen />
+      {/* <RegisterScreen /> */}
+      <SideMenu />
     </div>
   );
 }
