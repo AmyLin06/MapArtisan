@@ -1,9 +1,11 @@
 .main{
+    width: 100vw;
+    height: 100vh;
     background-color: #FFFDF3;
     background-image: url("../assets/SplashScreenMap.png");
     background-repeat: no-repeat;
     background-position-x:  85%;
-    background-position-y: -50%;
+    background-position-y: -30%;
     background-size: 57%;
 }
 .sloganText{

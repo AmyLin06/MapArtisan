@@ -23,6 +23,7 @@ const ContainedStyledButton = styled(Button)(({ fontSize }) => ({
   fontSize: fontSize || "14px",
 }));
 
+//onClick lines should be working, but commented out to avoid breaking change
 const CustomButton = ({
   text,
   onPress,
@@ -33,12 +34,20 @@ const CustomButton = ({
   return (
     <>
       {type === "outlined" ? (
-        <OutlinedStyledButton variant={type} fontSize={fontSize}>
+        <OutlinedStyledButton
+          variant={type}
+          fontSize={fontSize}
+          // onClick={onPress}
+        >
           {Icon && <Icon sx={{ fontSize: fontSize, marginRight: 1 }} />}
           {text}
         </OutlinedStyledButton>
       ) : (
-        <ContainedStyledButton variant={type} fontSize={fontSize}>
+        <ContainedStyledButton
+          variant={type}
+          fontSize={fontSize}
+          // onClick={onPress}
+        >
           {Icon && <Icon sx={{ fontSize: fontSize, marginRight: 1 }} />}
           {text}
         </ContainedStyledButton>

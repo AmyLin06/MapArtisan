@@ -1,6 +1,6 @@
 /* this file is not being used right now in Banner */
 .banner{
-    padding:10px;
+    padding:20px;
     display: grid;
     justify-content: flex-start;
     grid-template-columns: repeat(2, 1fr);

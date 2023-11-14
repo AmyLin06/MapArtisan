@@ -16,6 +16,8 @@ export default function SearchBar() {
         height: "75%",
         backgroundColor: "#FFFDF3",
         border: "1px solid #246BAD",
+        borderRadius: "25px",
+        boxShadow: "none",
       }}
     >
       <InputBase

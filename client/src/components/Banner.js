@@ -12,11 +12,13 @@ export default function Banner(props) {
   const { screen } = props;
   var middleOfBanner = <></>;
   var rightOfBanner = <></>;
+  var bannerColor = "transparent";
 
-  const customFontStyle = {
+  const communityScreenStyle = {
     fontFamily: "Londrina Outline, sans-serif",
     fontSize: "40px",
     fontWeight: "bold",
+    color: "#246BAD",
     display: "flex",
     justifyContent: "center",
   };
@@ -121,13 +123,32 @@ export default function Banner(props) {
           </Avatar>
         </Stack>
       );
-      middleOfBanner = <div style={customFontStyle}>MapArtisan Community</div>;
+      middleOfBanner = (
+        <div style={communityScreenStyle}>MapArtisan Community</div>
+      );
+      break;
+    case "EDIT":
+      rightOfBanner = (
+        <Stack spacing={2.5} direction="row">
+          <Avatar sx={{ bgcolor: "#246BAD" }}>
+            <GroupsIcon style={{ fontSize: "2rem" }} />
+          </Avatar>
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            R
+          </Avatar>
+        </Stack>
+      );
+      bannerColor = "#246BAD";
       break;
     default:
       break;
   }
   return (
-    <Grid container spacing={2}>
+    <Grid
+      container
+      spacing={2}
+      sx={{ paddingBottom: 3, backgroundColor: bannerColor }}
+    >
       <Grid item xs={2}>
         <CustomButton text="Logo here" />
       </Grid>

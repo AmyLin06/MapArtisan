@@ -1,0 +1,9 @@
+.copyRight{
+    color:#246BAD;
+    font-size: 12px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+}

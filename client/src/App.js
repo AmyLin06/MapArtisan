@@ -3,6 +3,7 @@ import HomeScreen from "./screens/HomeScreen";
 import maps from "./assets/maps.json"
 import currentUser from "./assets/currentUser.json"
 
+import RegisterScreen from "./screens/RegisterScreen";
 
 function App() {
   return (
