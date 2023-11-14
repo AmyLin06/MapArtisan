@@ -9,7 +9,6 @@ import sampleMaps from "../assets/maps.json";
 
 export default function CommunityScreen() {
   const [search, setSearch] = useState("Maps");
-  const [maps, setMaps] = useState(sampleMaps.maps);
   return (
     <Box sx={{ padding: 2 }}>
       <Banner screen={"COMMUNITY"} />
@@ -72,7 +71,7 @@ export default function CommunityScreen() {
           <FilterMenuList />
         </Grid>
       </Grid>
-      <MapList maps={maps} screen={"COMMUNITY"} />
+      <MapList maps={sampleMaps.maps} screen={"COMMUNITY"} />
     </Box>
   );
 }

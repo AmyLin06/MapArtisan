@@ -1,7 +1,6 @@
 import React from "react";
 import CustomButton from "./CustomButton";
 import { Stack, Typography, Grid } from "@mui/material";
-import { red } from "@mui/material/colors";
 import Avatar from "@mui/material/Avatar";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SearchBar from "./SearchBar";
