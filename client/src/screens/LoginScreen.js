@@ -20,7 +20,6 @@ const LoginScreen = () => {
   return (
     <>
       <div className="main">
-
         <Banner className="banner" screen="LOGIN" />
 
         <div className="content">
@@ -77,9 +76,9 @@ const LoginScreen = () => {
           </Stack>
         </div>
         <br />
-        <div className="copyright">
-          <Copyright />
-        </div>
+        {/* <div className="copyright"> */}
+        <Copyright />
+        {/* </div> */}
       </div>
     </>
   );

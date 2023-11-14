@@ -1,7 +1,6 @@
 import "./App.css";
 
-import LoginScreen from "./screens/LoginScreen";
-
+import RegisterScreen from "./screens/RegisterScreen";
 
 function App() {
   return (
@@ -19,8 +18,7 @@ function App() {
         />
       </header>
 
-      <LoginScreen />
-
+      <RegisterScreen />
     </div>
   );
 }
