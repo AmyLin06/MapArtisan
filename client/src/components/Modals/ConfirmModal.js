@@ -17,7 +17,8 @@ export default function ConfirmModal(props) {
   const { store } = useContext(GlobalStoreContext);
   const { modalType } = props;
 
-  const handleClose = () => {
+  const handleClose = (event) => {
+    event.stopPropagation();
     store.hideModals();
   };
   //TODO: onClick() functionality
@@ -28,7 +29,7 @@ export default function ConfirmModal(props) {
     <Modal
       //TODO: conditionally open modal
       //   open={store.listMarkedForDeletion !== null}
-      open={store.currentModal == modalType.name}
+      open={store.currentModal === modalType.name}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{ boxShadow: "none" }}

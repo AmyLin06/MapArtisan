@@ -26,7 +26,8 @@ export default function InputModal(props) {
     padding: "20px",
   };
 
-  const handleClose = () => {
+  const handleClose = (event) => {
+    event.stopPropagation();
     store.hideModals();
   };
 
@@ -71,7 +72,7 @@ export default function InputModal(props) {
     <Modal
       //TODO: conditionally open modal
       //   open={store.listMarkedForDeletion !== null}
-      open={store.currentModal == modalType.name}
+      open={store.currentModal === modalType.name}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       slotProps={{

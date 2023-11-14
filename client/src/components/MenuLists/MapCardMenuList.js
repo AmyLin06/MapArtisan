@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { GlobalStoreContext } from "../store/GlobalStore";
+import { GlobalStoreContext } from "../../store/GlobalStore";
 import { IconButton, Popover, MenuItem } from "@mui/material";
 import {
   MoreVert as MoreVertIcon,
@@ -8,9 +8,9 @@ import {
   FavoriteBorder as FavoriteBorderIcon,
   ForkRight as ForkRightIcon,
 } from "@mui/icons-material";
-import InputModal from "./Modals/InputModal";
-import ConfirmModal from "./Modals/ConfirmModal";
-import { InputModalTypes, ConfirmModalTypes } from "./Modals/ModalTypes";
+import InputModal from "../Modals/InputModal";
+import ConfirmModal from "../Modals/ConfirmModal";
+import { InputModalTypes, ConfirmModalTypes } from "../Modals/ModalTypes";
 
 //menu that opens and displays options for the map card in home screen and community screen
 export default function MapCardMenuList(props) {
@@ -22,25 +22,29 @@ export default function MapCardMenuList(props) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (event) => {
     setAnchorEl(null);
+    event.stopPropagation();
   };
 
-  const handleRename = () => {
+  const handleRename = (event) => {
     store.showEditMapNameModal(map);
-    handleClose();
+    handleClose(event);
   };
 
-  const handleDelete = () => {
+  const handleDelete = (event) => {
     store.showDeleteMapModal(map);
-    handleClose();
+    handleClose(event);
+    event.stopPropagation();
   };
-  const handleDuplicate = () => {
-    handleClose();
+  const handleDuplicate = (event) => {
+    handleClose(event);
+    event.stopPropagation();
   };
 
-  const handleLikes = () => {
-    handleClose();
+  const handleLikes = (event) => {
+    handleClose(event);
+    event.stopPropagation();
   };
   const open = Boolean(anchorEl);
 
@@ -70,7 +74,7 @@ export default function MapCardMenuList(props) {
 
   //screen==="COMMUNITY"
   return (
-    <>
+    <div>
       <IconButton onClick={handleOpen}>
         <MoreVertIcon style={{ marginTop: 10, fontSize: "2rem" }} />
       </IconButton>
@@ -86,6 +90,6 @@ export default function MapCardMenuList(props) {
           {"Duplicate"}
         </MenuItem>
       </Popover>
-    </>
+    </div>
   );
 }

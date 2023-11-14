@@ -2,26 +2,20 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import { Box, Typography, Grid } from "@mui/material";
-import MapCardMenuList from "./MapCardMenuList";
+import MapCardMenuList from "./MenuLists/MapCardMenuList";
 import GroupsIcon from "@mui/icons-material/Groups";
-import InputModal from "./Modals/InputModal";
+import { Link, useNavigate } from "react-router-dom";
+import { Avatar } from "@mui/material";
 
 //Example (currentMap is mock data for a map)
 //  (screen is either "HOME" by default or "COMMMUNITY", representing which screen the map card is for):
 //  <MapCard currentMap={currentMap} screen={"COMMUNITY"}></MapCard>
 
 export default function MapCard(props) {
+  const navigate = useNavigate();
   //By default, screen="HOME"
   const { currentMap, screen } = props;
 
-  //By default, leftIcons and subtextArea are set to values necessary for Home Screen
-  var leftIcons = (
-    <MapCardMenuList
-      isPublished={currentMap.isPublished}
-      screen={screen}
-      map={currentMap}
-    />
-  );
   var subtextArea = (
     <Grid item container alignItems="center">
       {currentMap.isPublished && (
@@ -50,8 +44,21 @@ export default function MapCard(props) {
     );
   }
 
+  function handleCardClick(event) {
+    event.preventDefault();
+    if (event.target.closest(".kebab")) {
+      return;
+    }
+
+    if (currentMap.isPublished) {
+      navigate("/map-details");
+    } else {
+      navigate("/map-details");
+    }
+  }
+
   return (
-    <>
+    <Link to="#" style={{ textDecoration: "none" }} onClick={handleCardClick}>
       <Card
         sx={{
           maxWidth: "100%",
@@ -76,10 +83,15 @@ export default function MapCard(props) {
             </Grid>
             {subtextArea}
           </Grid>
-          {leftIcons}
+          <Avatar className="kebab" sx={{ background: "transparent" }}>
+            <MapCardMenuList
+              isPublished={currentMap.isPublished}
+              screen={screen}
+            />
+          </Avatar>
         </Box>
       </Card>
-    </>
+    </Link>
   );
 }
 
