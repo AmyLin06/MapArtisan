@@ -15,7 +15,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 const HomeScreen = (props) => {
-  const {currentUser,maps} = props
+  const {maps} = props
   const [currentPage, setCurrentPage] = useState(1);
 
   const handleNextPage = () => {
