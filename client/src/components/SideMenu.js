@@ -58,7 +58,7 @@ export default function SideMenu() {
         sx={{
           position: "relative",
           bottom: 0,
-          marginTop: "125%",
+          // marginTop: "10%",
           display: "flex",
           justifyContent: "center",
         }}

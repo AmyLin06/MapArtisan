@@ -2,6 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import MapPins from "./MapPins";
+import FontSection from "./FontSection";
 import ColorPicker from "./ColorPicker";
 // import * as MUIcon from "@material-ui/icons";
 
@@ -35,6 +36,8 @@ export default function ToolTab() {
         <Typography variant="h7" fontWeight="bold">
           Fonts
         </Typography>
+        {/* <hr /> */}
+        <FontSection />
         {/* <MapList maps={maps} /> */}
       </Box>
     </Box>
