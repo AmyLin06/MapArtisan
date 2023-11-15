@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import MapPins from "./MapPins";
 import FontSection from "./FontSection";
+import ColorPicker from "./ColorPicker";
 // import * as MUIcon from "@material-ui/icons";
 
 export default function ToolTab() {
@@ -13,7 +14,6 @@ export default function ToolTab() {
         <Typography variant="h7" fontWeight="bold">
           Markups
         </Typography>
-        <hr />
         <MapPins />
         {/* {top20Icons.map((iconName, index) => {
           const IconComponent = MUIcon[iconName];
@@ -27,16 +27,16 @@ export default function ToolTab() {
       </Box>
       <Box sx={{ paddingTop: 1 }}>
         <Typography variant="h7" fontWeight="bold">
-          Color
+          Colors
         </Typography>
-        <hr />
-        {/* <MapList maps={maps} /> */}
+        <ColorPicker />
+        {/* <hr /> */}
       </Box>
       <Box sx={{ paddingTop: 1 }}>
         <Typography variant="h7" fontWeight="bold">
-          Text
+          Fonts
         </Typography>
-        <hr />
+        {/* <hr /> */}
         <FontSection />
         {/* <MapList maps={maps} /> */}
       </Box>
