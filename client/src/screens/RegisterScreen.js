@@ -1,5 +1,6 @@
 import "../styles/RegisterScreen.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
+import AuthContext from '../auth'
 import Banner from "../components/Banner";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
@@ -15,11 +16,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Privacy from "../assets/Privacy";
 import Term from "../assets/Term";
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const [open, setOpen] = useState(false);
   const [scroll, setScroll] = useState("paper");
   const [content, setContent] = useState(null);
   const [dialogTitle, setDialogTitle] = useState(null);
+  const { auth } = useContext(AuthContext);
 
   const handleClickOpen = (scrollType, content, title) => () => {
     setContent(content);
@@ -31,6 +33,18 @@ const LoginScreen = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    auth.registerUser(
+        formData.get('userName'),
+        formData.get('firstName'),
+        formData.get('lastName'),
+        formData.get('email'),
+        formData.get('password'),
+    );
+};
 
   const descriptionElementRef = useRef(null);
 
@@ -47,7 +61,7 @@ const LoginScreen = () => {
     <>
       <div className="register-container">
         <Banner className="banner" loginMenu={false} screen="REGISTER" />
-        <div className="content">
+        <div className="content" onSubmit={handleSubmit}>
           <Stack className="loginBox" spacing={2} direction="column">
             <div className="label">Username</div>
             <TextField
@@ -162,4 +176,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;

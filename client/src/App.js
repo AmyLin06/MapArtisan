@@ -11,6 +11,7 @@ import AccountViewScreen from "./screens/AccountViewScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import WorkspaceScreen from "./screens/WorkspaceScreen";
 import { GlobalStoreContextProvider } from "./store/GlobalStore";
+import {AuthContextProvider} from './auth';
 
 function App() {
   return (
@@ -29,24 +30,26 @@ function App() {
       </header>
 
       <BrowserRouter>
-        <GlobalStoreContextProvider>
-          <Routes>
-            <Route path="/">
-              <Route index element={<SplashScreen />} />
-              <Route path="login" element={<LoginScreen />} />
-              <Route path="register" element={<RegisterScreen />} />
-              <Route
-                path="home"
-                element={<HomeScreen maps={homeMaps.maps} />}
-              />
-              <Route path="community" element={<CommunityScreen />} />
-              <Route path="map-details" element={<MapDetailsScreen />} />
-              <Route path="account-setting" element={<AccountViewScreen />} />
-              <Route path="profile" element={<ProfileScreen />} />
-              <Route path="edit" element={<WorkspaceScreen />} />
-            </Route>
-          </Routes>
-        </GlobalStoreContextProvider>
+        <AuthContextProvider>
+          <GlobalStoreContextProvider>
+            <Routes>
+              <Route path="/">
+                <Route index element={<SplashScreen />} />
+                <Route path="login" element={<LoginScreen />} />
+                <Route path="register" element={<RegisterScreen />} />
+                <Route
+                  path="home"
+                  element={<HomeScreen maps={homeMaps.maps} />}
+                />
+                <Route path="community" element={<CommunityScreen />} />
+                <Route path="map-details" element={<MapDetailsScreen />} />
+                <Route path="account-setting" element={<AccountViewScreen />} />
+                <Route path="profile" element={<ProfileScreen />} />
+                <Route path="edit" element={<WorkspaceScreen />} />
+              </Route>
+            </Routes>
+          </GlobalStoreContextProvider>
+        </AuthContextProvider>
       </BrowserRouter>
     </div>
   );
