@@ -3,26 +3,34 @@ import React from "react";
 import Banner from "../components/Banner";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography,Box } from "@mui/material";
 import Copyright from "../components/CopyRight";
-import CustomButton from "../components/CustomButton";
+import Button from '@mui/material/Button';
+import { useContext } from 'react';
+import AuthContext from '../auth'
 
-// const handleSubmit = (event) => {
-//   event.preventDefault();
-//   const data = new FormData(event.currentTarget);
-//   console.log({
-//     email: data.get("email"),
-//     password: data.get("password"),
-//   });
-// };
+
 
 const LoginScreen = () => {
+  const { auth } = useContext(AuthContext);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    auth.loginUser(
+        formData.get('email'),
+        formData.get('password')
+    );
+  };
+
+  
+
   return (
     <>
       <div className="login-container">
         <Banner className="banner" screen="LOGIN" />
 
-        <div className="content">
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <Stack className="loginBox" spacing={2} direction="column">
             <div className="label">Email Address</div>
             <TextField
@@ -70,11 +78,16 @@ const LoginScreen = () => {
                 </Typography>
               </Link>
             </div>
-            <Link to="/home">
-              <CustomButton text={"Sign in"} type="contained" />
-            </Link>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
           </Stack>
-        </div>
+        </Box>
         <br />
         <Copyright />
       </div>
