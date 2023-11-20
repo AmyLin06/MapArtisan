@@ -92,8 +92,8 @@ function AuthContextProvider(props) {
                 })
                 history("/login");
                 console.log("NOW WE LOGIN");
-                // auth.loginUser(email, password);
-                // console.log("LOGGED IN");
+                auth.loginUser(email, password);
+                console.log("LOGGED IN");
             }
         } catch(error){
             authReducer({
@@ -111,6 +111,7 @@ function AuthContextProvider(props) {
         try{
             const response = await api.loginUser(email, password);
             if (response.status === 200) {
+                console.log(response.data.user)
                 authReducer({
                     type: AuthActionType.LOGIN_USER,
                     payload: {
@@ -119,7 +120,7 @@ function AuthContextProvider(props) {
                         errorMessage: null
                     }
                 })
-                history("/");
+                history("/home");
             }
         } catch(error){
             authReducer({
@@ -141,6 +142,7 @@ function AuthContextProvider(props) {
                 payload: null
             })
             history("/");
+            console.log(auth.user);
         }
     }
 
