@@ -23,7 +23,8 @@ function AuthContextProvider(props) {
 
     useEffect(() => {
         auth.getLoggedIn();
-    }, []);
+    }, [auth]);
+    //here
 
     const authReducer = (action) => {
         const { type, payload } = action;
@@ -74,12 +75,13 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.registerUser = async function(userName,firstName, lastName, email, password, passwordVerify) {
+    auth.registerUser = async function(userName,firstName, lastName, email, password, passwordverified) {
         console.log("REGISTERING USER");
         try{   
-            const response = await api.registerUser(userName,firstName, lastName, email, password, passwordVerify);   
+            const response = await api.registerUser(userName,firstName, lastName, email, password, passwordverified);   
             if (response.status === 200) {
                 console.log("Registered Sucessfully");
+                console.log(response.data.user)
                 authReducer({
                     type: AuthActionType.REGISTER_USER,
                     payload: {
@@ -88,7 +90,9 @@ function AuthContextProvider(props) {
                         errorMessage: null
                     }
                 })
+                console.log("93")
                 history.push("/login");
+                console.log("95")
                 console.log("NOW WE LOGIN");
                 // auth.loginUser(email, password);
                 // console.log("LOGGED IN");

@@ -1,15 +1,6 @@
-// const express = require("express");
-// const router = express.Router();
-
-// router.post("/user", (req, res) => {
-//   res.sendStatus(200);
-// });
-
-// module.exports = router;
-
 const express = require('express')
 const router = express.Router()
-const AuthController = require('../controllers/auth-controller')
+const AuthController = require('../controllers/auth_controller')
 
 router.post('/register', AuthController.registerUser)
 router.post('/login', AuthController.loginUser)

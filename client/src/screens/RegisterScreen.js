@@ -4,9 +4,8 @@ import AuthContext from '../auth'
 import Banner from "../components/Banner";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography,Box } from "@mui/material";
 import Copyright from "../components/CopyRight";
-import CustomButton from "../components/CustomButton";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -35,14 +34,16 @@ const RegisterScreen = () => {
   };
 
   const handleSubmit = (event) => {
+    console.log("Here")
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     auth.registerUser(
-        formData.get('userName'),
-        formData.get('firstName'),
-        formData.get('lastName'),
+        formData.get('username'),
+        formData.get('firstname'),
+        formData.get('lastname'),
         formData.get('email'),
         formData.get('password'),
+        formData.get('passwordverified'),
     );
 };
 
@@ -61,7 +62,7 @@ const RegisterScreen = () => {
     <>
       <div className="register-container">
         <Banner className="banner" loginMenu={false} screen="REGISTER" />
-        <div className="content" onSubmit={handleSubmit}>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Stack className="loginBox" spacing={2} direction="column">
             <div className="label">Username</div>
             <TextField
@@ -69,10 +70,44 @@ const RegisterScreen = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Username"
+              id="username"
+              label="username"
               name="username"
               autoComplete="username"
+              autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: "50px",
+                },
+              }}
+            />
+             <div className="label">Firstname</div>
+            <TextField
+              className="textfield"
+              margin="normal"
+              required
+              fullWidth
+              id="firstname"
+              label="firstname"
+              name="firstname"
+              autoComplete="firstname"
+              autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: "50px",
+                },
+              }}
+            />
+            <div className="label">Lastname</div>
+            <TextField
+              className="textfield"
+              margin="normal"
+              required
+              fullWidth
+              id="lastname"
+              label="lastname"
+              name="lastname"
+              autoComplete="lastname"
               autoFocus
               InputProps={{
                 style: {
@@ -104,9 +139,26 @@ const RegisterScreen = () => {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="password"
               type="password"
               id="password"
+              autoComplete="current-password"
+              InputProps={{
+                style: {
+                  borderRadius: "50px",
+                },
+              }}
+            />
+            <div className="label">PasswordVerified</div>
+            <TextField
+              className="textfield"
+              margin="normal"
+              required
+              fullWidth
+              name="passwordverified"
+              label="passwordverified"
+              type="passwordverified"
+              id="passwordverified"
               autoComplete="current-password"
               InputProps={{
                 style: {
@@ -133,9 +185,16 @@ const RegisterScreen = () => {
               </Button>
               .
             </div>
-            <Link to="/home">
-              <CustomButton text={"Sign up Now!"} type="contained" />
-            </Link>
+            {/* <Link to="/home"> */}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up Now!!
+            </Button>
+            {/* </Link> */}
             <br />
             <div>
               <Link to="/login">
@@ -145,7 +204,7 @@ const RegisterScreen = () => {
               </Link>
             </div>
           </Stack>
-        </div>
+        </Box>
         <div className="copyright">
           <Copyright />
         </div>
