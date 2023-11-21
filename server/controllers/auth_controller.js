@@ -110,6 +110,16 @@ updateUser = async (req, res) => {
                     errorMessage: "Please enter the same password twice."
                 })
         }
+        const existingNewEmail = await User.findOne({ email: email });
+        if (existingNewEmail) {
+            console.log("The given email is already used")
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    errorMessage: "An account with this email address already exists."
+                })
+        }
         console.log("password and password verify match");
         const existingUser = await User.findOne({ email: userEmail });
         console.log("existingUser: " + existingUser);
