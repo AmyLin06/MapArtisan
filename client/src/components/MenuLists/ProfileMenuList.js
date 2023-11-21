@@ -2,11 +2,14 @@ import { useState } from "react";
 import { IconButton, Popover, MenuItem, Avatar } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import AuthContext from '../../auth'
+import { useContext } from 'react';
 
 export default function ProfileMenuList() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const {auth} = useContext(AuthContext)
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,6 +29,7 @@ export default function ProfileMenuList() {
   }
   function handleLogout() {
     handleClose();
+    auth.logoutUser();
     navigate("/");
   }
 

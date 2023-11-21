@@ -1,0 +1,20 @@
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// Select the database to use.
+use('MapArtisan');
+
+// The drop() command destroys all data from a collection.
+// Make sure you run it against the correct database and collection.
+db.users.drop();
+
+// Insert a few documents into the sales collection.
+db.users.insertMany([
+  { '_id': 1, 'userName': 'abc', 'firstName': 'a', 'lastName': 'bc',  'email' : "abc@gmail.com" , 'passwordHash': '12345678' , 'maps' : []},
+  { '_id': 2, 'userName': 'rickyz', 'firstName': 'ricky', 'lastName': 'z',  'email' : "rz@gmail.com" , 'passwordHash': '12345678' , 'maps' : []},
+  { '_id': 3, 'userName': '123', 'firstName': '4', 'lastName': 'z',  'email' : "233@gmail.com" , 'passwordHash': '12345678' , 'maps' : []}
+]);
+
+
