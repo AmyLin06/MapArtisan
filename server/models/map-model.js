@@ -1,26 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const mapSchema = new Schema(
+const mapMetaData = new Schema(
   {
     mapTitle: { type: String, default: "Untitled" },
-    // mapPic: { type: ImageSchema, required: true },
     likes: { type: Number, default: 0 },
     forks: { type: Number, default: 0 },
     ownerUsername: { type: String, required: true },
-    // layers: {
-    //   type: [
-    //     {
-    //       layerName: String,
-    //       data: Buffer,
-    //     },
-    //   ],
-    //   required: true,
-    //   default: [],
-    // },
     comments: {
       type: [
         {
-          userName: String,
+          username: String,
           comment: String,
           date: Date,
         },
@@ -35,4 +24,4 @@ const mapSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Map", mapSchema);
+module.exports = mongoose.model("MapMetaData", mapMetaData);
