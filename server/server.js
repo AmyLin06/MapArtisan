@@ -18,7 +18,10 @@ app.use(express.urlencoded({ extended: true }));
 //   })
 // );
 
-const whitelist = ["http://localhost:3000", "https://mapartisan.onrender.com"];
+const whitelist = [
+  "http://localhost:3000",
+  "https://mapartisan-server.onrender.com",
+];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1) {
