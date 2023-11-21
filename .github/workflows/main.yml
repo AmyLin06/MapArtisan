@@ -3,7 +3,7 @@ run-name: Testing out ci/cd
 
 on: [push]
 jobs:
-  Install-dependencies:
+  Install-dependencies-and-supertests:
     runs-on: ubuntu-latest
 
     strategy:
