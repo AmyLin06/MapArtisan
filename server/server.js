@@ -1,21 +1,23 @@
-const express = require('express')
-const cors = require('cors')
-const dotenv = require('dotenv')
-const cookieParser = require('cookie-parser')
-const mongoose = require('mongoose')
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const mongoose = require("mongoose");
 
-dotenv.config()
+dotenv.config();
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 //sets up middleware
-app.use(express.urlencoded({ extended: true }))
-app.use(cors({
-    origin: ["http://localhost:3000"],
-    credentials: true
-}))
-app.use(express.json())
-app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://mapartisan.onrender.com"],
+    credentials: true,
+  })
+);
+app.use(express.json());
+app.use(cookieParser());
 
 //sets up custom router middleware
 const authRoute = require("./routes/auth-router");
