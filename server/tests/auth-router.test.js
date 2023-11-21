@@ -1,7 +1,7 @@
-const express = require("express");
-const request = require("supertest");
-const authRouter = require("../routes/auth-router");
-const app = express();
+// const express = require("express");
+// const request = require("supertest");
+// const authRouter = require("../routes/auth-router");
+// const app = express();
 
 app.use(express.json());
 app.use("/auth", authRouter);

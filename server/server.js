@@ -20,16 +20,9 @@ app.use(cookieParser())
 //sets up custom router middleware
 const authRoute = require("./routes/auth-router");
 app.use("/auth", authRoute);
-// const mapRoute = require('./routes/map-router')
-// app.use('/', mapRoute);
 
-
-const db = require('./db')
-db.on('error', console.error.bind(console, 'MongoDB connection error:'))
-
+const db = require("./db");
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // PUT THE SERVER IN LISTENING MODE
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
-
-
-
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
