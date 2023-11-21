@@ -3,12 +3,12 @@ run-name: Testing out ci/cd
 
 on: [push]
 jobs:
-  Install-npm & supertest:
+  Install-dependencies-and-supertests:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [14.x, 16.x]
 
     steps:
       - name: Checkout code
@@ -32,16 +32,41 @@ jobs:
           cd server
           npm test
 
-  Cypress-run:
+  Cypress-component-run:
     runs-on: ubuntu-22.04
-
-    # needs: Install-dependencies
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: client
+          component: true
+
+  Cypress-e2e-test:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress-run-e2e
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: client
+          build: npm run build
+          start: npm start
+
+  Cypress-component-test:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress-run-components
         uses: cypress-io/github-action@v6
         with:
           working-directory: client
