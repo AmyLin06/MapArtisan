@@ -22,7 +22,6 @@ const api = axios.create({
 // CUSTOM FILTERS FOR QUERIES
 
 export const getLoggedIn = () => api.get(`/loggedIn/`);
-
 export const loginUser = (email, password) => {
     return api.post(`/login/`, {
         email : email,
@@ -40,11 +39,25 @@ export const registerUser = (userName,firstName, lastName, email, password,passw
         passwordVerify : passwordVerify,
     })
 }
+export const updateUser = (userEmail,firstName,lastName,userName,email,currentPassword,newPassword,confirmNewPassword) => {
+    return api.put(`/update/`, {
+        userEmail:userEmail,
+        userName:userName,
+        firstName : firstName,
+        lastName : lastName,
+        currentPassword: currentPassword,
+        email : email,
+        newPassword : newPassword,
+        confirmNewPassword : confirmNewPassword,
+    })
+}
+
 const apis = {
     getLoggedIn,
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    updateUser
 }
 
 export default apis

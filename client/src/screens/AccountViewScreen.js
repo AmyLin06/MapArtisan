@@ -8,9 +8,10 @@ import Button from '@mui/material/Button';
 import { TextField,Grid,InputLabel,Box} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useContext } from 'react';
+import AuthContext from '../auth'
 
 const AccountViewScreen = () => {
-    
+    const { auth } = useContext(AuthContext);
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -21,7 +22,7 @@ const AccountViewScreen = () => {
         const currentPassword = formData.get('currentPassword');
         const newPassword = formData.get('newPassword');
         const confirmNewPassword = formData.get('confirmNewPassword');
-
+        auth.updateUser(firstName,lastName,userName,email,currentPassword,newPassword,confirmNewPassword);
     };
 
     return (
