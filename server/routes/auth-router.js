@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-router.post("/user", (req, res) => {
-  res.sendStatus(200);
+router.get("/user", (req, res) => {
+  res.json({ message: "success" });
 });
 
 module.exports = router;
