@@ -8,7 +8,7 @@ app.use("/auth", authRouter);
 
 describe("Test for the auth API", () => {
   it("try to logout from the account", async () => {
-    const response = await request(app).get("auth/logout");
+    const response = await request(app).get("/auth/logout");
     expect(response.statusCode).toEqual(200);
   });
 });
