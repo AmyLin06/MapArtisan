@@ -19,6 +19,7 @@ function AuthContextProvider(props) {
         loggedIn: false,
         errorMessage: null
     });
+    
     const history = useNavigate();
 
     useEffect(() => {
@@ -121,6 +122,7 @@ function AuthContextProvider(props) {
                     }
                 })
                 history("/home");
+                console.log(auth.user);
             }
         } catch(error){
             authReducer({
@@ -136,14 +138,15 @@ function AuthContextProvider(props) {
 
     auth.logoutUser = async function() {
         const response = await api.logoutUser();
+        console.log(response.status);
         if (response.status === 200) {
-            authReducer( {
+            authReducer({
                 type: AuthActionType.LOGOUT_USER,
                 payload: null
             })
             history("/");
-            console.log(auth.user);
         }
+        console.log(auth.user);
     }
 
     auth.getUserInitials = function() {
