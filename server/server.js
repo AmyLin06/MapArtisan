@@ -10,30 +10,12 @@ const app = express();
 
 //sets up middleware
 app.use(express.urlencoded({ extended: true }));
-// app.use(
-//   cors({
-//     origin: ["http://localhost:3000", "https://mapartisan.onrender.com"],
-//     // origin: "*",
-//     credentials: true,
-//   })
-// );
-
-const whitelist = [
-  "http://localhost:3000",
-  "https://mapartisan-server.onrender.com",
-];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://mapartisan.onrender.com"],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
