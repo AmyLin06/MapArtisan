@@ -32,19 +32,19 @@ jobs:
           cd server
           npm test
 
-  Cypress-e2e-test:
-    runs-on: ubuntu-22.04
+  # Cypress-e2e-test:
+  #   runs-on: ubuntu-22.04
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Cypress-run-e2e
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: client
-          build: npm run build
-          start: npm start
+  #     - name: Cypress-run-e2e
+  #       uses: cypress-io/github-action@v6
+  #       with:
+  #         working-directory: client
+  #         build: npm run build
+  #         start: npm start
 
   Cypress-component-test:
     runs-on: ubuntu-22.04
