@@ -8,13 +8,23 @@ dotenv.config();
 const PORT = process.env.PORT || 4000;
 const app = express();
 
+//sets up express middleware to parse incoming requests
+app.use(express.urlencoded({ extended: true }));
+
 //set up CORS
 const corsOptions = require("./configs/corsOptions");
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); // Handle preflight requests for all routes
 
-//sets up express middleware to parse incoming requests
-app.use(express.urlencoded({ extended: true }));
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  next();
+});
 
 app.use(express.json());
 app.use(cookieParser());
