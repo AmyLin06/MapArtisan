@@ -17,10 +17,17 @@ app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); // Handle preflight requests for all routes
 
 app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://mapartisan.onrender.com/"
-  );
+  const allowedOrigins = [
+    "https://mapartisan.onrender.com",
+    "http://localhost:3000", // Add more origins as needed
+  ];
+
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,CONNECT,TRACE"

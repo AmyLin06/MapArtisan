@@ -12,9 +12,11 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
+const isDevelopment = process.env.NODE_ENV === "development";
 const api = axios.create({
-  baseURL:
-    `${process.env.REACT_APP_API_URL}/auth` || "http://localhost:4000/auth",
+  baseURL: isDevelopment
+    ? "http://localhost:4000/auth"
+    : `${process.env.REACT_APP_API_URL}/auth` || "http://localhost:4000/auth",
 });
 
 // THESE ARE ALL THE REQUESTS WE`LL BE MAKING, ALL REQUESTS HAVE A
