@@ -17,7 +17,10 @@ app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); // Handle preflight requests for all routes
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://your-frontend.com");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://mapartisan.onrender.com/"
+  );
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,CONNECT,TRACE"
