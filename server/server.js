@@ -3,17 +3,18 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-const corsOptions = require("./configs/corsOptions");
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 const app = express();
 
+//set up CORS
+const corsOptions = require("./configs/corsOptions");
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // Handle preflight requests for all routes
+
 //sets up express middleware to parse incoming requests
 app.use(express.urlencoded({ extended: true }));
-
-//set up CORS
-app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
