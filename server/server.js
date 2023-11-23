@@ -3,33 +3,16 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const corsOptions = require("./configs/corsOptions");
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-//sets up middleware
+//sets up express middleware to parse incoming requests
 app.use(express.urlencoded({ extended: true }));
-// app.use(
-//   cors({
-//     origin: ["http://localhost:3000", "https://mapartisan.onrender.com"],
-//     // origin: "*",
-//     credentials: true,
-//   })
-// );
 
-const whitelist = ["http://localhost:3000", "https://mapartisan.onrender.com"];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
-
+//set up CORS
 app.use(cors(corsOptions));
 
 app.use(express.json());
@@ -39,7 +22,9 @@ app.use(cookieParser());
 const authRoute = require("./routes/auth-router");
 app.use("/auth", authRoute);
 
-const db = require("./db");
+//setting up an event listener on the db object
+//listen for events, and the "error" event is emitted when there is an error with the database connection
+const db = require("./configs/dbConn");
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // PUT THE SERVER IN LISTENING MODE
