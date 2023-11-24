@@ -8,11 +8,16 @@
     based API which helps a lot with asynchronous communication.
 */
 
-import axios from 'axios'
+import axios from "axios";
+
 axios.defaults.withCredentials = true;
+
+const isDevelopment = process.env.NODE_ENV === "development";
 const api = axios.create({
-    baseURL: 'http://localhost:4000/auth',
-})
+  baseURL: isDevelopment
+    ? "http://localhost:4000/auth"
+    : `${process.env.REACT_APP_API_URL}/auth` || "http://localhost:4000/auth",
+});
 
 // THESE ARE ALL THE REQUESTS WE`LL BE MAKING, ALL REQUESTS HAVE A
 // REQUEST METHOD (like get) AND PATH (like /register). SOME ALSO
@@ -23,41 +28,57 @@ const api = axios.create({
 
 export const getLoggedIn = () => api.get(`/loggedIn/`);
 export const loginUser = (email, password) => {
-    return api.post(`/login/`, {
-        email : email,
-        password : password
-    })
-}
-export const logoutUser = () => api.get(`/logout/`)
-export const registerUser = (userName,firstName, lastName, email, password,passwordVerify) => {
-    return api.post(`/register/`, {
-        userName:userName,
-        firstName : firstName,
-        lastName : lastName,
-        email : email,
-        password : password,
-        passwordVerify : passwordVerify,
-    })
-}
-export const updateUser = (userEmail,firstName,lastName,userName,email,currentPassword,newPassword,confirmNewPassword) => {
-    return api.put(`/update/`, {
-        userEmail:userEmail,
-        userName:userName,
-        firstName : firstName,
-        lastName : lastName,
-        currentPassword: currentPassword,
-        email : email,
-        newPassword : newPassword,
-        confirmNewPassword : confirmNewPassword,
-    })
-}
+  return api.post(`/login/`, {
+    email: email,
+    password: password,
+  });
+};
+export const logoutUser = () => api.get(`/logout/`);
+export const registerUser = (
+  userName,
+  firstName,
+  lastName,
+  email,
+  password,
+  passwordVerify
+) => {
+  return api.post(`/register/`, {
+    userName: userName,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
+    passwordVerify: passwordVerify,
+  });
+};
+export const updateUser = (
+  userEmail,
+  firstName,
+  lastName,
+  userName,
+  email,
+  currentPassword,
+  newPassword,
+  confirmNewPassword
+) => {
+  return api.put(`/update/`, {
+    userEmail: userEmail,
+    userName: userName,
+    firstName: firstName,
+    lastName: lastName,
+    currentPassword: currentPassword,
+    email: email,
+    newPassword: newPassword,
+    confirmNewPassword: confirmNewPassword,
+  });
+};
 
 const apis = {
-    getLoggedIn,
-    registerUser,
-    loginUser,
-    logoutUser,
-    updateUser
-}
+  getLoggedIn,
+  registerUser,
+  loginUser,
+  logoutUser,
+  updateUser,
+};
 
-export default apis
+export default apis;
