@@ -28,10 +28,14 @@ const api = axios.create({
 
 export const getLoggedIn = () => api.get(`/loggedIn/`);
 export const loginUser = (email, password) => {
-  return api.post(`/login/`, {
-    email: email,
-    password: password,
-  });
+  return api.post(
+    `/login/`,
+    {
+      email: email,
+      password: password,
+    },
+    { withCredentials: true }
+  );
 };
 export const logoutUser = () => api.get(`/logout/`);
 export const registerUser = (
