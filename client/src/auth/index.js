@@ -99,7 +99,7 @@ function AuthContextProvider(props) {
                         errorMessage: null
                     }
                 })
-                history("/login");
+                // history("/login");
                 console.log("NOW WE LOGIN");
                 auth.loginUser(email, password);
                 console.log("LOGGED IN");

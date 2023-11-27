@@ -157,7 +157,7 @@ const RegisterScreen = () => {
               fullWidth
               name="passwordverified"
               label="passwordverified"
-              type="passwordverified"
+              type="password"
               id="passwordverified"
               autoComplete="current-password"
               InputProps={{
