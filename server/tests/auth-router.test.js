@@ -27,7 +27,7 @@ describe("Logging in as a registered a user", () => {
   it("login a user with all data fields", async () => {
     const response = await request(app).post("/auth/login").send({
       email: "xyz987@gmail.com",
-      password: "12345678",
+      password: "87654321",
     });
     expect(response.status).toEqual(200);
   }, 10000);
@@ -161,7 +161,7 @@ describe("Registering as a new user", () => {
       lastName: "User",
       email: "xyz987@gmail.com",
       password: "testtest123",
-      passwordVerify: "testtest345",
+      passwordVerify: "testtest123",
     });
     expect(response.status).toEqual(400);
   });
@@ -177,6 +177,92 @@ describe("Registering as a new user", () => {
   //   });
   //   expect(response.status).toEqual(200);
   // });
+});
+
+describe("Update user information", () => {
+  it("Update a user with a non-existing user email", async () => {
+    const response = await request(app).put("/auth/update").send({
+      userEmail: "xyz9876@gmail.com",
+      email: "xyz987@gmail.com",
+      userName: "xyz987",
+      firstName: "xyz",
+      lastName: "123",
+      currentPassword: "87654321",
+      newPassword: "87654321",
+      confirmNewPassword: "87654321",
+    });
+    expect(response.status).toEqual(500);
+  });
+
+  it("Update a user with no firstname", async () => {
+    const response = await request(app).put("/auth/update").send({
+      userEmail: "xyz987@gmail.com",
+      email: "xyz987@gmail.com",
+      userName: "xyz987",
+      firstName: "",
+      lastName: "123",
+      currentPassword: "87654321",
+      newPassword: "87654321",
+      confirmNewPassword: "87654321",
+    });
+    expect(response.status).toEqual(400);
+  });
+
+  it("Update a user with no lastname", async () => {
+    const response = await request(app).put("/auth/update").send({
+      userEmail: "xyz987@gmail.com",
+      email: "xyz987@gmail.com",
+      userName: "xyz987",
+      firstName: "xyz",
+      lastName: "",
+      currentPassword: "87654321",
+      newPassword: "87654321",
+      confirmNewPassword: "87654321",
+    });
+    expect(response.status).toEqual(400);
+  });
+
+  it("Update a user with no current password", async () => {
+    const response = await request(app).put("/auth/update").send({
+      userEmail: "xyz987@gmail.com",
+      email: "xyz987@gmail.com",
+      userName: "xyz987",
+      firstName: "xyz",
+      lastName: "987",
+      currentPassword: "",
+      newPassword: "87654321",
+      confirmNewPassword: "87654321",
+    });
+    expect(response.status).toEqual(400);
+  });
+
+  it("Update a user with current mismatch password", async () => {
+    const response = await request(app).put("/auth/update").send({
+      userEmail: "xyz987@gmail.com",
+      email: "xyz987@gmail.com",
+      userName: "xyz987",
+      firstName: "xyz",
+      lastName: "987",
+      currentPassword: "87654322",
+      newPassword: "87654321",
+      confirmNewPassword: "87654321",
+    });
+    expect(response.status).toEqual(401);
+  });
+
+  it("Update a user with new password mismatch", async () => {
+    const response = await request(app).put("/auth/update").send({
+      userEmail: "xyz987@gmail.com",
+      email: "xyz987@gmail.com",
+      userName: "xyz987",
+      firstName: "",
+      lastName: "123",
+      currentPassword: "87654321",
+      newPassword: "87654321",
+      confirmNewPassword: "87654322",
+    });
+    expect(response.status).toEqual(400);
+  });
 });
 
 afterAll((done) => {

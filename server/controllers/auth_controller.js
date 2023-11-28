@@ -102,6 +102,7 @@ updateUser = async (req, res) => {
       confirmNewPassword,
     } = req.body;
     if (
+      !userEmail ||
       !userName ||
       !firstName ||
       !lastName ||
@@ -125,18 +126,18 @@ updateUser = async (req, res) => {
         errorMessage: "Please enter the same password twice.",
       });
     }
-    const existingNewEmail = await User.findOne({ email: email });
-    if (existingNewEmail) {
-      console.log("The given email is already used");
-      return res.status(400).json({
-        success: false,
-        errorMessage: "An account with this email address already exists.",
-      });
-    }
+    // const existingNewEmail = await User.findOne({ email: email });
+    // if (existingNewEmail) {
+    //   console.log("The given email is already used");
+    //   return res.status(400).json({
+    //     success: false,
+    //     errorMessage: "An account with this email address already exists.",
+    //   });
+    // }
     console.log("password and password verify match");
     const existingUser = await User.findOne({ email: userEmail });
     console.log("existingUser: " + existingUser);
-    //code here
+
     const passwordCorrect = await bcrypt.compare(
       currentPassword,
       existingUser.passwordHash
@@ -156,7 +157,7 @@ updateUser = async (req, res) => {
     existingUser.firstName = firstName;
     existingUser.lastName = lastName;
     existingUser.email = userEmail;
-    existingUser.passwordHash = passwordHash; // You might want to hash the new password before saving it
+    existingUser.passwordHash = passwordHash;
     // Save the updated user
     await existingUser.save();
     console.log("User updated successfully");
