@@ -9,13 +9,11 @@ import { TextField, Grid, InputLabel, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useContext } from "react";
 import AuthContext from "../auth";
-import { GlobalStoreContext } from "../store/GlobalStore";
 import SuccessModal from "../components/Modals/SuccessModal";
 import { SuccessModalTypes } from "../components/Modals/ModalTypes";
 
 const AccountViewScreen = () => {
   const { auth } = useContext(AuthContext);
-  const { store } = useContext(GlobalStoreContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -36,7 +34,6 @@ const AccountViewScreen = () => {
       newPassword,
       confirmNewPassword
     );
-    store.showAccountUpdateSuccessModal();
   };
 
   return (
