@@ -26,8 +26,8 @@ describe("Test for the auth API", () => {
 describe("Logging in as a registered a user", () => {
   it("login a user with all data fields", async () => {
     const response = await request(app).post("/auth/login").send({
-      email: "xyz987@gmail.com",
-      password: "87654321",
+      email: "mdkamal.parvez@stonybrook.edu",
+      password: "12345678",
     });
     expect(response.status).toEqual(200);
   }, 10000);
