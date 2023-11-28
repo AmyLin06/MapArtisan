@@ -2,18 +2,22 @@ import React from "react";
 import "../styles/ProfileScreen.css";
 import Banner from "../components/Banner";
 import ProfilePicture from "../components/profilepicture.jpg";
-import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+// import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Button from "@mui/material/Button";
 import { TextField, Grid, InputLabel, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../auth";
+import { IconButton } from "@mui/material";
 import SuccessModal from "../components/Modals/SuccessModal";
 import { SuccessModalTypes } from "../components/Modals/ModalTypes";
 
 const AccountViewScreen = () => {
   const { auth } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,6 +39,11 @@ const AccountViewScreen = () => {
       confirmNewPassword
     );
   };
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="main">
       <div>
@@ -43,22 +52,20 @@ const AccountViewScreen = () => {
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
         <div className="profile-container">
           <img className="profile-picture" src={ProfilePicture} alt="Profile" />
-          <div className="icon-buttons">
-            <Button className="icon-button" style={{ color: "#333" }}>
-              <span role="img" aria-label="Icon 1">
-                <PhotoLibraryIcon />
-                <br />
-                Upload Image
-              </span>
-            </Button>
-            <Button className="icon-button" style={{ color: "#333" }}>
-              <span role="img" aria-label="Icon 2">
-                <DeleteIcon />
-                <br />
-                Delete
-              </span>
-            </Button>
-          </div>
+          {/* <div className="icon-buttons">
+                    <Button className="icon-button" style={{color: "#333"}}>
+                        <span role="img" aria-label="Icon 1">
+                        <PhotoLibraryIcon/><br/>
+                        Upload Image
+                        </span>
+                    </Button>
+                    <Button className="icon-button" style={{color: "#333"}}>
+                        <span role="img" aria-label="Icon 2">
+                        <DeleteIcon/><br/>
+                        Delete
+                        </span>
+                    </Button>
+                </div> */}
           <Typography variant="h5" style={{ textAlign: "left" }}>
             Name & Username
           </Typography>
@@ -77,8 +84,8 @@ const AccountViewScreen = () => {
                   label=" Enter First Name"
                   name="firstName"
                   autoComplete=""
-                  autoFocus
                   defaultValue={auth.user?.firstName || ""}
+                  autoFocus
                   InputProps={{
                     style: {
                       borderRadius: "50px",
@@ -103,7 +110,7 @@ const AccountViewScreen = () => {
                   InputProps={{
                     style: {
                       borderRadius: "50px",
-                      color: "navy",
+                      color: "navy", // Change the font color to navy blue
                     },
                   }}
                 />
@@ -126,7 +133,7 @@ const AccountViewScreen = () => {
                   InputProps={{
                     style: {
                       borderRadius: "50px",
-                      color: "navy",
+                      color: "navy", // Change the font color to navy blue
                     },
                   }}
                 />
@@ -137,7 +144,11 @@ const AccountViewScreen = () => {
           <br></br>
           <Typography variant="h5" style={{ textAlign: "left" }}>
             Email & Password
+            <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+              {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+            </IconButton>
           </Typography>
+
           <div className="inputs">
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -150,14 +161,15 @@ const AccountViewScreen = () => {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label={auth.user.email}
                   name="email"
-                  autoComplete=""
+                  autoComplete="off"
                   autoFocus
-                  value={auth.user?.email || ""}
+                  disabled
                   InputProps={{
                     style: {
                       borderRadius: "50px",
+                      backgroundColor: "#f0f0f0",
                     },
                   }}
                 />
@@ -174,6 +186,7 @@ const AccountViewScreen = () => {
                   margin="normal"
                   required
                   fullWidth
+                  type={showPassword ? "text" : "password"}
                   id="currentPassword"
                   label=" Enter Current Password"
                   name="currentPassword"
@@ -181,17 +194,14 @@ const AccountViewScreen = () => {
                   InputProps={{
                     style: {
                       borderRadius: "50px",
-                      color: "navy",
+                      color: "navy", // Change the font color to navy blue
                     },
                   }}
                 />
               </Grid>
 
               <Grid item xs={6}>
-                <InputLabel
-                  htmlFor="newtPassword"
-                  style={{ textAlign: "left" }}
-                >
+                <InputLabel htmlFor="newPassword" style={{ textAlign: "left" }}>
                   New Password:
                 </InputLabel>
                 <TextField
@@ -199,6 +209,7 @@ const AccountViewScreen = () => {
                   margin="normal"
                   required
                   fullWidth
+                  type={showPassword ? "text" : "password"}
                   id="newPassword"
                   label=" Enter New Password"
                   name="newPassword"
@@ -206,7 +217,7 @@ const AccountViewScreen = () => {
                   InputProps={{
                     style: {
                       borderRadius: "50px",
-                      color: "navy",
+                      color: "navy", // Change the font color to navy blue
                     },
                   }}
                 />
@@ -223,6 +234,7 @@ const AccountViewScreen = () => {
                   margin="normal"
                   required
                   fullWidth
+                  type={showPassword ? "text" : "password"}
                   id="confirmNewPassword"
                   label=" Confirm New Password"
                   name="confirmNewPassword"
@@ -230,7 +242,7 @@ const AccountViewScreen = () => {
                   InputProps={{
                     style: {
                       borderRadius: "50px",
-                      color: "navy",
+                      color: "navy", // Change the font color to navy blue
                     },
                   }}
                 />
