@@ -105,27 +105,57 @@ updateUser = async (req, res) => {
       !userEmail ||
       !userName ||
       !firstName ||
-      !lastName ||
-      !currentPassword ||
-      !newPassword ||
-      !confirmNewPassword
-    ) {
+      !lastName ) {
       return res
         .status(400)
         .json({ errorMessage: "Please enter all required fields." });
     }
+    const existingUser = await User.findOne({ email: userEmail });
+    console.log("existingUser: " + existingUser);
     console.log("update user");
-    if (newPassword.length < 8) {
-      return res.status(400).json({
-        errorMessage: "Please enter a new password of at least 8 characters.",
-      });
+    if(newPassword&&confirmNewPassword){
+      if (newPassword.length < 8) {
+        return res.status(400).json({
+          errorMessage: "Please enter a new password of at least 8 characters.",
+        });
+      }
+      console.log("password long enough");
+      if (newPassword !== confirmNewPassword) {
+        return res.status(400).json({
+          errorMessage: "Please enter the same password twice.",
+        });
+      }
+      console.log("password and password verify match");
+      
+      if (!currentPassword){
+        return res
+          .status(400)
+          .json({ errorMessage: "Please enter passwords if you wnat to update password" });
+      }
+      const passwordCorrect = await bcrypt.compare(
+        currentPassword,
+        existingUser.passwordHash
+      );
+      if (!passwordCorrect) {
+        console.log("Incorrect password");
+        return res.status(401).json({
+          errorMessage: "Wrong email or password provided.",
+        });
+      }
+      const saltRounds = 10;
+      const salt = await bcrypt.genSalt(saltRounds);
+      const passwordHash = await bcrypt.hash(newPassword, salt);
+      console.log("passwordHash: " + passwordHash);
+      existingUser.passwordHash = passwordHash;
     }
-    console.log("password long enough");
-    if (newPassword !== confirmNewPassword) {
-      return res.status(400).json({
-        errorMessage: "Please enter the same password twice.",
-      });
+    else{
+      if(newPassword||confirmNewPassword){
+        return res
+        .status(400)
+        .json({ errorMessage: "Please enter all the password text field if you want to update the password." });
+      }
     }
+
     // const existingNewEmail = await User.findOne({ email: email });
     // if (existingNewEmail) {
     //   console.log("The given email is already used");
@@ -134,30 +164,13 @@ updateUser = async (req, res) => {
     //     errorMessage: "An account with this email address already exists.",
     //   });
     // }
-    console.log("password and password verify match");
-    const existingUser = await User.findOne({ email: userEmail });
-    console.log("existingUser: " + existingUser);
-
-    const passwordCorrect = await bcrypt.compare(
-      currentPassword,
-      existingUser.passwordHash
-    );
-    if (!passwordCorrect) {
-      console.log("Incorrect password");
-      return res.status(401).json({
-        errorMessage: "Wrong email or password provided.",
-      });
-    }
-    const saltRounds = 10;
-    const salt = await bcrypt.genSalt(saltRounds);
-    const passwordHash = await bcrypt.hash(newPassword, salt);
-    console.log("passwordHash: " + passwordHash);
+    
+    
     // Update user information
     existingUser.userName = userName;
     existingUser.firstName = firstName;
     existingUser.lastName = lastName;
     existingUser.email = userEmail;
-    existingUser.passwordHash = passwordHash;
     // Save the updated user
     await existingUser.save();
     console.log("User updated successfully");
