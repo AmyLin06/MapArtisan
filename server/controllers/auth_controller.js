@@ -22,6 +22,7 @@ getLoggedIn = async (req, res) => {
         firstName: loggedInUser.firstName,
         lastName: loggedInUser.lastName,
         email: loggedInUser.email,
+        userName: existingUser.userName,
       },
     });
   } catch (err) {
@@ -80,6 +81,7 @@ loginUser = async (req, res) => {
           firstName: existingUser.firstName,
           lastName: existingUser.lastName,
           email: existingUser.email,
+          userName: existingUser.userName,
         },
       });
   } catch (err) {
@@ -105,7 +107,6 @@ updateUser = async (req, res) => {
       !userName ||
       !firstName ||
       !lastName ||
-      !email ||
       !currentPassword ||
       !newPassword ||
       !confirmNewPassword
@@ -156,7 +157,7 @@ updateUser = async (req, res) => {
     existingUser.userName = userName;
     existingUser.firstName = firstName;
     existingUser.lastName = lastName;
-    existingUser.email = email;
+    existingUser.email = userEmail;
     existingUser.passwordHash = passwordHash; // You might want to hash the new password before saving it
     // Save the updated user
     await existingUser.save();
@@ -168,6 +169,7 @@ updateUser = async (req, res) => {
         firstName: existingUser.firstName,
         lastName: existingUser.lastName,
         email: existingUser.email,
+        userName: existingUser.userName,
       },
     });
   } catch (err) {

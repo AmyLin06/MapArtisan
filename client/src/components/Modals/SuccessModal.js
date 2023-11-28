@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useContext } from "react";
 import * as React from "react";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
+import { SuccessModalTypes } from "./ModalTypes";
+import { GlobalStoreContext } from "../../store/GlobalStore";
+import AuthContext from "../../auth";
 
 //Modal that displays a message in the lower-left of the screen for 5sec, with an option to prematurely close the modal
 //Example of a way to create a SuccessModal, see ModalTypes.js for definition of "SuccessModalTypes.MESSAGE_SUCCESS":
@@ -11,24 +14,39 @@ import Snackbar from "@mui/material/Snackbar";
 
 export default function SuccessModal(props) {
   const { modalType } = props;
-  const [open, setOpen] = useState(true);
+  const { store } = useContext(GlobalStoreContext);
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setOpen(false);
+      auth.hideModals();
     }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
 
+  var text = modalType.text + "MYMAP";
+  if (modalType === SuccessModalTypes.ACCOUNT_UPDATE_SUCCESS) {
+    text = modalType.text;
+  }
   return (
     <Snackbar
-      open={open}
+      open={
+        auth.currentModal === modalType.name ||
+        store.currentModal === modalType.name
+      }
       autoHideDuration={5000}
-      onClose={() => setOpen(false)}
+      onClose={() => {
+        auth.hideModals();
+      }}
     >
-      <Alert onClose={() => setOpen(false)} severity="success">
-        {modalType.text + "MYMAP"}
+      <Alert
+        onClose={() => {
+          auth.hideModals();
+        }}
+        severity="success"
+      >
+        {text}
         {". " + modalType.subtext}
       </Alert>
     </Snackbar>

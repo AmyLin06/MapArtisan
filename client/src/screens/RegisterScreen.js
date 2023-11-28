@@ -14,6 +14,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Privacy from "../assets/Privacy";
 import Term from "../assets/Term";
+import { IconButton } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const RegisterScreen = () => {
   const [open, setOpen] = useState(false);
@@ -21,6 +24,11 @@ const RegisterScreen = () => {
   const [content, setContent] = useState(null);
   const [dialogTitle, setDialogTitle] = useState(null);
   const { auth } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleClickOpen = (scrollType, content, title) => () => {
     setContent(content);
@@ -140,13 +148,18 @@ const RegisterScreen = () => {
               fullWidth
               name="password"
               label="password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
               InputProps={{
                 style: {
                   borderRadius: "50px",
                 },
+                endAdornment: (
+                  <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                ),
               }}
             />
             <div className="label">PasswordVerified</div>
@@ -157,13 +170,18 @@ const RegisterScreen = () => {
               fullWidth
               name="passwordverified"
               label="passwordverified"
-              type="passwordverified"
+              type={showPassword ? 'text' : 'password'}
               id="passwordverified"
               autoComplete="current-password"
               InputProps={{
                 style: {
                   borderRadius: "50px",
                 },
+                endAdornment: (
+                  <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                ),
               }}
             />
             <div>
