@@ -105,7 +105,6 @@ updateUser = async (req, res) => {
       !userName ||
       !firstName ||
       !lastName ||
-      !email ||
       !currentPassword ||
       !newPassword ||
       !confirmNewPassword
@@ -156,7 +155,7 @@ updateUser = async (req, res) => {
     existingUser.userName = userName;
     existingUser.firstName = firstName;
     existingUser.lastName = lastName;
-    existingUser.email = email;
+    existingUser.email = userEmail;
     existingUser.passwordHash = passwordHash; // You might want to hash the new password before saving it
     // Save the updated user
     await existingUser.save();
