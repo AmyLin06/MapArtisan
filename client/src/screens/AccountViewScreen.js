@@ -35,7 +35,6 @@ const AccountViewScreen = () => {
       confirmNewPassword
     );
   };
-
   return (
     <div className="main">
       <div>
@@ -79,6 +78,7 @@ const AccountViewScreen = () => {
                   name="firstName"
                   autoComplete=""
                   autoFocus
+                  defaultValue={auth.user?.firstName || ""}
                   InputProps={{
                     style: {
                       borderRadius: "50px",
@@ -99,6 +99,7 @@ const AccountViewScreen = () => {
                   label=" Enter Last Name"
                   name="lastName"
                   autoComplete=""
+                  defaultValue={auth.user?.lastName || ""}
                   InputProps={{
                     style: {
                       borderRadius: "50px",
@@ -121,6 +122,7 @@ const AccountViewScreen = () => {
                   label=" Enter Username"
                   name="userName"
                   autoComplete=""
+                  defaultValue={auth.user?.userName || ""}
                   InputProps={{
                     style: {
                       borderRadius: "50px",
@@ -148,10 +150,11 @@ const AccountViewScreen = () => {
                   required
                   fullWidth
                   id="email"
-                  label="example@gmail.com"
+                  label="Email Address"
                   name="email"
                   autoComplete=""
                   autoFocus
+                  value={auth.user?.email || ""}
                   InputProps={{
                     style: {
                       borderRadius: "50px",

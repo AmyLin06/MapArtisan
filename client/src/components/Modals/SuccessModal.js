@@ -3,6 +3,7 @@ import * as React from "react";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import { SuccessModalTypes } from "./ModalTypes";
+import { GlobalStoreContext } from "../../store/GlobalStore";
 import AuthContext from "../../auth";
 
 //Modal that displays a message in the lower-left of the screen for 5sec, with an option to prematurely close the modal
@@ -13,6 +14,7 @@ import AuthContext from "../../auth";
 
 export default function SuccessModal(props) {
   const { modalType } = props;
+  const { store } = useContext(GlobalStoreContext);
   const { auth } = useContext(AuthContext);
 
   useEffect(() => {
@@ -29,7 +31,10 @@ export default function SuccessModal(props) {
   }
   return (
     <Snackbar
-      open={auth.currentModal === modalType.name}
+      open={
+        auth.currentModal === modalType.name ||
+        store.currentModal === modalType.name
+      }
       autoHideDuration={5000}
       onClose={() => {
         auth.hideModals();
