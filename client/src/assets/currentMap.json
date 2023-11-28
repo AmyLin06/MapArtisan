@@ -5,10 +5,6 @@
     "forks": 321,
     "ownerUsername": "TomTilly",
     "layers": [
-        {"layerName": "KML layer"},
-        {"layerName": "GeoJSON layer"},
-        {"layerName": "another KML layer"},
-        {"layerName": "another GeoJSON layer"}
     ],
     "profilePic": "https://png.pngtree.com/thumb_back/fh260/background/20230612/pngtree-man-wearing-glasses-is-wearing-colorful-background-image_2905240.jpg", 
     "comments": [
