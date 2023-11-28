@@ -22,6 +22,7 @@ getLoggedIn = async (req, res) => {
         firstName: loggedInUser.firstName,
         lastName: loggedInUser.lastName,
         email: loggedInUser.email,
+        userName: existingUser.userName,
       },
     });
   } catch (err) {
@@ -80,6 +81,7 @@ loginUser = async (req, res) => {
           firstName: existingUser.firstName,
           lastName: existingUser.lastName,
           email: existingUser.email,
+          userName: existingUser.userName,
         },
       });
   } catch (err) {
@@ -167,6 +169,7 @@ updateUser = async (req, res) => {
         firstName: existingUser.firstName,
         lastName: existingUser.lastName,
         email: existingUser.email,
+        userName: existingUser.userName,
       },
     });
   } catch (err) {

@@ -49,6 +49,12 @@ export const SuccessModalTypes = {
     subtext: "Your vision, Mapped out.",
     close: close,
   },
+  ACCOUNT_UPDATE_SUCCESS: {
+    name: "ACCOUNT_UPDATE_SUCCESS",
+    text: "Successfully updated your information",
+    subtext: "",
+    close: close,
+  },
 };
 export const InputModalTypes = {
   RENAME_MAP: {
