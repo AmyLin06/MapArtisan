@@ -6,13 +6,16 @@ import { Link } from "react-router-dom";
 import { Stack, Typography,Box } from "@mui/material";
 import Copyright from "../components/CopyRight";
 import Button from '@mui/material/Button';
-import { useContext } from 'react';
+import { useContext,useState } from 'react';
 import AuthContext from '../auth'
-
+import { IconButton } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 
 const LoginScreen = () => {
   const { auth } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,6 +24,10 @@ const LoginScreen = () => {
         formData.get('email'),
         formData.get('password')
     );
+  };
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   
@@ -57,13 +64,18 @@ const LoginScreen = () => {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
               InputProps={{
                 style: {
                   borderRadius: "50px",
                 },
+                endAdornment: (
+                  <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                ),
               }}
             />
             <div>
