@@ -2,16 +2,21 @@ import React from "react";
 import "../styles/ProfileScreen.css";
 import Banner from "../components/Banner";
 import ProfilePicture from "../components/profilepicture.jpg"
-import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
-import DeleteIcon from '@mui/icons-material/Delete';
+// import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+// import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Button from '@mui/material/Button';
 import { TextField,Grid,InputLabel,Box} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { useContext } from 'react';
-import AuthContext from '../auth'
+import { useContext , useState} from 'react';
+import AuthContext from '../auth';
+import { IconButton } from "@mui/material";
 
 const AccountViewScreen = () => {
     const { auth } = useContext(AuthContext);
+    const [showPassword, setShowPassword] = useState(false);
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -23,6 +28,10 @@ const AccountViewScreen = () => {
         const newPassword = formData.get('newPassword');
         const confirmNewPassword = formData.get('confirmNewPassword');
         auth.updateUser(firstName,lastName,userName,email,currentPassword,newPassword,confirmNewPassword);
+    };
+
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -37,7 +46,7 @@ const AccountViewScreen = () => {
                     src = {ProfilePicture}
                     alt="Profile"
                 />
-                <div className="icon-buttons">
+                {/* <div className="icon-buttons">
                     <Button className="icon-button" style={{color: "#333"}}>
                         <span role="img" aria-label="Icon 1">
                         <PhotoLibraryIcon/><br/>
@@ -50,7 +59,7 @@ const AccountViewScreen = () => {
                         Delete
                         </span>
                     </Button>
-                </div>
+                </div> */}
                 <Typography variant="h5" style={{ textAlign: "left" }}>
                     Name & Username
                 </Typography>
@@ -126,7 +135,11 @@ const AccountViewScreen = () => {
                 <br></br>
                 <Typography variant="h5" style={{ textAlign: "left" }}>
                     Email & Password
+                    <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                        {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                    </IconButton>
                 </Typography>
+                
                 <div className = "inputs">
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
@@ -139,13 +152,15 @@ const AccountViewScreen = () => {
                                 required
                                 fullWidth
                                 id="email"
-                                label="example@gmail.com"
+                                label= {auth.user.email}
                                 name="email"
-                                autoComplete=""
+                                autoComplete="off"
                                 autoFocus
+                                disabled
                                 InputProps={{
                                     style: {
                                         borderRadius: "50px",
+                                        backgroundColor: "#f0f0f0",
                                     },
                                 }}
                             />
@@ -159,6 +174,7 @@ const AccountViewScreen = () => {
                                 margin="normal"
                                 required
                                 fullWidth
+                                type={showPassword ? 'text' : 'password'}
                                 id="currentPassword"
                                 label=" Enter Current Password"
                                 name="currentPassword"
@@ -173,7 +189,7 @@ const AccountViewScreen = () => {
                         </Grid>
                         
                         <Grid item xs={6}>
-                            <InputLabel htmlFor="newtPassword" style={{ textAlign: "left" }}>
+                            <InputLabel htmlFor="newPassword" style={{ textAlign: "left" }}>
                                 New Password:
                             </InputLabel>
                             <TextField
@@ -181,6 +197,7 @@ const AccountViewScreen = () => {
                                 margin="normal"
                                 required
                                 fullWidth
+                                type={showPassword ? 'text' : 'password'}
                                 id="newPassword"
                                 label=" Enter New Password"
                                 name="newPassword"
@@ -202,6 +219,7 @@ const AccountViewScreen = () => {
                                 margin="normal"
                                 required
                                 fullWidth
+                                type={showPassword ? 'text' : 'password'}
                                 id="confirmNewPassword"
                                 label=" Confirm New Password"
                                 name="confirmNewPassword"
