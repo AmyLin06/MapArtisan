@@ -10,6 +10,7 @@ export const GlobalStoreActionType = {
   LOAD_COMMUNITY_MAPS: "LOAD_COMMUNITY_MAPS",
   MARK_MAP_FOR_DELETION: "MARK_MAP_FOR_DELETION",
   CHANGE_MAP_NAME: "CHANGE_MAP_NAME",
+  UPDATE_ACCOUNT: "UPDATE_ACCOUNT",
 };
 
 const CurrentModal = {
@@ -18,6 +19,7 @@ const CurrentModal = {
   RENAME_MAP: "RENAME_MAP",
   MESSAGE_MODAL: "MESSAGE_MODAL",
   MESSAGE_SUCCESS: "MESSAGE_SUCCESS",
+  ACCOUNT_UPDATE_SUCCESS: "ACCOUNT_UPDATE_SUCCESS",
   ERROR: "ERROR",
 };
 
@@ -58,6 +60,14 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
         });
       }
+      case GlobalStoreActionType.UPDATE_ACCOUNT: {
+        return setStore({
+          currentModal: CurrentModal.ACCOUNT_UPDATE_SUCCESS,
+          currentMap: store.currentMap,
+          homeMapLists: store.homeMapLists,
+          communityMapList: store.communityMapList,
+        });
+      }
       default:
         return store;
     }
@@ -74,6 +84,13 @@ function GlobalStoreContextProvider(props) {
   store.showDeleteMapModal = (map) => {
     storeReducer({
       type: GlobalStoreActionType.MARK_MAP_FOR_DELETION,
+      payload: { map },
+    });
+  };
+
+  store.showAccountUpdateSuccessModal = (map) => {
+    storeReducer({
+      type: GlobalStoreActionType.UPDATE_ACCOUNT,
       payload: { map },
     });
   };
