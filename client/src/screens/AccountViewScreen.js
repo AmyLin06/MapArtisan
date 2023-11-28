@@ -1,7 +1,7 @@
-import React from "react";
+import React,{useState,useRef} from "react";
 import "../styles/ProfileScreen.css";
 import Banner from "../components/Banner";
-import ProfilePicture from "../components/profilepicture.jpg"
+import ProfilePicture from "../components/profilePicture.jpg"
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
@@ -12,6 +12,49 @@ import AuthContext from '../auth'
 
 const AccountViewScreen = () => {
     const { auth } = useContext(AuthContext);
+    const [file, setFile] = useState(null);
+    const Picture = ProfilePicture;
+    const fileInputRef = useRef();
+
+
+    const handleButtonClick = () => {
+        // Trigger click event on the hidden file input
+        fileInputRef.current.click();
+    };
+
+    const handleFileChange = async (e) => {
+        // Update the state with the selected file
+        const selectedFile = e.target.files[0];
+        // console.log(e.target.files[0]);
+        setFile(selectedFile);
+        console.log(file);
+        await handleUpload(selectedFile);
+    };
+
+    const handleUpload = async (selectedFile) => {
+        if (!selectedFile) {
+          alert('Please select a file to upload.');
+          return;
+        }
+        // Create a FormData object to append the file
+        const formData = new FormData();
+        formData.append('file', file);
+        // for (const entry of formData.entries()) {
+        //     console.log(entry[0], entry[1]);
+        // }
+        auth.uploadPicture(formData);
+    }
+
+    
+
+    
+    if (auth.user && auth.user.profilePictureUrl) {
+        // loaded the profile picture from S3
+    } else {
+        console.log("default profile picture loaded");
+    }
+    
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -27,6 +70,13 @@ const AccountViewScreen = () => {
 
     return (
       <div className="main">
+        <input
+        type="file"
+        accept="image/jpeg, image/png"
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+        ref={fileInputRef}
+        />
         <div>
           <Banner screen = "ACCOUNT_DETAIL"/>
         </div>
@@ -34,16 +84,23 @@ const AccountViewScreen = () => {
             <div className="profile-container">
                 <img
                     className="profile-picture"
-                    src = {ProfilePicture}
+                    src = {Picture}
                     alt="Profile"
                 />
                 <div className="icon-buttons">
-                    <Button className="icon-button" style={{color: "#333"}}>
+                    <Button className="icon-button" style={{color: "#333"}} onClick={handleButtonClick}>
                         <span role="img" aria-label="Icon 1">
                         <PhotoLibraryIcon/><br/>
                         Upload Image
                         </span>
                     </Button>
+                    <br />
+                    {/* {file && (
+                        <>
+                        <span>Selected File: {file.name}</span>
+                        <br />
+                        </>
+                    )} */}
                     <Button className="icon-button" style={{color: "#333"}}>
                         <span role="img" aria-label="Icon 2">
                         <DeleteIcon/><br/>

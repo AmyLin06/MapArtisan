@@ -167,6 +167,36 @@ function AuthContextProvider(props) {
         return initials;
     }
 
+    auth.uploadPicture = async function(formData){
+        console.log("UPLOAD PROFILE PICTURE");
+        try{   
+            const userEmail = auth.user.email;
+            const response = await api.uploadPicture(userEmail,formData);   
+            if (response.status === 200) {
+                console.log("UPLOAD Sucessfully");
+                console.log(response.data.user)
+                authReducer({
+                    type: AuthActionType.UPDATE_USER,
+                    payload: {
+                        user: response.data.user,
+                        loggedIn: true,
+                        errorMessage: null
+                    }
+                })
+                history('/home')
+            }
+        } catch(error){
+            authReducer({
+                type: AuthActionType.UPDATE_USER,
+                payload: {
+                    user: auth.user,
+                    loggedIn: true,
+                    errorMessage: error.response.data.errorMessage
+                }
+            })
+        }
+    }
+
     auth.updateUser = async function(firstName,lastName,userName,email,currentPassword,newPassword,confirmNewPassword) {
         console.log("UPDATE USER");
         try{   

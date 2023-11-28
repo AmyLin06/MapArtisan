@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const AWS = require('aws-sdk');
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -55,6 +56,14 @@ app.use("/auth", authRoute);
 //listen for events, and the "error" event is emitted when there is an error with the database connection
 const db = require("./configs/dbConn");
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
+
+//setupS3
+AWS.config.update({
+  accessKeyId: 'AKIA2OQS5Z5CWS3VAKFE',
+  secretAccessKey: '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',
+  region: 'us-east-1',
+});
+const s3 = new AWS.S3();
 
 // PUT THE SERVER IN LISTENING MODE
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

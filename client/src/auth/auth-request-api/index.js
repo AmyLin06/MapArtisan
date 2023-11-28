@@ -73,12 +73,23 @@ export const updateUser = (
   });
 };
 
+export const uploadPicture = (
+  userEmail,
+  formData
+) => {
+  return api.put(`/upload/`, {
+    userEmail: userEmail,
+    formData: formData
+  });
+};
+
 const apis = {
   getLoggedIn,
   registerUser,
   loginUser,
   logoutUser,
   updateUser,
+  uploadPicture,
 };
 
 export default apis;

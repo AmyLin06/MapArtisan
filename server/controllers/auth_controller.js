@@ -88,6 +88,47 @@ loginUser = async (req, res) => {
   }
 };
 
+uploadPicture = async (req, res) => {
+  console.log("UPLOAD PICTURE IN BACKEND");
+  try {
+    const {
+      userEmail,
+      formData
+    } = req.body;
+    console.log(formData);
+    if (!formData) {
+      return res
+        .status(400)
+        .json({ errorMessage: "Please enter all required fields." });
+    }
+
+    console.log("update user");
+    
+    const existingUser = await User.findOne({ email: userEmail });
+    console.log("existingUser: " + existingUser);
+    //code here
+    // Update user information
+    
+
+
+    // Save the updated user
+    await existingUser.save();
+    console.log("User updated successfully");
+    console.log(existingUser);
+    return res.status(200).json({
+      loggedIn: true,
+      user: {
+        firstName: existingUser.firstName,
+        lastName: existingUser.lastName,
+        email: existingUser.email,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+};
+
 updateUser = async (req, res) => {
   console.log("UPDATE USER IN BACKEND");
   try {
@@ -250,6 +291,9 @@ registerUser = async (req, res) => {
       email,
       passwordHash,
     });
+    
+    // Update the user's profile picture URL
+    savedUser.profilePictureUrl = NULL;
     const savedUser = await newUser.save();
     console.log("new user saved: " + savedUser._id);
 
@@ -280,10 +324,12 @@ registerUser = async (req, res) => {
   }
 };
 
+
 module.exports = {
   getLoggedIn,
   registerUser,
   loginUser,
   logoutUser,
   updateUser,
+  uploadPicture,
 };
