@@ -153,6 +153,11 @@ const AccountViewScreen = () => {
             <IconButton onClick={handleTogglePasswordPart} edge="end">
               {showPasswordPart ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </IconButton>
+            <div className="inputs" style={{ display: showPasswordPart ? "block" : "none" }}>
+              <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+              </IconButton>
+            </div>
           </Typography>
 
           <div className="inputs" style={{ display: showPasswordPart ? "block" : "none" }}>
@@ -254,11 +259,7 @@ const AccountViewScreen = () => {
                 />
               </Grid>
             </Grid>
-            <IconButton onClick={handleTogglePasswordVisibility} edge="end">
-              {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-            </IconButton>
           </div>
-          <br></br>
           <Box display="flex" justifyContent="flex-end">
             <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
               Save Changes
