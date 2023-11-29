@@ -22,6 +22,7 @@ getLoggedIn = async (req, res) => {
         firstName: loggedInUser.firstName,
         lastName: loggedInUser.lastName,
         email: loggedInUser.email,
+        userName: existingUser.userName,
       },
     });
   } catch (err) {
@@ -41,9 +42,7 @@ loginUser = async (req, res) => {
         .json({ errorMessage: "Please enter all required fields." });
     }
 
-    const existingUser =
-      (await User.findOne({ email: email })) ||
-      User.findOne({ userName: userName });
+    const existingUser = await User.findOne({ email: email });
     console.log("existingUser: " + existingUser);
     if (!existingUser) {
       return res.status(401).json({
@@ -80,6 +79,7 @@ loginUser = async (req, res) => {
           firstName: existingUser.firstName,
           lastName: existingUser.lastName,
           email: existingUser.email,
+          userName: existingUser.userName,
         },
       });
   } catch (err) {
@@ -102,10 +102,10 @@ updateUser = async (req, res) => {
       confirmNewPassword,
     } = req.body;
     if (
+      !userEmail ||
       !userName ||
       !firstName ||
       !lastName ||
-      !email ||
       !currentPassword ||
       !newPassword ||
       !confirmNewPassword
@@ -126,18 +126,18 @@ updateUser = async (req, res) => {
         errorMessage: "Please enter the same password twice.",
       });
     }
-    const existingNewEmail = await User.findOne({ email: email });
-    if (existingNewEmail) {
-      console.log("The given email is already used");
-      return res.status(400).json({
-        success: false,
-        errorMessage: "An account with this email address already exists.",
-      });
-    }
+    // const existingNewEmail = await User.findOne({ email: email });
+    // if (existingNewEmail) {
+    //   console.log("The given email is already used");
+    //   return res.status(400).json({
+    //     success: false,
+    //     errorMessage: "An account with this email address already exists.",
+    //   });
+    // }
     console.log("password and password verify match");
     const existingUser = await User.findOne({ email: userEmail });
     console.log("existingUser: " + existingUser);
-    //code here
+
     const passwordCorrect = await bcrypt.compare(
       currentPassword,
       existingUser.passwordHash
@@ -156,8 +156,8 @@ updateUser = async (req, res) => {
     existingUser.userName = userName;
     existingUser.firstName = firstName;
     existingUser.lastName = lastName;
-    existingUser.email = email;
-    existingUser.passwordHash = passwordHash; // You might want to hash the new password before saving it
+    existingUser.email = userEmail;
+    existingUser.passwordHash = passwordHash;
     // Save the updated user
     await existingUser.save();
     console.log("User updated successfully");
@@ -168,6 +168,7 @@ updateUser = async (req, res) => {
         firstName: existingUser.firstName,
         lastName: existingUser.lastName,
         email: existingUser.email,
+        userName: existingUser.userName,
       },
     });
   } catch (err) {
