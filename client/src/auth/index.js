@@ -26,11 +26,13 @@ const CurrentModal = {
 };
 
 function AuthContextProvider(props) {
+  const [guest,setGuest] = useState(false);
   const [auth, setAuth] = useState({
     currentModal: CurrentModal.NONE,
     user: null,
     loggedIn: false,
     errorMessage: null,
+    guest:false,
   });
 
   const history = useNavigate();
@@ -49,6 +51,7 @@ function AuthContextProvider(props) {
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: null,
+          guest:payload.guest,
         });
       }
       case AuthActionType.LOGIN_USER: {
@@ -57,6 +60,7 @@ function AuthContextProvider(props) {
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: payload.errorMessage,
+          guest:payload.guest,
         });
       }
       case AuthActionType.LOGOUT_USER: {
@@ -65,6 +69,7 @@ function AuthContextProvider(props) {
           user: null,
           loggedIn: false,
           errorMessage: null,
+          guest: false,
         });
       }
       case AuthActionType.REGISTER_USER: {
@@ -73,6 +78,7 @@ function AuthContextProvider(props) {
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: payload.errorMessage,
+          guest:guest,
         });
       }
       case AuthActionType.UPDATE_USER: {
@@ -81,6 +87,7 @@ function AuthContextProvider(props) {
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: payload.errorMessage,
+          guest:guest,
         });
       }
       case AuthActionType.HIDE_MODALS: {
@@ -89,6 +96,7 @@ function AuthContextProvider(props) {
           user: auth.user,
           loggedIn: auth.loggedIn,
           errorMessage: auth.errorMessage,
+          guest:payload.guest,
         });
       }
       default:
@@ -104,6 +112,7 @@ function AuthContextProvider(props) {
         payload: {
           loggedIn: response.data.loggedIn,
           user: response.data.user,
+          guest:guest,
         },
       });
     }
@@ -169,6 +178,7 @@ function AuthContextProvider(props) {
             user: response.data.user,
             loggedIn: true,
             errorMessage: null,
+            guest:false,
           },
         });
         history("/home");
@@ -181,13 +191,15 @@ function AuthContextProvider(props) {
           user: auth.user,
           loggedIn: false,
           errorMessage: error.response.data.errorMessage,
-          currentModal:CurrentModal.ACCOUNT_LOGIN_FAIL
+          currentModal:CurrentModal.ACCOUNT_LOGIN_FAIL,
+          guest:false,
         },
       });
     }
   };
 
   auth.logoutUser = async function () {
+    setGuest(false);
     const response = await api.logoutUser();
     console.log(response.status);
     if (response.status === 200) {
@@ -260,12 +272,13 @@ function AuthContextProvider(props) {
   auth.hideModals = () => {
     authReducer({
       type: AuthActionType.HIDE_MODALS,
-      payload: {},
+      payload: {guest:guest},
     });
   };
 
   auth.guestLogin = async function() {
     try{
+        setGuest(true);
         const response = await api.loginUser("guest@gmail.com", "GuestPassword");
         if (response.status === 200) {
             authReducer({
@@ -273,7 +286,9 @@ function AuthContextProvider(props) {
                 payload: {
                     user: response.data.user,
                     loggedIn: true,
-                    errorMessage: null
+                    errorMessage: null,
+                    currentModal:CurrentModal.ACCOUNT_LOGIN_SUCCESS,
+                    guest: true,
                 }
             })
             history("/home");
@@ -288,13 +303,16 @@ function AuthContextProvider(props) {
                     payload: {
                         user: response.data.user,
                         loggedIn: true,
-                        errorMessage: null
+                        errorMessage: null,
+                        //need to think about
                     }
                 })
-                auth.loginUser("guest@gmail.com", "GuestPassword");
+                // auth.loginUser("guest@gmail.com", "GuestPassword");
+                auth.guestLogin();
                 console.log("GUEST LOGGED IN");
             }
         } catch(error){
+            setGuest(false);
             authReducer({
                 type: AuthActionType.REGISTER_USER,
                 payload: {
