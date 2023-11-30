@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 export const EditStoreContext = createContext({});
 
-export const GlobalStoreActionType = {
+export const EditStoreActionType = {
   CLOSE_CURRENT_MAP: "CLOSE_CURRENT_MAP",
   SET_CURRENT_MAP: "SET_CURRENT_MAP",
   SET_MAP_NAME_EDIT_ACTIVE: "SET_MAP_NAME_EDIT_ACTIVE",

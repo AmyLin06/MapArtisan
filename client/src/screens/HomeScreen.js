@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../styles/HomeScreen.css";
 import Banner from "../components/Banner";
 import { Typography, Box } from "@mui/material";
@@ -13,11 +13,12 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Link } from "react-router-dom";
+import GlobalStoreContext from "../store/GlobalStore";
 
 const HomeScreen = (props) => {
   const { maps } = props;
   const [currentPage, setCurrentPage] = useState(1);
-
+  const { store } = useContext(GlobalStoreContext);
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
   };
@@ -60,7 +61,7 @@ const HomeScreen = (props) => {
                         sx={{ backgroundColor: "#195083" }}
                       >
                         {/* Instead of CardMedia, use only an AddIcon */}
-                        <IconButton size="large">
+                        <IconButton size="large" onClick={store.createNewMap}>
                           <AddIcon fontSize="large" />
                         </IconButton>
                       </Box>

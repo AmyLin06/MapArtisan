@@ -1,13 +1,14 @@
-const Map = require("../models/map-model");
-// const User = require('../models/user-model');
-// const auth = require('../auth')
+const MapMetaData = require("../models/map-model");
+const User = require("../models/user-model");
+const auth = require("../auth");
 
-createMap = (req, res) => {
-  //   if (auth.verifyUser(req) === null) {
-  //     return res.status(400).json({
-  //       errorMessage: "UNAUTHORIZED",
-  //     });
-  //   }
+createMap = async (req, res) => {
+  console.log("in server create map");
+  if (auth.verifyUser(req) === null) {
+    return res.status(400).json({
+      errorMessage: "UNAUTHORIZED",
+    });
+  }
   const body = req.body;
   console.log("createMap body: " + JSON.stringify(body));
   if (!body) {
@@ -17,41 +18,52 @@ createMap = (req, res) => {
     });
   }
 
-  const map = new Map(body);
-  console.log("map: " + map.toString());
-  if (!map) {
-    return res.status(400).json({ success: false, error: err });
-  }
+  try {
+    const user = await User.findOne({ email: body.ownerEmail });
 
-  User.findOne({ _id: req.ownerId }, (err, user) => {
+    if (!user) {
+      return res.status(404).json({
+        errorMessage: "User not found",
+      });
+    }
+
     console.log("user found: " + JSON.stringify(user));
-    user.maps.push(map._id);
-    user.save().then(() => {
-      map
-        .save()
-        .then(() => {
-          return res.status(201).json({
-            map: map,
-          });
-        })
-        .catch((error) => {
-          return res.status(400).json({
-            errorMessage: "Map Not Created!",
-          });
-        });
+
+    const map = new MapMetaData({
+      ownerID: user._id,
+      ownerUsername: user.userName,
+      mapTitle: body.name || "Untitled",
+      lastOpened: new Date(),
     });
-  });
+
+    user.maps.push(map._id);
+
+    // Save the user and the new mapmetadata
+    await Promise.all([user.save(), map.save()]);
+
+    console.log("map: " + map.toString());
+
+    return res.status(201).json({
+      map: map,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      errorMessage: "Error creating map",
+    });
+  }
 };
 
 deleteMap = async (req, res) => {
-  // if(auth.verifyUser(req) === null){
-  //     return res.status(400).json({
-  //         errorMessage: 'UNAUTHORIZED'
-  //     })
-  // }
-  console.log("delete Map with id: " + JSON.stringify(req.params.id));
+  if (auth.verifyUser(req) === null) {
+    return res.status(400).json({
+      errorMessage: "UNAUTHORIZED",
+    });
+  }
+  console.log("delete map with id: " + JSON.stringify(req.params.id));
   console.log("delete " + req.params.id);
-  Playlist.findById({ _id: req.params.id }, (err, map) => {
+  Map.findById({ _id: req.params.id }, (err, map) => {
     console.log("map found: " + JSON.stringify(map));
     if (err) {
       return res.status(404).json({
@@ -60,11 +72,10 @@ deleteMap = async (req, res) => {
     }
 
     // DOES THIS LIST BELONG TO THIS USER?
-    async function asyncFindUser(list) {
-      User.findOne({ email: list.ownerEmail }, (err, user) => {
+    async function asyncFindUser(map) {
+      User.findOne({ _id: map.ownerID }, (err, user) => {
         console.log("user._id: " + user._id);
-        console.log("req.userId: " + req.userId);
-        if (user._id == req.userId) {
+        if (user._id == req.ownerId) {
           console.log("correct user!");
           Playlist.findOneAndDelete({ _id: req.params.id }, () => {
             return res.status(200).json({});
@@ -77,7 +88,7 @@ deleteMap = async (req, res) => {
         }
       });
     }
-    asyncFindUser(playlist);
+    asyncFindUser(map);
   });
 };
 
