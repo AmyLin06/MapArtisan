@@ -15,7 +15,8 @@ import { useContext, useState } from "react";
 import AuthContext from "../auth";
 import { IconButton } from "@mui/material";
 import SuccessModal from "../components/Modals/SuccessModal";
-import { SuccessModalTypes } from "../components/Modals/ModalTypes";
+import { SuccessModalTypes,FailModalTypes } from "../components/Modals/ModalTypes";
+import FailModal from "../components/Modals/FailModal"
 
 const AccountViewScreen = () => {
   const { auth } = useContext(AuthContext);
@@ -267,6 +268,7 @@ const AccountViewScreen = () => {
           </Box>
         </div>
         <SuccessModal modalType={SuccessModalTypes.ACCOUNT_UPDATE_SUCCESS} />
+        <FailModal modalType = {FailModalTypes.ACCOUNT_UPDATE_FAIL} />
       </Box>
     </div>
   );

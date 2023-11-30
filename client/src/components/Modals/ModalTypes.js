@@ -55,7 +55,34 @@ export const SuccessModalTypes = {
     subtext: "",
     close: close,
   },
+  ACCOUNT_LOGIN_SUCCESS: {
+    name: "ACCOUNT_LOGIN_SUCCESS",
+    text: "Sucessfully login",
+    subtext: "",
+    close: close,
+  },
 };
+export const FailModalTypes = {
+  ACCOUNT_UPDATE_FAIL: {
+    name: "ACCOUNT_UPDATE_FAIL",
+    text: "Failed to updated your information",
+    subtext: "",
+    close: close,
+  },
+  ACCOUNT_LOGIN_FAIL: {
+    name: "ACCOUNT_LOGIN_FAIL",
+    text: "Failed to login",
+    subtext: "",
+    close: close,
+  },
+  ACCOUNT_REGISTER_FAIL: {
+    name: "ACCOUNT_REGISTER_FAIL",
+    text: "Failed to register",
+    subtext: "",
+    close: close,
+  },
+};
+
 export const InputModalTypes = {
   RENAME_MAP: {
     name: "RENAME_MAP",

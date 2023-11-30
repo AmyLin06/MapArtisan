@@ -18,6 +18,10 @@ export const AuthActionType = {
 const CurrentModal = {
   NONE: "NONE",
   ACCOUNT_UPDATE_SUCCESS: "ACCOUNT_UPDATE_SUCCESS",
+  ACCOUNT_UPDATE_FAIL:"ACCOUNT_UPDATE_FAIL",
+  ACCOUNT_LOGIN_FAIL:"ACCOUNT_LOGIN_FAIL",
+  ACCOUNT_LOGIN_SUCCESS:"ACCOUNT_LOGIN_SUCCESS",
+  ACCOUNT_REGISTER_FAIL:"ACCOUNT_REGISTER_FAIL",
   ERROR: "ERROR",
 };
 
@@ -49,7 +53,7 @@ function AuthContextProvider(props) {
       }
       case AuthActionType.LOGIN_USER: {
         return setAuth({
-          currentModal: CurrentModal.NONE,
+          currentModal: payload.currentModal,
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: payload.errorMessage,
@@ -65,7 +69,7 @@ function AuthContextProvider(props) {
       }
       case AuthActionType.REGISTER_USER: {
         return setAuth({
-          currentModal: CurrentModal.NONE,
+          currentModal: payload.currentModal,
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: payload.errorMessage,
@@ -132,6 +136,7 @@ function AuthContextProvider(props) {
             user: response.data.user,
             loggedIn: false,
             errorMessage: null,
+            currentModal:CurrentModal.NONE,
           },
         });
         // history("/login");
@@ -146,6 +151,7 @@ function AuthContextProvider(props) {
           user: auth.user,
           loggedIn: false,
           errorMessage: error.response.data.errorMessage,
+          currentModal:CurrentModal.ACCOUNT_REGISTER_FAIL,
         },
       });
     }
@@ -159,6 +165,7 @@ function AuthContextProvider(props) {
         authReducer({
           type: AuthActionType.LOGIN_USER,
           payload: {
+            currentModal:CurrentModal.ACCOUNT_LOGIN_SUCCESS,
             user: response.data.user,
             loggedIn: true,
             errorMessage: null,
@@ -174,6 +181,7 @@ function AuthContextProvider(props) {
           user: auth.user,
           loggedIn: false,
           errorMessage: error.response.data.errorMessage,
+          currentModal:CurrentModal.ACCOUNT_LOGIN_FAIL
         },
       });
     }
@@ -241,7 +249,7 @@ function AuthContextProvider(props) {
       authReducer({
         type: AuthActionType.UPDATE_USER,
         payload: {
-          currentModal: CurrentModal.NONE,
+          currentModal: CurrentModal.ACCOUNT_UPDATE_FAIL,
           user: auth.user,
           loggedIn: true,
           errorMessage: error.response.data.errorMessage,
@@ -255,6 +263,50 @@ function AuthContextProvider(props) {
       payload: {},
     });
   };
+
+  auth.guestLogin = async function() {
+    try{
+        const response = await api.loginUser("guest@gmail.com", "GuestPassword");
+        if (response.status === 200) {
+            authReducer({
+                type: AuthActionType.LOGIN_USER,
+                payload: {
+                    user: response.data.user,
+                    loggedIn: true,
+                    errorMessage: null
+                }
+            })
+            history("/home");
+        }
+    } catch(error){
+        try{
+            const response = await api.registerUser("Guest","Guest", "User", "guest@gmail.com", "GuestPassword", "GuestPassword");
+            if (response.status === 200) {
+                console.log("Registered Sucessfully");
+                authReducer({
+                    type: AuthActionType.REGISTER_USER,
+                    payload: {
+                        user: response.data.user,
+                        loggedIn: true,
+                        errorMessage: null
+                    }
+                })
+                auth.loginUser("guest@gmail.com", "GuestPassword");
+                console.log("GUEST LOGGED IN");
+            }
+        } catch(error){
+            authReducer({
+                type: AuthActionType.REGISTER_USER,
+                payload: {
+                    user: auth.user,
+                    loggedIn: false,
+                    errorMessage: error.response.data.errorMessage
+                }
+            })
+        }
+    }
+}
+
   return (
     <AuthContext.Provider
       value={{
