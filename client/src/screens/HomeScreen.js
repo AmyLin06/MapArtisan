@@ -13,6 +13,8 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Link } from "react-router-dom";
+import SuccessModal from "../components/Modals/SuccessModal";
+import {SuccessModalTypes} from "../components/Modals/ModalTypes";
 
 const HomeScreen = (props) => {
   const { maps } = props;
@@ -124,6 +126,7 @@ const HomeScreen = (props) => {
           </Box>
         </div>
       </div>
+      <SuccessModal modalType = {SuccessModalTypes.ACCOUNT_LOGIN_SUCCESS} />
     </Box>
   );
 };

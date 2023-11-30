@@ -11,7 +11,8 @@ import AuthContext from '../auth'
 import { IconButton } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
+import FailModal from "../components/Modals/FailModal"
+import {FailModalTypes} from "../components/Modals/ModalTypes";
 
 const LoginScreen = () => {
   const { auth } = useContext(AuthContext);
@@ -103,6 +104,7 @@ const LoginScreen = () => {
         <br />
         <Copyright />
       </div>
+      <FailModal modalType = {FailModalTypes.ACCOUNT_LOGIN_FAIL} />
     </>
   );
 };
