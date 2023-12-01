@@ -13,11 +13,15 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Link } from "react-router-dom";
+import SuccessModal from "../components/Modals/SuccessModal";
+import { SuccessModalTypes } from "../components/Modals/ModalTypes";
+import AuthContext from "../auth";
 import GlobalStoreContext from "../store/GlobalStore";
 
 const HomeScreen = (props) => {
   const { maps } = props;
   const [currentPage, setCurrentPage] = useState(1);
+  const { auth } = useContext(AuthContext);
   const { store } = useContext(GlobalStoreContext);
 
   const handleNextPage = () => {
@@ -41,23 +45,25 @@ const HomeScreen = (props) => {
       <div className="content-container">
         <div className="blue-area">
           <Box sx={{ paddingTop: 2 }}>
-            <Typography variant="h5" fontWeight="bold">
-              Templates
-            </Typography>
-            <Link to="/community">
-              <Box display="flex" justifyContent="flex-end">
-                <Button>
-                  {" "}
-                  Community Inspiration <ArrowForwardIcon />{" "}
-                </Button>
-              </Box>
-            </Link>
+            <Box display="flex" justifyContent="space-between">
+              <Typography variant="h5" fontWeight="bold">
+                Templates
+              </Typography>
+              <Link to="/community">
+                <Box display="flex" justifyContent="flex-end">
+                  <Button>
+                    {" "}
+                    Community Inspiration <ArrowForwardIcon />{" "}
+                  </Button>
+                </Box>
+              </Link>
+            </Box>
             <br></br>
             {currentPage === 1 && (
               <div>
                 <Grid container spacing={2}>
-                  <Grid item xs={4}>
-                    <Card sx={{ maxWidth: "100%", height: "300px" }}>
+                  <Grid item xs={3}>
+                    <Card sx={{ maxWidth: "100%", height: "250px" }}>
                       <Box
                         height="100%"
                         display="flex"
@@ -71,17 +77,19 @@ const HomeScreen = (props) => {
                       </Box>
                     </Card>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
                     <TemplateCard templateName="Template1" />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
                     <TemplateCard templateName="Template2" />
                   </Grid>
+                  <Grid item xs={3}>
+                    <TemplateCard templateName="Template3" />
+                  </Grid>
                 </Grid>
-                <br></br>
                 <Button
                   className="icon-button"
-                  style={{ color: "#333" }}
+                  style={{ color: "#333", padding: 0 }}
                   onClick={handleNextPage}
                 >
                   <span role="img" aria-label="Icon 2">
@@ -95,17 +103,13 @@ const HomeScreen = (props) => {
             {currentPage === 2 && (
               <div>
                 <Grid container spacing={2}>
-                  <Grid item xs={4}>
-                    <TemplateCard templateName="Template3" />
-                  </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
                     <TemplateCard templateName="Template4" />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
                     <TemplateCard templateName="Template5" />
                   </Grid>
                 </Grid>
-                <br></br>
                 <Button
                   className="icon-button"
                   style={{ color: "#333" }}
@@ -120,15 +124,20 @@ const HomeScreen = (props) => {
             )}
           </Box>
         </div>
-        <div className="white-area">
-          <Box sx={{ paddingTop: 2 }}>
-            <Typography variant="h5" fontWeight="bold">
-              Maps
-            </Typography>
-            <MapList maps={maps} screen={"HOME"} />
-          </Box>
-        </div>
+        {auth.guest ? null : (
+          <div class="container">
+            <div className="white-area">
+              <Box sx={{ paddingTop: 2 }}>
+                <Typography variant="h5" fontWeight="bold">
+                  Maps
+                </Typography>
+                <MapList maps={maps} screen={"HOME"} />
+              </Box>
+            </div>
+          </div>
+        )}
       </div>
+      <SuccessModal modalType={SuccessModalTypes.ACCOUNT_LOGIN_SUCCESS} />
     </Box>
   );
 };

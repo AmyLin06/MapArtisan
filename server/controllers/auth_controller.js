@@ -125,12 +125,12 @@ updateUser = async (req, res) => {
           errorMessage: "Please enter the same password twice.",
         });
       }
-      console.log("password and password verify match");
+      console.log("Password and password verify match");
       
       if (!currentPassword){
         return res
           .status(400)
-          .json({ errorMessage: "Please enter passwords if you wnat to update password" });
+          .json({ errorMessage: "Please enter passwords if you want to update password" });
       }
       const passwordCorrect = await bcrypt.compare(
         currentPassword,
@@ -139,7 +139,7 @@ updateUser = async (req, res) => {
       if (!passwordCorrect) {
         console.log("Incorrect password");
         return res.status(401).json({
-          errorMessage: "Wrong email or password provided.",
+          errorMessage: "Wrong password provided.",
         });
       }
       const saltRounds = 10;

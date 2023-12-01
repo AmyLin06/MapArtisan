@@ -8,8 +8,11 @@ import { Typography, Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ImportMenuList from "./MenuLists/ImportMenuList";
 import ExportMenuList from "./MenuLists/ExportMenuList";
+import AuthContext from "../auth";
+import { useContext } from "react";
 
 export default function QuickAccessToolbar() {
+  const { auth } = useContext(AuthContext);
   const handleSave = () => {
     console.log("trying to save in quick access toolbar - not implemented");
   };
@@ -36,13 +39,15 @@ export default function QuickAccessToolbar() {
       <ToggleButton
         value="save"
         aria-label="save"
+        disabled={auth.guest}
         sx={{
           borderRadius: "70px 0 0 70px",
           border: "1px solid black",
           height: "30px",
+          backgroundColor: auth.guest ? "#808080" : "inherit",
         }}
       >
-        <IconButton onClick={handleSave}>
+        <IconButton onClick={handleSave} >
           <Box
             style={{
               display: "flex",
@@ -110,10 +115,12 @@ export default function QuickAccessToolbar() {
       <ToggleButton
         value="export"
         aria-label="export"
+        disabled={auth.guest}
         sx={{
           borderRadius: "0 70px 70px 0",
           border: "1px solid black",
           height: "30px",
+          backgroundColor: auth.guest ? "#808080" : "inherit",
         }}
       >
         <ExportMenuList />
