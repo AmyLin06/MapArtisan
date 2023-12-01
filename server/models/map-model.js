@@ -4,19 +4,16 @@ const mapMetaData = new Schema(
   {
     ownerID: { type: mongoose.Schema.Types.ObjectId },
     mapTitle: { type: String, default: "Untitled" },
-    likes: { type: Number, default: 0 },
-    forks: { type: Number, default: 0 },
-    ownerUsername: { type: String, required: true },
-    comments: {
+    userLiked: {
       type: [
         {
-          username: String,
-          comment: String,
-          date: Date,
+          userID: mongoose.Schema.Types.ObjectId,
         },
       ],
       default: [],
     },
+    forks: { type: Number, default: 0 },
+    ownerUsername: { type: String, required: true },
     publishedDate: { type: Date, required: false },
     isPublished: { type: Boolean, default: false },
     lastOpened: { type: Date, required: true },

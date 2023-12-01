@@ -19,12 +19,17 @@ const HomeScreen = (props) => {
   const { maps } = props;
   const [currentPage, setCurrentPage] = useState(1);
   const { store } = useContext(GlobalStoreContext);
+
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
   };
 
   const handlePreviousPage = () => {
     setCurrentPage(currentPage - 1);
+  };
+
+  const handleCreateBaseMap = () => {
+    store.createNewMap();
   };
 
   return (
@@ -60,8 +65,7 @@ const HomeScreen = (props) => {
                         alignItems="center"
                         sx={{ backgroundColor: "#195083" }}
                       >
-                        {/* Instead of CardMedia, use only an AddIcon */}
-                        <IconButton size="large" onClick={store.createNewMap}>
+                        <IconButton size="large" onClick={handleCreateBaseMap}>
                           <AddIcon fontSize="large" />
                         </IconButton>
                       </Box>

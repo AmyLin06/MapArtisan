@@ -92,7 +92,63 @@ deleteMap = async (req, res) => {
   });
 };
 
+updateMapMetaData = async (req, res) => {
+  console.log("in server update map");
+  if (auth.verifyUser(req) === null) {
+    return res.status(400).json({
+      errorMessage: "UNAUTHORIZED",
+    });
+  }
+  const body = req.body;
+  console.log("updateMapMetaData body: " + JSON.stringify(body));
+  if (!body) {
+    return res.status(400).json({
+      success: false,
+      error: "You must provide a Map",
+    });
+  }
+
+  try {
+    const mapMetaData = await MapMetaData.findOne({ _id: body.mapID });
+
+    if (!mapMetaData) {
+      return res.status(404).json({
+        errorMessage: "Map not found",
+      });
+    }
+
+    console.log("map found: " + JSON.stringify(mapMetaData));
+
+    const updateQuery = { $set: body.field };
+    const options = { new: true }; // This option returns the updated document
+    const updatedDocument = await MapMetaData.findOneAndUpdate(
+      { _id: body.mapID },
+      updateQuery,
+      options
+    );
+
+    if (updatedDocument) {
+      console.log(`Document ${body.mapID} updated successfully.`);
+      return res.status(201).json({
+        map: updatedDocument,
+      });
+    } else {
+      console.log(`Document ${body.mapID} not found or no updates applied.`);
+      return res.status(400).json({
+        errorMessage: "Document not found or no updates applied.",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      errorMessage: "Error updating map meta data",
+    });
+  }
+};
+
 module.exports = {
   createMap,
   deleteMap,
+  updateMapMetaData,
 };

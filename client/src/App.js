@@ -32,8 +32,8 @@ function App() {
 
       <BrowserRouter>
         <AuthContextProvider>
-          <GlobalStoreContextProvider>
-            <EditStoreContextProvider>
+          <EditStoreContextProvider>
+            <GlobalStoreContextProvider>
               <Routes>
                 <Route path="/">
                   <Route index element={<SplashScreen />} />
@@ -53,8 +53,8 @@ function App() {
                   <Route path="edit" element={<WorkspaceScreen />} />
                 </Route>
               </Routes>
-            </EditStoreContextProvider>
-          </GlobalStoreContextProvider>
+            </GlobalStoreContextProvider>
+          </EditStoreContextProvider>
         </AuthContextProvider>
       </BrowserRouter>
     </div>

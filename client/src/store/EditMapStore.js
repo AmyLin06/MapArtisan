@@ -1,6 +1,7 @@
-import { createContext, useContext, useState } from "react";
-import AuthContext from "../auth";
+import { createContext, useState } from "react";
+// import AuthContext from "../auth";
 import { useNavigate } from "react-router-dom";
+import api from "./store-request-api";
 
 export const EditStoreContext = createContext({});
 
@@ -25,7 +26,7 @@ const CurrentModal = {
 };
 
 function EditStoreContextProvider(props) {
-  const { auth } = useContext(AuthContext);
+  // const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [editStore, setEditStore] = useState({
@@ -58,6 +59,20 @@ function EditStoreContextProvider(props) {
           currentMapIndex: editStore.currentMapIndex,
         });
       }
+      case EditStoreActionType.UPDATE_MAP: {
+        return setEditStore({
+          currentModal: CurrentModal.NONE,
+          currentMap: payload,
+          currentMapIndex: editStore.currentMapIndex,
+        });
+      }
+      case EditStoreActionType.SET_CURRENT_MAP: {
+        return setEditStore({
+          currentModal: CurrentModal.NONE,
+          currentMap: payload,
+          currentMapIndex: editStore.currentMapIndex,
+        });
+      }
       default:
         return editStore;
     }
@@ -83,6 +98,34 @@ function EditStoreContextProvider(props) {
       type: EditStoreActionType.HIDE_MODALS,
       // payload: {},
     });
+  };
+
+  editStore.setMap = (map) => {
+    editStoreReducer({
+      type: EditStoreActionType.SET_CURRENT_MAP,
+      payload: { map },
+    });
+  };
+
+  editStore.publishMap = async function () {
+    const updatingField = {
+      isPublished: true,
+      publishedDate: new Date(),
+    };
+    const response = await api.updateMapMetaData(
+      editStore.currentMap.map._id,
+      updatingField
+    );
+    console.log("publishMap response: " + response);
+    if (response.status === 201) {
+      // tps.clearAllTransactions();
+      let newMap = response.data.map;
+      editStoreReducer({
+        type: EditStoreActionType.UPDATE_MAP,
+        payload: newMap,
+      });
+      navigate("/map-details");
+    } else console.log("API FAILED TO PUBLISH MAP");
   };
 
   return (

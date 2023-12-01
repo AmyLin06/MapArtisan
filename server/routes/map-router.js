@@ -16,5 +16,6 @@ const auth = require("../auth");
 // });
 
 router.post("/create", auth.verify, MapController.createMap);
+router.put("/updatemetadata", auth.verify, MapController.updateMapMetaData);
 
 module.exports = router;

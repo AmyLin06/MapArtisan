@@ -1,7 +1,9 @@
 import { createContext, useState, useContext } from "react";
-import api from "./global-store-request-api";
+import api from "./store-request-api";
 import AuthContext from "../auth";
+import EditStoreContext from "./EditMapStore";
 import { useNavigate } from "react-router-dom";
+
 export const GlobalStoreContext = createContext({});
 
 export const GlobalStoreActionType = {
@@ -25,6 +27,7 @@ const CurrentModal = {
 
 function GlobalStoreContextProvider(props) {
   const { auth } = useContext(AuthContext);
+  const { editStore } = useContext(EditStoreContext);
   const navigate = useNavigate();
 
   const [store, setStore] = useState({
@@ -107,7 +110,7 @@ function GlobalStoreContextProvider(props) {
         type: GlobalStoreActionType.CREATE_NEW_MAP,
         payload: newMap,
       });
-
+      editStore.setMap(response.data.map);
       // IF IT'S A VALID MAP THEN LET'S START EDITING IT
       navigate("/edit");
     } else console.log("API FAILED TO CREATE A NEW MAP");

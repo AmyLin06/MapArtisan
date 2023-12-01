@@ -1,4 +1,3 @@
-// import { useContext } from "react";
 import React, { useContext } from "react";
 import { GlobalStoreContext } from "../../store/GlobalStore";
 import { EditStoreContext } from "../../store/EditMapStore";
@@ -10,6 +9,7 @@ import Divider from "@mui/material/Divider";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomButton from "../CustomButton";
 import { ConfirmModalStyle } from "../../styles/ConfirmModalStyle";
+import { ConfirmModalTypes } from "./ModalTypes";
 
 //Modal that displays in the middle of the screen asking the user to confirm the change they initialized
 //Example of a way to create a ConfirmModal, see ModalTypes.js for definition of "ConfirmModalTypes.DELETE_LAYER"
@@ -24,10 +24,20 @@ export default function ConfirmModal(props) {
     store.hideModals();
     editStore.hideModals();
   };
+  const handleConfirm = (event) => {
+    event.stopPropagation();
+    switch (modalType) {
+      case ConfirmModalTypes.PUBLISH_MAP:
+        editStore.publishMap();
+        break;
+      default:
+        break;
+    }
+    store.hideModals();
+    editStore.hideModals();
+  };
   //TODO: onClick() functionality
   //TODO: add map/layer name to typography in return, using map from store??
-  //TODO: change confirm and cancel buttons to use the reusable component button
-  console.log("editStore" + editStore);
   return (
     <Modal
       open={
@@ -103,7 +113,7 @@ export default function ConfirmModal(props) {
             gap: "3%",
           }}
         >
-          <CustomButton text={"Confirm"} onPress={handleClose}></CustomButton>
+          <CustomButton text={"Confirm"} onPress={handleConfirm}></CustomButton>
           <CustomButton text={"Cancel"} onPress={handleClose}></CustomButton>
         </Box>
       </Box>

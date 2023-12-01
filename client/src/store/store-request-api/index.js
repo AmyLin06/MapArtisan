@@ -34,9 +34,17 @@ export const createNewMap = (newMapName, newMap, userEmail) => {
     ownerEmail: userEmail,
   });
 };
+export const updateMapMetaData = (mapID, field) => {
+  return api.put(`/updatemetadata/`, {
+    // SPECIFY THE PAYLOAD
+    mapID: mapID,
+    field: field,
+  });
+};
 
 const apis = {
   createNewMap,
+  updateMapMetaData,
 };
 
 export default apis;
