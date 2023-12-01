@@ -48,6 +48,7 @@ export default function FailModal(props) {
   
   return (
     <Snackbar
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       open={
         auth.currentModal === modalType.name ||
         store.currentModal === modalType.name
@@ -68,7 +69,6 @@ export default function FailModal(props) {
           {text}
         </Typography>
         {'' + modalType.subtext}
-        <br />
         {auth.errorMessage}
       </Alert>
     </Snackbar>

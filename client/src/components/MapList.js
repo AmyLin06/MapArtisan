@@ -6,13 +6,13 @@ const MapList = (props) => {
 
   let mapcards = "";
   mapcards = maps.map((m, index) => (
-    <Grid item xs={4} key={"grid" + index} sx={{ paddingBottom: 1 }}>
+    <Grid item xs={3} key={"grid" + index} sx={{ paddingBottom: 1 }}>
       <MapCard id={"map" + index} currentMap={m} screen={screen} />
     </Grid>
   ));
 
   return (
-    <Box>
+    <Box >
       <List sx={{ width: "100%" }}>
         <Grid container spacing={5}>
           {mapcards}

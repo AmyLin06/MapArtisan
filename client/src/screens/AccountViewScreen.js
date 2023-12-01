@@ -6,8 +6,8 @@ import ProfilePicture from "../components/profilepicture.jpg";
 // import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Button from "@mui/material/Button";
 import { TextField, Grid, InputLabel, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -15,8 +15,11 @@ import { useContext, useState } from "react";
 import AuthContext from "../auth";
 import { IconButton } from "@mui/material";
 import SuccessModal from "../components/Modals/SuccessModal";
-import { SuccessModalTypes,FailModalTypes } from "../components/Modals/ModalTypes";
-import FailModal from "../components/Modals/FailModal"
+import {
+  SuccessModalTypes,
+  FailModalTypes,
+} from "../components/Modals/ModalTypes";
+import FailModal from "../components/Modals/FailModal";
 
 const AccountViewScreen = () => {
   const { auth } = useContext(AuthContext);
@@ -154,14 +157,20 @@ const AccountViewScreen = () => {
             <IconButton onClick={handleTogglePasswordPart} edge="end">
               {showPasswordPart ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </IconButton>
-            <div className="inputs" style={{ display: showPasswordPart ? "block" : "none" }}>
+            <div
+              className="inputs"
+              style={{ display: showPasswordPart ? "block" : "none" }}
+            >
               <IconButton onClick={handleTogglePasswordVisibility} edge="end">
                 {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
               </IconButton>
             </div>
           </Typography>
 
-          <div className="inputs" style={{ display: showPasswordPart ? "block" : "none" }}>
+          <div
+            className="inputs"
+            style={{ display: showPasswordPart ? "block" : "none" }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <InputLabel htmlFor="email" style={{ textAlign: "left" }}>
@@ -268,7 +277,7 @@ const AccountViewScreen = () => {
           </Box>
         </div>
         <SuccessModal modalType={SuccessModalTypes.ACCOUNT_UPDATE_SUCCESS} />
-        <FailModal modalType = {FailModalTypes.ACCOUNT_UPDATE_FAIL} />
+        <FailModal modalType={FailModalTypes.ACCOUNT_UPDATE_FAIL} />
       </Box>
     </div>
   );

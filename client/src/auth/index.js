@@ -13,24 +13,27 @@ export const AuthActionType = {
   REGISTER_USER: "REGISTER_USER",
   UPDATE_USER: "UPDATE_USER",
   HIDE_MODALS: "HIDE_MODALS",
+  FORGET_PASSWORD: "FORGET_PASSWORD",
 };
 
 const CurrentModal = {
   NONE: "NONE",
   ACCOUNT_UPDATE_SUCCESS: "ACCOUNT_UPDATE_SUCCESS",
-  ACCOUNT_UPDATE_FAIL:"ACCOUNT_UPDATE_FAIL",
-  ACCOUNT_LOGIN_FAIL:"ACCOUNT_LOGIN_FAIL",
-  ACCOUNT_LOGIN_SUCCESS:"ACCOUNT_LOGIN_SUCCESS",
-  ACCOUNT_REGISTER_FAIL:"ACCOUNT_REGISTER_FAIL",
+  ACCOUNT_UPDATE_FAIL: "ACCOUNT_UPDATE_FAIL",
+  ACCOUNT_LOGIN_FAIL: "ACCOUNT_LOGIN_FAIL",
+  ACCOUNT_LOGIN_SUCCESS: "ACCOUNT_LOGIN_SUCCESS",
+  ACCOUNT_REGISTER_FAIL: "ACCOUNT_REGISTER_FAIL",
   ERROR: "ERROR",
 };
 
 function AuthContextProvider(props) {
+  const [guest, setGuest] = useState(false);
   const [auth, setAuth] = useState({
     currentModal: CurrentModal.NONE,
     user: null,
     loggedIn: false,
     errorMessage: null,
+    guest: false,
   });
 
   const history = useNavigate();
@@ -49,6 +52,16 @@ function AuthContextProvider(props) {
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: null,
+          guest: payload.guest,
+        });
+      }
+      case AuthActionType.FORGET_PASSWORD: {
+        return setAuth({
+          currentModal: payload.currentModal,
+          user: null,
+          loggedIn: null,
+          errorMessage: payload.errorMessage,
+          guest: false,
         });
       }
       case AuthActionType.LOGIN_USER: {
@@ -57,6 +70,7 @@ function AuthContextProvider(props) {
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: payload.errorMessage,
+          guest: payload.guest,
         });
       }
       case AuthActionType.LOGOUT_USER: {
@@ -65,6 +79,7 @@ function AuthContextProvider(props) {
           user: null,
           loggedIn: false,
           errorMessage: null,
+          guest: false,
         });
       }
       case AuthActionType.REGISTER_USER: {
@@ -73,6 +88,7 @@ function AuthContextProvider(props) {
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: payload.errorMessage,
+          guest: guest,
         });
       }
       case AuthActionType.UPDATE_USER: {
@@ -81,6 +97,7 @@ function AuthContextProvider(props) {
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: payload.errorMessage,
+          guest: guest,
         });
       }
       case AuthActionType.HIDE_MODALS: {
@@ -89,6 +106,7 @@ function AuthContextProvider(props) {
           user: auth.user,
           loggedIn: auth.loggedIn,
           errorMessage: auth.errorMessage,
+          guest: payload.guest,
         });
       }
       default:
@@ -104,6 +122,7 @@ function AuthContextProvider(props) {
         payload: {
           loggedIn: response.data.loggedIn,
           user: response.data.user,
+          guest: guest,
         },
       });
     }
@@ -136,7 +155,7 @@ function AuthContextProvider(props) {
             user: response.data.user,
             loggedIn: false,
             errorMessage: null,
-            currentModal:CurrentModal.NONE,
+            currentModal: CurrentModal.NONE,
           },
         });
         // history("/login");
@@ -151,7 +170,37 @@ function AuthContextProvider(props) {
           user: auth.user,
           loggedIn: false,
           errorMessage: error.response.data.errorMessage,
-          currentModal:CurrentModal.ACCOUNT_REGISTER_FAIL,
+          currentModal: CurrentModal.ACCOUNT_REGISTER_FAIL,
+        },
+      });
+    }
+  };
+
+  auth.forgetPassword = async function (email) {
+    try {
+      const response = await api.forgetPassword(email);
+      if (response.status === 200) {
+        authReducer({
+          type: AuthActionType.FORGET_PASSWORD,
+          payload: {
+            currentModal: CurrentModal.NONE,
+            user: null,
+            loggedIn: false,
+            errorMessage: null,
+            guest: false,
+          },
+        });
+        history("/login");
+      }
+    } catch (error) {
+      authReducer({
+        type: AuthActionType.FORGET_PASSWORD,
+        payload: {
+          user: null,
+          loggedIn: false,
+          errorMessage: error.response.data.errorMessage,
+          currentModal: CurrentModal.ACCOUNT_LOGIN_FAIL, //need to update to reset fail
+          guest: false,
         },
       });
     }
@@ -165,10 +214,11 @@ function AuthContextProvider(props) {
         authReducer({
           type: AuthActionType.LOGIN_USER,
           payload: {
-            currentModal:CurrentModal.ACCOUNT_LOGIN_SUCCESS,
+            currentModal: CurrentModal.ACCOUNT_LOGIN_SUCCESS,
             user: response.data.user,
             loggedIn: true,
             errorMessage: null,
+            guest: false,
           },
         });
         history("/home");
@@ -181,13 +231,15 @@ function AuthContextProvider(props) {
           user: auth.user,
           loggedIn: false,
           errorMessage: error.response.data.errorMessage,
-          currentModal:CurrentModal.ACCOUNT_LOGIN_FAIL
+          currentModal: CurrentModal.ACCOUNT_LOGIN_FAIL,
+          guest: false,
         },
       });
     }
   };
 
   auth.logoutUser = async function () {
+    setGuest(false);
     const response = await api.logoutUser();
     console.log(response.status);
     if (response.status === 200) {
@@ -260,52 +312,65 @@ function AuthContextProvider(props) {
   auth.hideModals = () => {
     authReducer({
       type: AuthActionType.HIDE_MODALS,
-      payload: {},
+      payload: { guest: guest },
     });
   };
 
-  auth.guestLogin = async function() {
-    try{
-        const response = await api.loginUser("guest@gmail.com", "GuestPassword");
+  auth.guestLogin = async function () {
+    try {
+      setGuest(true);
+      const response = await api.loginUser("guest@gmail.com", "GuestPassword");
+      if (response.status === 200) {
+        authReducer({
+          type: AuthActionType.LOGIN_USER,
+          payload: {
+            user: response.data.user,
+            loggedIn: true,
+            errorMessage: null,
+            currentModal: CurrentModal.ACCOUNT_LOGIN_SUCCESS,
+            guest: true,
+          },
+        });
+        history("/home");
+      }
+    } catch (error) {
+      try {
+        const response = await api.registerUser(
+          "Guest",
+          "Guest",
+          "User",
+          "guest@gmail.com",
+          "GuestPassword",
+          "GuestPassword"
+        );
         if (response.status === 200) {
-            authReducer({
-                type: AuthActionType.LOGIN_USER,
-                payload: {
-                    user: response.data.user,
-                    loggedIn: true,
-                    errorMessage: null
-                }
-            })
-            history("/home");
+          console.log("Registered Sucessfully");
+          authReducer({
+            type: AuthActionType.REGISTER_USER,
+            payload: {
+              user: response.data.user,
+              loggedIn: true,
+              errorMessage: null,
+              //need to think about
+            },
+          });
+          // auth.loginUser("guest@gmail.com", "GuestPassword");
+          auth.guestLogin();
+          console.log("GUEST LOGGED IN");
         }
-    } catch(error){
-        try{
-            const response = await api.registerUser("Guest","Guest", "User", "guest@gmail.com", "GuestPassword", "GuestPassword");
-            if (response.status === 200) {
-                console.log("Registered Sucessfully");
-                authReducer({
-                    type: AuthActionType.REGISTER_USER,
-                    payload: {
-                        user: response.data.user,
-                        loggedIn: true,
-                        errorMessage: null
-                    }
-                })
-                auth.loginUser("guest@gmail.com", "GuestPassword");
-                console.log("GUEST LOGGED IN");
-            }
-        } catch(error){
-            authReducer({
-                type: AuthActionType.REGISTER_USER,
-                payload: {
-                    user: auth.user,
-                    loggedIn: false,
-                    errorMessage: error.response.data.errorMessage
-                }
-            })
-        }
+      } catch (error) {
+        setGuest(false);
+        authReducer({
+          type: AuthActionType.REGISTER_USER,
+          payload: {
+            user: auth.user,
+            loggedIn: false,
+            errorMessage: error.response.data.errorMessage,
+          },
+        });
+      }
     }
-}
+  };
 
   return (
     <AuthContext.Provider
