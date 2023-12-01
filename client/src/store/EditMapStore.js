@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import fakeMap from "../assets/currentMap.json";
 
 export const EditMapContext = createContext({});
@@ -26,6 +26,7 @@ function EditMapContextProvider(props) {
     currentModal: CurrentModal.NONE,
     currentMap: fakeMap,
     currentMapIndex: -1,
+    activeMarker: null,
   });
 
   const storeReducer = (action) => {
@@ -36,6 +37,7 @@ function EditMapContextProvider(props) {
           currentModel: editStore.currentModal,
           currentMap: editStore.currentMap,
           currentMapIndex: editStore.currentMapIndex,
+          activeMarker: editStore.activeMarker,
         });
       }
       default:
@@ -53,6 +55,17 @@ function EditMapContextProvider(props) {
       type: EditMapStoreActionType.UPDATE_MAP,
       payload: {},
     });
+  };
+
+  //add a marker coordinate to the current map
+  editStore.addMarker = (coord) => {
+    let map = editStore.currentMap;
+    map.markerCoords.push(coord);
+  };
+
+  //set the current selected marker
+  editStore.setActiveMarker = (key) => {
+    editStore.activeMarker = key;
   };
 
   return (

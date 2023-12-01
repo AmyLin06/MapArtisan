@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Typography, Box, Paper } from "@mui/material";
 import { EditMapContext } from "../../store/EditMapStore";
+import { read } from "shapefile";
 
 //menu that opens and displays options for data formats the user can import
 export default function ImportMenuList() {
@@ -22,19 +23,51 @@ export default function ImportMenuList() {
 
   const open = Boolean(anchorEl);
 
-  const handleGeoJson = (event) => {
+  const handleImportFile = (event) => {
     fileInputRef.current.click();
+  };
+
+  const getFileExtension = (filename) => {
+    return filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2);
   };
 
   const handleFileChange = (event) => {
     event.preventDefault();
-    // Add the GeoJSON file as a layer to the current map
+    const selectedFile = event.target.files[0];
     const fileReader = new FileReader();
-    fileReader.onload = (event) => {
-      const data = JSON.parse(event.target.result);
-      editStore.addLayer(data, "GEOJSON");
-    };
-    fileReader.readAsText(event.target.files[0]);
+
+    if (getFileExtension(selectedFile.name) === "json") {
+      // Add the GeoJSON file as a layer to the current map
+      fileReader.onload = (event) => {
+        const data = JSON.parse(event.target.result);
+        editStore.addLayer(data, "GEOJSON");
+      };
+      fileReader.readAsText(event.target.files[0]);
+    } else if (getFileExtension(selectedFile.name) === "kml") {
+      fileReader.onload = (event) => {
+        const parser = new DOMParser();
+        const text = parser.parseFromString(event.target.result, "text/xml");
+        editStore.addLayer(text, "KML");
+      };
+      fileReader.readAsText(event.target.files[0]);
+    } else if (getFileExtension(selectedFile.name) === "shp") {
+      fileReader.onload = async (event) => {
+        const arrayBuffer = event.target.result; // ArrayBuffer from FileReader
+
+        try {
+          const { features } = await read(arrayBuffer);
+          const geoJson = {
+            type: "FeatureCollection",
+            features: features || [],
+          };
+          editStore.addLayer(geoJson, "SHAPEFILE");
+          console.log(geoJson); // GeoJSON output
+        } catch (error) {
+          console.error("Error parsing shapefile SAD:", error);
+        }
+      };
+      fileReader.readAsArrayBuffer(event.target.files[0]);
+    }
     handleClose();
   };
 
@@ -62,7 +95,7 @@ export default function ImportMenuList() {
       <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
         <Paper style={{ background: "#FFFDF3" }}>
           <MenuItem
-            onClick={handleClose}
+            onClick={handleImportFile}
             sx={{
               "&:hover": {
                 background: "#246BAD",
@@ -72,7 +105,7 @@ export default function ImportMenuList() {
             {"KML"}
           </MenuItem>
           <MenuItem
-            onClick={handleGeoJson}
+            onClick={handleImportFile}
             sx={{
               "&:hover": {
                 background: "#246BAD",
@@ -82,7 +115,7 @@ export default function ImportMenuList() {
             {"GeoJSON"}
           </MenuItem>
           <MenuItem
-            onClick={handleClose}
+            onClick={handleImportFile}
             sx={{
               "&:hover": {
                 background: "#246BAD",

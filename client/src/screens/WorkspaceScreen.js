@@ -3,7 +3,7 @@ import Banner from "../components/Banner";
 import "../styles/WorkspaceScreen.css";
 import QuickAccessToolbar from "../components/QuickAccessToolbar";
 import SideMenu from "../components/SideMenu";
-import LeafletMap from "../components/LeafletMap";
+import LeafletMap from "../components/Leaflet/LeafletMap";
 
 const WorkspaceScreen = () => {
   return (
