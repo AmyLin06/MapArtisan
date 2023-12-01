@@ -1,4 +1,6 @@
-import * as React from "react";
+// import * as React from "react";
+import React, { useContext } from "react";
+import { EditStoreContext } from "../store/EditMapStore";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -26,12 +28,14 @@ CustomTabPanel.propTypes = {
 
 export default function SideMenu() {
   const [value, setValue] = React.useState(0);
+  const { editStore } = useContext(EditStoreContext);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const handlePublish = () => {
-    console.log("trying to publish map in the side menu - not implemented yet");
+    // console.log("trying to publish map in the side menu - not implemented yet");
+    editStore.showPublishMapModal();
   };
   return (
     <Box sx={{ width: "100%" }}>

@@ -1,6 +1,7 @@
 // import { useContext } from "react";
 import React, { useContext } from "react";
 import { GlobalStoreContext } from "../../store/GlobalStore";
+import { EditStoreContext } from "../../store/EditMapStore";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
@@ -15,28 +16,30 @@ import { ConfirmModalStyle } from "../../styles/ConfirmModalStyle";
 //<ConfirmModal modalType={ConfirmModalTypes.DELETE_LAYER}></ConfirmModal>
 export default function ConfirmModal(props) {
   const { store } = useContext(GlobalStoreContext);
+  const { editStore } = useContext(EditStoreContext);
   const { modalType } = props;
 
   const handleClose = (event) => {
     event.stopPropagation();
     store.hideModals();
+    editStore.hideModals();
   };
   //TODO: onClick() functionality
   //TODO: add map/layer name to typography in return, using map from store??
   //TODO: change confirm and cancel buttons to use the reusable component button
-
+  console.log("editStore" + editStore);
   return (
     <Modal
-      //TODO: conditionally open modal
-      //   open={store.listMarkedForDeletion !== null}
-      open={store.currentModal === modalType.name}
+      open={
+        store.currentModal === modalType.name ||
+        editStore.currentModal === modalType.name
+      }
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{ boxShadow: "none" }}
       slotProps={{
         backdrop: {
           sx: {
-            //Your style here....
             backgroundColor: "rgba(0,0,0,0.05)",
           },
         },
