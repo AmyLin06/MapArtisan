@@ -11,8 +11,9 @@ import AccountViewScreen from "./screens/AccountViewScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import WorkspaceScreen from "./screens/WorkspaceScreen";
 import { GlobalStoreContextProvider } from "./store/GlobalStore";
-import { AuthContextProvider } from "./auth";
 import ForgetPasswordScreen from "./screens/ForgetPasswordScreen";
+import { AuthContextProvider } from "./auth";
+import { EditStoreContextProvider } from "./store/EditMapStore";
 
 function App() {
   return (
@@ -32,28 +33,33 @@ function App() {
 
       <BrowserRouter>
         <AuthContextProvider>
-          <GlobalStoreContextProvider>
-            <Routes>
-              <Route path="/">
-                <Route index element={<SplashScreen />} />
-                <Route path="login" element={<LoginScreen />} />
-                <Route path="register" element={<RegisterScreen />} />
-                <Route
-                  path="forget-password"
-                  element={<ForgetPasswordScreen />}
-                />
-                <Route
-                  path="home"
-                  element={<HomeScreen maps={homeMaps.maps} />}
-                />
-                <Route path="community" element={<CommunityScreen />} />
-                <Route path="map-details" element={<MapDetailsScreen />} />
-                <Route path="account-setting" element={<AccountViewScreen />} />
-                <Route path="profile" element={<ProfileScreen />} />
-                <Route path="edit" element={<WorkspaceScreen />} />
-              </Route>
-            </Routes>
-          </GlobalStoreContextProvider>
+          <EditStoreContextProvider>
+            <GlobalStoreContextProvider>
+              <Routes>
+                <Route path="/">
+                  <Route index element={<SplashScreen />} />
+                  <Route path="login" element={<LoginScreen />} />
+                  <Route path="register" element={<RegisterScreen />} />
+                  <Route
+                    path="forget-password"
+                    element={<ForgetPasswordScreen />}
+                  />
+                  <Route
+                    path="home"
+                    element={<HomeScreen maps={homeMaps.maps} />}
+                  />
+                  <Route path="community" element={<CommunityScreen />} />
+                  <Route path="map-details" element={<MapDetailsScreen />} />
+                  <Route
+                    path="account-setting"
+                    element={<AccountViewScreen />}
+                  />
+                  <Route path="profile" element={<ProfileScreen />} />
+                  <Route path="edit" element={<WorkspaceScreen />} />
+                </Route>
+              </Routes>
+            </GlobalStoreContextProvider>
+          </EditStoreContextProvider>
         </AuthContextProvider>
       </BrowserRouter>
     </div>

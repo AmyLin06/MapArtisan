@@ -16,11 +16,13 @@ import { Link } from "react-router-dom";
 import SuccessModal from "../components/Modals/SuccessModal";
 import { SuccessModalTypes } from "../components/Modals/ModalTypes";
 import AuthContext from "../auth";
+import GlobalStoreContext from "../store/GlobalStore";
 
 const HomeScreen = (props) => {
   const { maps } = props;
   const [currentPage, setCurrentPage] = useState(1);
   const { auth } = useContext(AuthContext);
+  const { store } = useContext(GlobalStoreContext);
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -29,7 +31,11 @@ const HomeScreen = (props) => {
   const handlePreviousPage = () => {
     setCurrentPage(currentPage - 1);
   };
-  // console.log(auth.guest);
+
+  const handleCreateBaseMap = () => {
+    store.createNewMap();
+  };
+
   return (
     <Box className="home-container" sx={{ padding: 2 }}>
       <div>
@@ -65,8 +71,7 @@ const HomeScreen = (props) => {
                         alignItems="center"
                         sx={{ backgroundColor: "#195083" }}
                       >
-                        {/* Instead of CardMedia, use only an AddIcon */}
-                        <IconButton size="large">
+                        <IconButton size="large" onClick={handleCreateBaseMap}>
                           <AddIcon fontSize="large" />
                         </IconButton>
                       </Box>

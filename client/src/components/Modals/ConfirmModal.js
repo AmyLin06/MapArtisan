@@ -1,6 +1,6 @@
-// import { useContext } from "react";
 import React, { useContext } from "react";
 import { GlobalStoreContext } from "../../store/GlobalStore";
+import { EditStoreContext } from "../../store/EditMapStore";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
@@ -9,34 +9,47 @@ import Divider from "@mui/material/Divider";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomButton from "../CustomButton";
 import { ConfirmModalStyle } from "../../styles/ConfirmModalStyle";
+import { ConfirmModalTypes } from "./ModalTypes";
 
 //Modal that displays in the middle of the screen asking the user to confirm the change they initialized
 //Example of a way to create a ConfirmModal, see ModalTypes.js for definition of "ConfirmModalTypes.DELETE_LAYER"
 //<ConfirmModal modalType={ConfirmModalTypes.DELETE_LAYER}></ConfirmModal>
 export default function ConfirmModal(props) {
   const { store } = useContext(GlobalStoreContext);
+  const { editStore } = useContext(EditStoreContext);
   const { modalType } = props;
 
   const handleClose = (event) => {
     event.stopPropagation();
     store.hideModals();
+    editStore.hideModals();
+  };
+  const handleConfirm = (event) => {
+    event.stopPropagation();
+    switch (modalType) {
+      case ConfirmModalTypes.PUBLISH_MAP:
+        editStore.publishMap();
+        break;
+      default:
+        break;
+    }
+    store.hideModals();
+    editStore.hideModals();
   };
   //TODO: onClick() functionality
   //TODO: add map/layer name to typography in return, using map from store??
-  //TODO: change confirm and cancel buttons to use the reusable component button
-
   return (
     <Modal
-      //TODO: conditionally open modal
-      //   open={store.listMarkedForDeletion !== null}
-      open={store.currentModal === modalType.name}
+      open={
+        store.currentModal === modalType.name ||
+        editStore.currentModal === modalType.name
+      }
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{ boxShadow: "none" }}
       slotProps={{
         backdrop: {
           sx: {
-            //Your style here....
             backgroundColor: "rgba(0,0,0,0.05)",
           },
         },
@@ -100,7 +113,7 @@ export default function ConfirmModal(props) {
             gap: "3%",
           }}
         >
-          <CustomButton text={"Confirm"} onPress={handleClose}></CustomButton>
+          <CustomButton text={"Confirm"} onPress={handleConfirm}></CustomButton>
           <CustomButton text={"Cancel"} onPress={handleClose}></CustomButton>
         </Box>
       </Box>

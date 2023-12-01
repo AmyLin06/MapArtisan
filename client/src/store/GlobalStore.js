@@ -1,4 +1,8 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
+import api from "./store-request-api";
+import AuthContext from "../auth";
+import EditStoreContext from "./EditMapStore";
+import { useNavigate } from "react-router-dom";
 
 export const GlobalStoreContext = createContext({});
 
@@ -22,7 +26,9 @@ const CurrentModal = {
 };
 
 function GlobalStoreContextProvider(props) {
-  // const { auth } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
+  const { editStore } = useContext(EditStoreContext);
+  const navigate = useNavigate();
 
   const [store, setStore] = useState({
     currentModal: CurrentModal.NONE,
@@ -58,6 +64,14 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
         });
       }
+      case GlobalStoreActionType.CREATE_NEW_MAP: {
+        return setStore({
+          currentModal: CurrentModal.NONE,
+          currentMap: payload,
+          homeMapLists: store.homeMapLists,
+          communityMapList: store.communityMapList,
+        });
+      }
       default:
         return store;
     }
@@ -85,6 +99,23 @@ function GlobalStoreContextProvider(props) {
     });
   };
 
+  store.createNewMap = async function () {
+    let mapName = "Untitled";
+    const response = await api.createNewMap(mapName, null, auth.user.email);
+    console.log("createNewMap response: " + response);
+    if (response.status === 201) {
+      // tps.clearAllTransactions();
+      let newMap = response.data.map;
+      storeReducer({
+        type: GlobalStoreActionType.CREATE_NEW_MAP,
+        payload: newMap,
+      });
+      editStore.setMap(response.data.map);
+      // IF IT'S A VALID MAP THEN LET'S START EDITING IT
+      navigate("/edit");
+    } else console.log("API FAILED TO CREATE A NEW MAP");
+  };
+  // };
   return (
     <GlobalStoreContext.Provider
       value={{
