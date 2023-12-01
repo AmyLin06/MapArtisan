@@ -12,7 +12,7 @@ import Card from "@mui/material/Card";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SuccessModal from "../components/Modals/SuccessModal";
 import { SuccessModalTypes } from "../components/Modals/ModalTypes";
 import AuthContext from "../auth";
@@ -23,6 +23,7 @@ const HomeScreen = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { auth } = useContext(AuthContext);
   const { store } = useContext(GlobalStoreContext);
+  const navigate = useNavigate();
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -33,7 +34,7 @@ const HomeScreen = (props) => {
   };
 
   const handleCreateBaseMap = () => {
-    store.createNewMap();
+    auth.guest ? navigate("/edit") : store.createNewMap();
   };
 
   return (
