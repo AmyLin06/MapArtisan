@@ -11,12 +11,14 @@ import {
 import InputModal from "../Modals/InputModal";
 import ConfirmModal from "../Modals/ConfirmModal";
 import { InputModalTypes, ConfirmModalTypes } from "../Modals/ModalTypes";
+import AuthContext from "../../auth";
 
 //menu that opens and displays options for the map card in home screen and community screen
 export default function MapCardMenuList(props) {
   const { isPublished, screen, map } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const { store } = useContext(GlobalStoreContext);
+  const { auth } = useContext(AuthContext);
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -79,12 +81,12 @@ export default function MapCardMenuList(props) {
         <MoreVertIcon style={{ marginTop: 10, fontSize: "2rem" }} />
       </IconButton>
       <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
-        {
+        {auth.guest ? null : (
           <MenuItem onClick={handleLikes}>
             <FavoriteBorderIcon style={{ marginRight: 4 }} />
             {"Like"}
           </MenuItem>
-        }
+        )}
         <MenuItem onClick={handleDuplicate}>
           <ForkRightIcon style={{ marginRight: 4 }} />
           {"Duplicate"}

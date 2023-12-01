@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import "../styles/HomeScreen.css";
 import Banner from "../components/Banner";
 import { Typography, Box } from "@mui/material";
@@ -14,8 +14,8 @@ import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Link } from "react-router-dom";
 import SuccessModal from "../components/Modals/SuccessModal";
-import {SuccessModalTypes} from "../components/Modals/ModalTypes";
-import AuthContext from '../auth'
+import { SuccessModalTypes } from "../components/Modals/ModalTypes";
+import AuthContext from "../auth";
 
 const HomeScreen = (props) => {
   const { maps } = props;
@@ -39,18 +39,18 @@ const HomeScreen = (props) => {
       <div className="content-container">
         <div className="blue-area">
           <Box sx={{ paddingTop: 2 }}>
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="h5" fontWeight="bold">
-                  Templates
-                </Typography>
-                <Link to="/community">
-                  <Box display="flex" justifyContent="flex-end">
-                    <Button>
-                      {" "}
-                      Community Inspiration <ArrowForwardIcon />{" "}
-                    </Button>
-                  </Box>
-                </Link>
+            <Box display="flex" justifyContent="space-between">
+              <Typography variant="h5" fontWeight="bold">
+                Templates
+              </Typography>
+              <Link to="/community">
+                <Box display="flex" justifyContent="flex-end">
+                  <Button>
+                    {" "}
+                    Community Inspiration <ArrowForwardIcon />{" "}
+                  </Button>
+                </Box>
+              </Link>
             </Box>
             <br></br>
             {currentPage === 1 && (
@@ -84,7 +84,7 @@ const HomeScreen = (props) => {
                 </Grid>
                 <Button
                   className="icon-button"
-                  style={{ color: "#333" , padding: 0 }}
+                  style={{ color: "#333", padding: 0 }}
                   onClick={handleNextPage}
                 >
                   <span role="img" aria-label="Icon 2">
@@ -98,7 +98,6 @@ const HomeScreen = (props) => {
             {currentPage === 2 && (
               <div>
                 <Grid container spacing={2}>
-                  
                   <Grid item xs={3}>
                     <TemplateCard templateName="Template4" />
                   </Grid>
@@ -133,7 +132,7 @@ const HomeScreen = (props) => {
           </div>
         )}
       </div>
-      <SuccessModal modalType = {SuccessModalTypes.ACCOUNT_LOGIN_SUCCESS} />
+      <SuccessModal modalType={SuccessModalTypes.ACCOUNT_LOGIN_SUCCESS} />
     </Box>
   );
 };
