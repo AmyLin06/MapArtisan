@@ -70,7 +70,7 @@ loginUser = async (req, res) => {
       .cookie("token", token, {
         httpOnly: false,
         secure: true,
-        sameSite: true,
+        sameSite: "none",
       })
       .status(200)
       .json({
@@ -101,11 +101,7 @@ updateUser = async (req, res) => {
       newPassword,
       confirmNewPassword,
     } = req.body;
-    if (
-      !userEmail ||
-      !userName ||
-      !firstName ||
-      !lastName ) {
+    if (!userEmail || !userName || !firstName || !lastName) {
       return res
         .status(400)
         .json({ errorMessage: "Please enter all required fields." });
@@ -113,7 +109,7 @@ updateUser = async (req, res) => {
     const existingUser = await User.findOne({ email: userEmail });
     console.log("existingUser: " + existingUser);
     console.log("update user");
-    if(newPassword&&confirmNewPassword){
+    if (newPassword && confirmNewPassword) {
       if (newPassword.length < 8) {
         return res.status(400).json({
           errorMessage: "Please enter a new password of at least 8 characters.",
@@ -126,11 +122,14 @@ updateUser = async (req, res) => {
         });
       }
       console.log("Password and password verify match");
-      
-      if (!currentPassword){
+
+      if (!currentPassword) {
         return res
           .status(400)
-          .json({ errorMessage: "Please enter passwords if you want to update password" });
+          .json({
+            errorMessage:
+              "Please enter passwords if you want to update password",
+          });
       }
       const passwordCorrect = await bcrypt.compare(
         currentPassword,
@@ -147,12 +146,14 @@ updateUser = async (req, res) => {
       const passwordHash = await bcrypt.hash(newPassword, salt);
       console.log("passwordHash: " + passwordHash);
       existingUser.passwordHash = passwordHash;
-    }
-    else{
-      if(newPassword||confirmNewPassword){
+    } else {
+      if (newPassword || confirmNewPassword) {
         return res
-        .status(400)
-        .json({ errorMessage: "Please enter all the password text field if you want to update the password." });
+          .status(400)
+          .json({
+            errorMessage:
+              "Please enter all the password text field if you want to update the password.",
+          });
       }
     }
 
@@ -164,8 +165,7 @@ updateUser = async (req, res) => {
     //     errorMessage: "An account with this email address already exists.",
     //   });
     // }
-    
-    
+
     // Update user information
     existingUser.userName = userName;
     existingUser.firstName = firstName;
