@@ -147,8 +147,61 @@ updateMapMetaData = async (req, res) => {
   }
 };
 
+getUserMaps = async (req, res) => {
+  console.log("in server getUserMaps");
+  if (auth.verifyUser(req) === null) {
+    return res.status(400).json({
+      errorMessage: "UNAUTHORIZED",
+    });
+  }
+  const body = req.params.userEmail;
+  console.log("getUserMaps body: " + JSON.stringify(body));
+  if (!body) {
+    return res.status(400).json({
+      success: false,
+      error: "You must provide a Map",
+    });
+  }
+
+  // try {
+  //   // Assuming User and MapMetaData models are correctly imported
+  //   const user = await User.findOne({ email: body });
+
+  //   if (!user) {
+  //     return res.status(404).json({
+  //       errorMessage: "User not found",
+  //     });
+  //   }
+
+  //   const mapMetaDataList = user.maps;
+  //   console.log("mapMetaDataList");
+  //   console.log(mapMetaDataList);
+  //   const detailedMapMetaDataList = await Promise.all(
+  //     mapMetaDataList.map(async (mapMetaData) => {
+  //       const detailedMapMetaData = await MapMetaData.findById(mapMetaData._id);
+  //       console.log(detailedMapMetaData);
+  //       return detailedMapMetaData;
+  //     })
+  //   );
+
+  //   return res.status(201).json({
+  //     maps: detailedMapMetaDataList,
+  //   });
+  // } catch (error) {
+  //   console.error(error);
+
+  //   return res.status(400).json({
+  //     errorMessage: "Error finding user's maps",
+  //   });
+  // }
+  return res.status(201).json({
+    maps: [],
+  });
+};
+
 module.exports = {
   createMap,
   deleteMap,
   updateMapMetaData,
+  getUserMaps,
 };

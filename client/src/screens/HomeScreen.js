@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../styles/HomeScreen.css";
 import Banner from "../components/Banner";
 import { Typography, Box } from "@mui/material";
@@ -12,14 +12,14 @@ import Card from "@mui/material/Card";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import DrawIcon from "@mui/icons-material/Draw";
 import { Link, useNavigate } from "react-router-dom";
 import SuccessModal from "../components/Modals/SuccessModal";
 import { SuccessModalTypes } from "../components/Modals/ModalTypes";
 import AuthContext from "../auth";
 import GlobalStoreContext from "../store/GlobalStore";
 
-const HomeScreen = (props) => {
-  const { maps } = props;
+const HomeScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { auth } = useContext(AuthContext);
   const { store } = useContext(GlobalStoreContext);
@@ -36,6 +36,10 @@ const HomeScreen = (props) => {
   const handleCreateBaseMap = () => {
     auth.guest ? navigate("/edit") : store.createNewMap();
   };
+
+  useEffect(() => {
+    store.getHomeMapMetaData();
+  }, [auth.user]);
 
   return (
     <Box className="home-container" sx={{ padding: 2 }}>
@@ -132,7 +136,26 @@ const HomeScreen = (props) => {
                 <Typography variant="h5" fontWeight="bold">
                   Maps
                 </Typography>
-                <MapList maps={maps} screen={"HOME"} />
+                {!!store.homeMapLists ? (
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="center"
+                    textAlign="center"
+                  >
+                    <Typography
+                      variant="subtitle1"
+                      color="textSecondary"
+                      fontSize="1.5rem"
+                    >
+                      No maps created yet...
+                    </Typography>
+                    <DrawIcon fontSize="medium" color="action" />
+                  </Box>
+                ) : (
+                  <MapList maps={store.homeMapLists} screen={"HOME"} />
+                )}
               </Box>
             </div>
           </div>
