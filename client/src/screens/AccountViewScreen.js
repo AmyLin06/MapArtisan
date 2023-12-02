@@ -6,6 +6,8 @@ import ProfilePicture from "../components/profilepicture.jpg";
 // import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Button from "@mui/material/Button";
 import { TextField, Grid, InputLabel, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -13,12 +15,16 @@ import { useContext, useState } from "react";
 import AuthContext from "../auth";
 import { IconButton } from "@mui/material";
 import SuccessModal from "../components/Modals/SuccessModal";
-import { SuccessModalTypes } from "../components/Modals/ModalTypes";
+import {
+  SuccessModalTypes,
+  FailModalTypes,
+} from "../components/Modals/ModalTypes";
+import FailModal from "../components/Modals/FailModal";
 
 const AccountViewScreen = () => {
   const { auth } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
-
+  const [showPasswordPart, setShowPasswordPart] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -42,6 +48,10 @@ const AccountViewScreen = () => {
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleTogglePasswordPart = () => {
+    setShowPasswordPart(!showPasswordPart);
   };
 
   return (
@@ -144,12 +154,23 @@ const AccountViewScreen = () => {
           <br></br>
           <Typography variant="h5" style={{ textAlign: "left" }}>
             Email & Password
-            <IconButton onClick={handleTogglePasswordVisibility} edge="end">
-              {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+            <IconButton onClick={handleTogglePasswordPart} edge="end">
+              {showPasswordPart ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </IconButton>
+            <div
+              className="inputs"
+              style={{ display: showPasswordPart ? "block" : "none" }}
+            >
+              <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+              </IconButton>
+            </div>
           </Typography>
 
-          <div className="inputs">
+          <div
+            className="inputs"
+            style={{ display: showPasswordPart ? "block" : "none" }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <InputLabel htmlFor="email" style={{ textAlign: "left" }}>
@@ -249,7 +270,6 @@ const AccountViewScreen = () => {
               </Grid>
             </Grid>
           </div>
-          <br></br>
           <Box display="flex" justifyContent="flex-end">
             <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
               Save Changes
@@ -257,6 +277,7 @@ const AccountViewScreen = () => {
           </Box>
         </div>
         <SuccessModal modalType={SuccessModalTypes.ACCOUNT_UPDATE_SUCCESS} />
+        <FailModal modalType={FailModalTypes.ACCOUNT_UPDATE_FAIL} />
       </Box>
     </div>
   );

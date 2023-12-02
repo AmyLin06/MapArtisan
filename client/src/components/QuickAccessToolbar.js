@@ -16,9 +16,11 @@ import LayerList from "./LayerList";
 import { EditMapContext } from "../store/EditMapStore";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import PanToolAltOutlinedIcon from "@mui/icons-material/PanToolAltOutlined";
+import AuthContext from "../auth";
 
 export default function QuickAccessToolbar() {
   const { editStore } = useContext(EditMapContext);
+  const { auth } = useContext(AuthContext);
 
   const handleSave = () => {
     console.log("trying to save in quick access toolbar - not implemented");
@@ -31,7 +33,7 @@ export default function QuickAccessToolbar() {
   };
 
   const handlePublish = () => {
-    console.log("trying to publish in quick access toolbar - not implemented");
+    editStore.showPublishMapModal();
   };
 
   const handleMapScroll = () => {
@@ -70,7 +72,9 @@ export default function QuickAccessToolbar() {
       <FillInMenu />
       <BorderMenu />
       <TextMenu />
-      <LayerList layers={editStore.currentMap.layers} />
+      <LayerList
+        layers={editStore.currentMap ? editStore.currentMap.layers : []}
+      />
       <Tooltip title="Publish">
         <IconButton aria-label="publish" onClick={handlePublish}>
           <ShareOutlinedIcon />

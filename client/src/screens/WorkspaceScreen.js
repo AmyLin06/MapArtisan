@@ -5,6 +5,8 @@ import LeafletMap from "../components/Leaflet/LeafletMap";
 import { Typography, Grid } from "@mui/material";
 import { EditMapContext } from "../store/EditMapStore";
 import React, { useContext } from "react";
+import ConfirmModal from "../components/Modals/ConfirmModal";
+import { ConfirmModalTypes } from "../components/Modals/ModalTypes";
 
 const WorkspaceScreen = () => {
   const { editStore } = useContext(EditMapContext);
@@ -19,7 +21,9 @@ const WorkspaceScreen = () => {
               fontWeight="bold"
               sx={{ color: "#246BAD", paddingLeft: 1 }}
             >
-              {editStore.currentMap.mapTitle}
+              {editStore.currentMapMetaData
+                ? editStore.currentMapMetaData.mapTitle
+                : ""}
             </Typography>
           </Grid>
           <Grid item className="map-editing" xs={10}>
@@ -29,6 +33,7 @@ const WorkspaceScreen = () => {
             <LeafletMap />
           </Grid>
         </Grid>
+        <ConfirmModal modalType={ConfirmModalTypes.PUBLISH_MAP} />
       </div>
     </div>
   );

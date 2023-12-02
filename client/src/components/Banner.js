@@ -6,12 +6,14 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
 import ProfileMenuList from "./MenuLists/ProfileMenuList";
+import { useContext } from "react";
+import AuthContext from "../auth";
 
 //need to pass a "screen" prop to Banner, note that ACCOUNT_DETAIL, PROFILE, and MAP_DETAIL have the same banner
 //Example: <Banner screen={"COMMUNITY"} />
 export default function Banner(props) {
   const { screen } = props;
-
+  const { auth } = useContext(AuthContext);
   var middleOfBanner = <></>;
   var rightOfBanner = <></>;
   var bannerColor = "transparent";
@@ -25,12 +27,17 @@ export default function Banner(props) {
     justifyContent: "center",
   };
 
+  const handleGuestLogin = () => {
+    console.log("Guest Login");
+    auth.guestLogin();
+  };
+
   switch (screen) {
     case "WELCOME":
       rightOfBanner = (
         <Stack spacing={1.5} direction="row">
           <Link to="/home">
-            <CustomButton text="Continue as Guest" />
+            <CustomButton text="Continue as Guest" onPress={handleGuestLogin} />
           </Link>
           <Link to="/login">
             <CustomButton text="Login" />
@@ -68,6 +75,21 @@ export default function Banner(props) {
           }}
         >
           {"Login"}
+        </Typography>
+      );
+      break;
+    case "FORGET_PASSWORD":
+      middleOfBanner = (
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            color: "#246BAD",
+            fontSize: "2em",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {"Forget Password"}
         </Typography>
       );
       break;

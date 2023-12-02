@@ -17,6 +17,9 @@ import Term from "../assets/Term";
 import { IconButton } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import FailModal from "../components/Modals/FailModal"
+import {FailModalTypes} from "../components/Modals/ModalTypes";
+
 
 const RegisterScreen = () => {
   const [open, setOpen] = useState(false);
@@ -249,6 +252,7 @@ const RegisterScreen = () => {
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
+      <FailModal modalType = {FailModalTypes.ACCOUNT_REGISTER_FAIL} />
     </>
   );
 };

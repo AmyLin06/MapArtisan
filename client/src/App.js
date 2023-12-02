@@ -11,6 +11,7 @@ import AccountViewScreen from "./screens/AccountViewScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import WorkspaceScreen from "./screens/WorkspaceScreen";
 import { GlobalStoreContextProvider } from "./store/GlobalStore";
+import ForgetPasswordScreen from "./screens/ForgetPasswordScreen";
 import { AuthContextProvider } from "./auth";
 import { EditMapContextProvider } from "./store/EditMapStore";
 
@@ -32,13 +33,17 @@ function App() {
 
       <BrowserRouter>
         <AuthContextProvider>
-          <GlobalStoreContextProvider>
-            <EditMapContextProvider>
+          <EditMapContextProvider>
+            <GlobalStoreContextProvider>
               <Routes>
                 <Route path="/">
                   <Route index element={<SplashScreen />} />
                   <Route path="login" element={<LoginScreen />} />
                   <Route path="register" element={<RegisterScreen />} />
+                  <Route
+                    path="forget-password"
+                    element={<ForgetPasswordScreen />}
+                  />
                   <Route
                     path="home"
                     element={<HomeScreen maps={homeMaps.maps} />}
@@ -53,8 +58,8 @@ function App() {
                   <Route path="edit" element={<WorkspaceScreen />} />
                 </Route>
               </Routes>
-            </EditMapContextProvider>
-          </GlobalStoreContextProvider>
+            </GlobalStoreContextProvider>
+          </EditMapContextProvider>
         </AuthContextProvider>
       </BrowserRouter>
     </div>

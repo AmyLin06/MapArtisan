@@ -12,16 +12,19 @@ function LeafletMap() {
   const center = [40.902771, -73.13385];
   const map_container_ref = useRef(null);
 
-  const mapLayers = editStore.currentMap.layers.map((layer, index) => {
-    if (layer.layerType === "GEOJSON" || layer.layerType === "SHAPEFILE") {
-      return <RenderGeoJson mapData={layer.data} />;
-    }
-    if (layer.layerType === "KML") {
-      return <RenderKML mapData={layer.data} />;
-    }
-    // Add additional conditions for other layer types if needed
-    return null; // or a default component if the layer type is unknown
-  });
+  let mapLayers = null;
+  if (editStore.currentMapGraphic) {
+    mapLayers = editStore.currentMapGraphic.layers.map((layer, index) => {
+      if (layer.layerType === "GEOJSON" || layer.layerType === "SHAPEFILE") {
+        return <RenderGeoJson mapData={layer.data} />;
+      }
+      if (layer.layerType === "KML") {
+        return <RenderKML mapData={layer.data} />;
+      }
+      // Add additional conditions for other layer types if needed
+      return null; // or a default component if the layer type is unknown
+    });
+  }
 
   return (
     <Box>

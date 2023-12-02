@@ -3,15 +3,16 @@ import React from "react";
 import Banner from "../components/Banner";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
-import { Stack, Typography,Box } from "@mui/material";
+import { Stack, Typography, Box } from "@mui/material";
 import Copyright from "../components/CopyRight";
-import Button from '@mui/material/Button';
-import { useContext,useState } from 'react';
-import AuthContext from '../auth'
+import Button from "@mui/material/Button";
+import { useContext, useState } from "react";
+import AuthContext from "../auth";
 import { IconButton } from "@mui/material";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import FailModal from "../components/Modals/FailModal";
+import { FailModalTypes } from "../components/Modals/ModalTypes";
 
 const LoginScreen = () => {
   const { auth } = useContext(AuthContext);
@@ -20,17 +21,12 @@ const LoginScreen = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    auth.loginUser(
-        formData.get('email'),
-        formData.get('password')
-    );
+    auth.loginUser(formData.get("email"), formData.get("password"));
   };
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  
 
   return (
     <>
@@ -64,7 +60,7 @@ const LoginScreen = () => {
               fullWidth
               name="password"
               label="Password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               InputProps={{
@@ -72,14 +68,17 @@ const LoginScreen = () => {
                   borderRadius: "50px",
                 },
                 endAdornment: (
-                  <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                  <IconButton
+                    onClick={handleTogglePasswordVisibility}
+                    edge="end"
+                  >
                     {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                   </IconButton>
                 ),
               }}
             />
             <div>
-              <Link href="#" variant="body2">
+              <Link to="/forget-password" href="#" variant="body2">
                 Forgot password?
               </Link>
             </div>
@@ -103,6 +102,7 @@ const LoginScreen = () => {
         <br />
         <Copyright />
       </div>
+      <FailModal modalType={FailModalTypes.ACCOUNT_LOGIN_FAIL} />
     </>
   );
 };

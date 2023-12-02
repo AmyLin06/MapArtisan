@@ -6,7 +6,6 @@ import mapMarkers from "../../assets/mapPins/markers/mapMarkers";
 
 const LocationMarker = () => {
   const { editStore } = useContext(EditMapContext);
-  const [markers, setMarkers] = useState([]);
 
   const createMarkerIcon = (iconKey) => {
     return new L.Icon({
@@ -19,11 +18,10 @@ const LocationMarker = () => {
   const map = useMapEvents({
     click(e) {
       if (editStore.activeTool.tool === "MARKER") {
-        const newMarker = [
-          ...markers,
-          { iconKey: editStore.activeTool.detail, coordinates: e.latlng },
-        ];
-        setMarkers(newMarker);
+        const newMarker = {
+          iconKey: editStore.activeTool.detail,
+          coordinates: e.latlng,
+        };
         editStore.addMarker(newMarker); //Add the coordinate to edit store as well
       }
     },
@@ -31,15 +29,17 @@ const LocationMarker = () => {
 
   return (
     <>
-      {markers.map((marker, index) => (
-        <Marker
-          key={index}
-          position={marker.coordinates}
-          icon={createMarkerIcon(marker.iconKey)}
-        >
-          <Popup>Hi</Popup>
-        </Marker>
-      ))}
+      {editStore.currentMapGraphic
+        ? editStore.currentMapGraphic.markers.map((marker, index) => (
+            <Marker
+              key={index}
+              position={marker.coordinates}
+              icon={createMarkerIcon(marker.iconKey)}
+            >
+              <Popup>Hi</Popup>
+            </Marker>
+          ))
+        : null}
     </>
   );
 };
