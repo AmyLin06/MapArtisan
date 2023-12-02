@@ -21,6 +21,7 @@ import GlobalStoreContext from "../store/GlobalStore";
 
 const HomeScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [maps, setMaps] = useState([]);
   const { auth } = useContext(AuthContext);
   const { store } = useContext(GlobalStoreContext);
   const navigate = useNavigate();
@@ -38,8 +39,8 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    store.getHomeMapMetaData();
-  }, [auth.user]);
+    setMaps(store.homeMapLists);
+  }, [store.homeMapLists]);
 
   return (
     <Box className="home-container" sx={{ padding: 2 }}>
@@ -136,7 +137,7 @@ const HomeScreen = () => {
                 <Typography variant="h5" fontWeight="bold">
                   Maps
                 </Typography>
-                {!!store.homeMapLists ? (
+                {maps.length === 0 ? (
                   <Box
                     display="flex"
                     flexDirection="row"
@@ -154,7 +155,7 @@ const HomeScreen = () => {
                     <DrawIcon fontSize="medium" color="action" />
                   </Box>
                 ) : (
-                  <MapList maps={store.homeMapLists} screen={"HOME"} />
+                  <MapList maps={maps} screen={"HOME"} />
                 )}
               </Box>
             </div>

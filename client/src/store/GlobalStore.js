@@ -119,13 +119,14 @@ function GlobalStoreContextProvider(props) {
         payload: newMap,
       });
       editStore.setMap(response.data.map);
-      // IF IT'S A VALID MAP THEN LET'S START EDITING IT
-      navigate("/edit");
+
+      navigate("/edit"); // IF IT'S A VALID MAP THEN LET'S START EDITING IT
+      store.getHomeMapMetaData(); //update home lists as user has a new map
     } else console.log("API FAILED TO CREATE A NEW MAP");
   };
 
   store.getHomeMapMetaData = async function () {
-    const response = await api.getUserMaps(auth.user.email);
+    const response = await api.getUserMaps();
     console.log("getHomeMapMetaData response: " + response.data.maps);
     console.log(response);
     if (response.status === 201) {
