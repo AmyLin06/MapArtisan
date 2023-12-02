@@ -1,7 +1,7 @@
 import { createContext, useState, useContext } from "react";
 import api from "./store-request-api";
 import AuthContext from "../auth";
-import EditStoreContext from "./EditMapStore";
+import EditMapContext from "./EditMapStore";
 import { useNavigate } from "react-router-dom";
 
 export const GlobalStoreContext = createContext({});
@@ -27,7 +27,7 @@ const CurrentModal = {
 
 function GlobalStoreContextProvider(props) {
   const { auth } = useContext(AuthContext);
-  const { editStore } = useContext(EditStoreContext);
+  const { editStore } = useContext(EditMapContext);
   const navigate = useNavigate();
 
   const [store, setStore] = useState({
