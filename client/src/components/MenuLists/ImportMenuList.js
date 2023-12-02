@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { Typography, Box, Paper } from "@mui/material";
+import { Typography, Box, Paper, Tooltip } from "@mui/material";
 import { EditMapContext } from "../../store/EditMapStore";
 import { read } from "shapefile";
 
@@ -79,9 +79,12 @@ export default function ImportMenuList() {
         onChange={handleFileChange}
       />
 
-      <IconButton onClick={handleOpen}>
-        <ArrowDownwardIcon style={{ fontSize: "1rem" }} />
-      </IconButton>
+      <Tooltip title="Import File" disableFocusListener disableTouchListener>
+        <IconButton onClick={handleOpen}>
+          <ArrowDownwardIcon style={{ fontSize: "1rem" }} />
+        </IconButton>
+      </Tooltip>
+
       <Popover
         open={open}
         anchorEl={anchorEl}

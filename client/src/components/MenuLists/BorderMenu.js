@@ -1,11 +1,11 @@
 import { CirclePicker } from "react-color";
 import { BorderColor as BorderColorIcon } from "@mui/icons-material";
 import React, { useState } from "react";
-import { IconButton, Popover } from "@mui/material";
+import { IconButton, Popover, Tooltip } from "@mui/material";
 
 export default function BorderMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedFillColor, setSelectedColor] = useState(""); // Set a default color
+  const [selectedBorderColor, setSelectedColor] = useState(""); // Set a default color
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,13 +26,15 @@ export default function BorderMenu() {
 
   return (
     <>
-      <IconButton
-        aria-label="fill-in"
-        onClick={handleClick}
-        sx={{ color: selectedFillColor }}
-      >
-        <BorderColorIcon />
-      </IconButton>
+      <Tooltip title="Border" disableFocusListener disableTouchListener>
+        <IconButton
+          aria-label="border"
+          onClick={handleClick}
+          sx={{ color: selectedBorderColor }}
+        >
+          <BorderColorIcon />
+        </IconButton>
+      </Tooltip>
 
       <Popover
         id={id}
@@ -47,9 +49,10 @@ export default function BorderMenu() {
           vertical: "top",
           horizontal: "left",
         }}
+        sx={{ width: "60%" }}
       >
         <CirclePicker
-          color={selectedFillColor}
+          color={selectedBorderColor}
           onChangeComplete={handleColorChange}
           width={"100%"}
         />

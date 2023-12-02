@@ -1,4 +1,4 @@
-import { Box, IconButton, Menu, MenuItem } from "@mui/material";
+import { Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import LayerCard from "./LayerCard";
 import React, { useState } from "react";
 import LayersOutlinedIcon from "@mui/icons-material/LayersOutlined";
@@ -28,10 +28,11 @@ const LayerList = (props) => {
 
   return (
     <Box>
-      <IconButton onClick={handleOpenMenu} size="small">
-        <LayersOutlinedIcon />
-      </IconButton>
-
+      <Tooltip title="Layers">
+        <IconButton onClick={handleOpenMenu} size="small">
+          <LayersOutlinedIcon />
+        </IconButton>
+      </Tooltip>
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}

@@ -1,11 +1,11 @@
 import { CirclePicker } from "react-color";
 import { FormatColorText as FormatColorTextIcon } from "@mui/icons-material";
 import React, { useState } from "react";
-import { IconButton, Popover } from "@mui/material";
+import { IconButton, Popover, Tooltip } from "@mui/material";
 
 export default function TextMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedFillColor, setSelectedColor] = useState(""); // Set a default color
+  const [selectedTextColor, setSelectedColor] = useState(""); // Set a default color
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,13 +26,15 @@ export default function TextMenu() {
 
   return (
     <>
-      <IconButton
-        aria-label="fill-in"
-        onClick={handleClick}
-        sx={{ color: selectedFillColor }}
-      >
-        <FormatColorTextIcon />
-      </IconButton>
+      <Tooltip title="Text" disableFocusListener disableTouchListener>
+        <IconButton
+          aria-label="text"
+          onClick={handleClick}
+          sx={{ color: selectedTextColor }}
+        >
+          <FormatColorTextIcon />
+        </IconButton>
+      </Tooltip>
 
       <Popover
         id={id}
@@ -47,9 +49,10 @@ export default function TextMenu() {
           vertical: "top",
           horizontal: "left",
         }}
+        sx={{ width: "60%" }}
       >
         <CirclePicker
-          color={selectedFillColor}
+          color={selectedTextColor}
           onChangeComplete={handleColorChange}
           width={"100%"}
         />

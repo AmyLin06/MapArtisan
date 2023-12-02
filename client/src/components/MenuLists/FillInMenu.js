@@ -1,7 +1,7 @@
 import { CirclePicker } from "react-color";
 import { FormatColorFill as FormatColorFillIcon } from "@mui/icons-material";
 import React, { useState } from "react";
-import { IconButton, Popover } from "@mui/material";
+import { IconButton, Popover, Tooltip } from "@mui/material";
 
 export default function ExportMenuList() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -26,13 +26,15 @@ export default function ExportMenuList() {
 
   return (
     <>
-      <IconButton
-        aria-label="fill-in"
-        onClick={handleClick}
-        sx={{ color: selectedFillColor }}
-      >
-        <FormatColorFillIcon />
-      </IconButton>
+      <Tooltip title="Fill-in" disableFocusListener disableTouchListener>
+        <IconButton
+          aria-label="fill-in"
+          onClick={handleClick}
+          sx={{ color: selectedFillColor }}
+        >
+          <FormatColorFillIcon />
+        </IconButton>
+      </Tooltip>
 
       <Popover
         id={id}
@@ -47,6 +49,7 @@ export default function ExportMenuList() {
           vertical: "top",
           horizontal: "left",
         }}
+        sx={{ width: "60%" }}
       >
         <CirclePicker
           color={selectedFillColor}

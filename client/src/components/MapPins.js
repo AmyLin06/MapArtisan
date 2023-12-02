@@ -9,6 +9,7 @@ import {
   MenuItem,
   MenuList,
   ClickAwayListener,
+  Tooltip,
 } from "@mui/material";
 import { EditMapContext } from "../store/EditMapStore";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -48,33 +49,35 @@ const MapPins = () => {
   return (
     <React.Fragment>
       <ButtonGroup aria-label="split button">
-        <Button
-          size="small"
-          sx={{
-            border:
-              editStore.activeTool.tool === "MARKER"
-                ? "2px solid #246BAD"
-                : "none",
-            "&:hover": {
+        <Tooltip title="Marker">
+          <Button
+            size="small"
+            sx={{
               border:
                 editStore.activeTool.tool === "MARKER"
                   ? "2px solid #246BAD"
                   : "none",
-            },
-          }}
-          aria-controls={open ? "split-button-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-label="select marker option"
-          aria-haspopup="menu"
-          ref={anchorRef}
-          onClick={handleToggle}
-        >
-          <img
-            src={mapMarkers[selectedKey]}
-            style={{ width: "25px", height: "25px" }}
-          />
-          <ArrowDropDownIcon />
-        </Button>
+              "&:hover": {
+                border:
+                  editStore.activeTool.tool === "MARKER"
+                    ? "2px solid #246BAD"
+                    : "none",
+              },
+            }}
+            aria-controls={open ? "split-button-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
+            aria-label="select marker option"
+            aria-haspopup="menu"
+            ref={anchorRef}
+            onClick={handleToggle}
+          >
+            <img
+              src={mapMarkers[selectedKey]}
+              style={{ width: "25px", height: "25px" }}
+            />
+            <ArrowDropDownIcon />
+          </Button>
+        </Tooltip>
       </ButtonGroup>
       <Popper
         sx={{

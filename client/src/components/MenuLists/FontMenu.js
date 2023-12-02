@@ -8,6 +8,7 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
+import { Tooltip } from "@mui/material";
 
 var fontList = ["Inter", "Times New Romans", "Inika", "Mandali", "PT Sans"];
 
@@ -36,23 +37,25 @@ export default function FontMenu() {
   return (
     <React.Fragment>
       <ButtonGroup ref={anchorRef} aria-label="split button">
-        <Button
-          size="small"
-          aria-controls={open ? "split-button-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-label="select merge strategy"
-          aria-haspopup="menu"
-          sx={{
-            border: "none",
-            "&:hover": {
-              border: "none", // Add this line to remove the border on hover
-            },
-          }}
-          onClick={handleToggle}
-        >
-          {fontList[selectedIndex]}
-          <ArrowDropDownIcon />
-        </Button>
+        <Tooltip title="Font Style">
+          <Button
+            size="small"
+            aria-controls={open ? "split-button-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
+            aria-label="select merge strategy"
+            aria-haspopup="menu"
+            sx={{
+              border: "none",
+              "&:hover": {
+                border: "none", // Add this line to remove the border on hover
+              },
+            }}
+            onClick={handleToggle}
+          >
+            {fontList[selectedIndex]}
+            <ArrowDropDownIcon />
+          </Button>
+        </Tooltip>
       </ButtonGroup>
       <Popper
         sx={{

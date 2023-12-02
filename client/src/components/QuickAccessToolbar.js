@@ -1,6 +1,10 @@
-import { React, useState, useContext } from "react";
-import { Save as SaveIcon } from "@mui/icons-material";
-import { Popover, ButtonGroup, IconButton } from "@mui/material";
+import { React, useContext } from "react";
+import {
+  Save as SaveIcon,
+  Undo as UndoIcon,
+  Redo as RedoIcon,
+} from "@mui/icons-material";
+import { ButtonGroup, IconButton, Tooltip } from "@mui/material";
 import ImportMenuList from "./MenuLists/ImportMenuList";
 import ExportMenuList from "./MenuLists/ExportMenuList";
 import MapPins from "./MapPins";
@@ -36,25 +40,29 @@ export default function QuickAccessToolbar() {
 
   return (
     <ButtonGroup aria-label="leaflet-toolbar" sx={{ height: "30px" }}>
-      <IconButton
-        aria-label="scroll-map"
-        sx={{
-          border:
-            editStore.activeTool.tool === "SCROLL"
-              ? "2px solid #246BAD"
-              : "none",
-        }}
-        onClick={handleMapScroll}
-      >
-        <PanToolAltOutlinedIcon />
-      </IconButton>
-      <IconButton
-        aria-label="save"
-        onClick={handleSave}
-        sx={{ border: "none" }}
-      >
-        <SaveIcon style={{ fontSize: "1rem" }} />
-      </IconButton>
+      <Tooltip title="Cursor">
+        <IconButton
+          aria-label="scroll-map"
+          sx={{
+            border:
+              editStore.activeTool.tool === "SCROLL"
+                ? "2px solid #246BAD"
+                : "none",
+          }}
+          onClick={handleMapScroll}
+        >
+          <PanToolAltOutlinedIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Save">
+        <IconButton
+          aria-label="save"
+          onClick={handleSave}
+          sx={{ border: "none" }}
+        >
+          <SaveIcon style={{ fontSize: "1rem" }} />
+        </IconButton>
+      </Tooltip>
       <ImportMenuList />
       <ExportMenuList />
       <MapPins />
@@ -63,9 +71,21 @@ export default function QuickAccessToolbar() {
       <BorderMenu />
       <TextMenu />
       <LayerList layers={editStore.currentMap.layers} />
-      <IconButton aria-label="publish" onClick={handlePublish}>
-        <ShareOutlinedIcon />
-      </IconButton>
+      <Tooltip title="Publish">
+        <IconButton aria-label="publish" onClick={handlePublish}>
+          <ShareOutlinedIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Undo">
+        <IconButton aria-label="undo" onClick={handleUndo}>
+          <UndoIcon style={{ fontSize: "1rem" }} />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Redo">
+        <IconButton value="redo" aria-label="redo" onClick={handleRedo}>
+          <RedoIcon style={{ fontSize: "1rem" }} />
+        </IconButton>
+      </Tooltip>
     </ButtonGroup>
   );
 }

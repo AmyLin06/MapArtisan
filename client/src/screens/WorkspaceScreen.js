@@ -2,7 +2,6 @@ import Banner from "../components/Banner";
 import "../styles/WorkspaceScreen.css";
 import QuickAccessToolbar from "../components/QuickAccessToolbar";
 import LeafletMap from "../components/Leaflet/LeafletMap";
-import UndoRedoTool from "../components/UndoRedoTool";
 import { Typography, Grid } from "@mui/material";
 import { EditMapContext } from "../store/EditMapStore";
 import React, { useContext } from "react";
@@ -16,11 +15,15 @@ const WorkspaceScreen = () => {
       <div className="workspace-content">
         <Grid container>
           <Grid item className="name-name" xs={2}>
-            <Typography>{editStore.currentMap.mapTitle}</Typography>
+            <Typography
+              fontWeight="bold"
+              sx={{ color: "#246BAD", paddingLeft: 1 }}
+            >
+              {editStore.currentMap.mapTitle}
+            </Typography>
           </Grid>
           <Grid item className="map-editing" xs={10}>
             <QuickAccessToolbar />
-            <UndoRedoTool />
           </Grid>
           <Grid item xs={12}>
             <LeafletMap />
