@@ -7,10 +7,6 @@
     background-color: #246BAD;
 }
 
-.workspace-content {
-    display: grid;
-    grid-template-columns: 15% 85%;
-}
 .sidebar{
     height: 100vh;
     background-color: #B4CEE5;
@@ -23,4 +19,5 @@
 
 .leaflet-container {
     height: 100vh;
+    z-index: 1;
 }

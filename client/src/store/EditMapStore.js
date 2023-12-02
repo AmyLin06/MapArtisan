@@ -21,12 +21,19 @@ const CurrentModal = {
   ERROR: "ERROR",
 };
 
+const LeafletTool = {
+  SCROLL: "SCROLL",
+  MARKER: "MARKER",
+  BORDER: "BORDER",
+  FILLIN: "FILLIN",
+};
+
 function EditMapContextProvider(props) {
   const [editStore, setEditStore] = useState({
     currentModal: CurrentModal.NONE,
     currentMap: fakeMap,
     currentMapIndex: -1,
-    activeMarker: null,
+    activeTool: { tool: LeafletTool.SCROLL, detail: "NONE" },
   });
 
   const storeReducer = (action) => {
@@ -37,7 +44,7 @@ function EditMapContextProvider(props) {
           currentModel: editStore.currentModal,
           currentMap: editStore.currentMap,
           currentMapIndex: editStore.currentMapIndex,
-          activeMarker: editStore.activeMarker,
+          activeTool: editStore.activeTool,
         });
       }
       default:
@@ -46,10 +53,9 @@ function EditMapContextProvider(props) {
   };
 
   //add a layer to the current map
-  editStore.addLayer = (data, type) => {
+  editStore.addLayer = (name, data, type) => {
     let map = editStore.currentMap;
-    let newLayer = { layerName: `${type}`, layerType: type, data: data };
-    console.log("layer: ", newLayer);
+    let newLayer = { layerName: name, layerType: type, data: data };
     map.layers.push(newLayer);
     storeReducer({
       type: EditMapStoreActionType.UPDATE_MAP,
@@ -65,7 +71,20 @@ function EditMapContextProvider(props) {
 
   //set the current selected marker
   editStore.setActiveMarker = (key) => {
-    editStore.activeMarker = key;
+    editStore.activeTool = { tool: LeafletTool.MARKER, detail: key };
+    storeReducer({
+      type: EditMapStoreActionType.UPDATE_MAP,
+      payload: {},
+    });
+  };
+
+  //set the current leaflet tool to scrolling
+  editStore.setScrolling = () => {
+    editStore.activeTool = { tool: LeafletTool.SCROLL, detail: "NONE" };
+    storeReducer({
+      type: EditMapStoreActionType.UPDATE_MAP,
+      payload: {},
+    });
   };
 
   return (

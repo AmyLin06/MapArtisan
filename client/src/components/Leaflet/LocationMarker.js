@@ -18,10 +18,10 @@ const LocationMarker = () => {
 
   const map = useMapEvents({
     click(e) {
-      if (editStore.activeMarker) {
+      if (editStore.activeTool.tool === "MARKER") {
         const newMarker = [
           ...markers,
-          { iconKey: editStore.activeMarker, coordinates: e.latlng },
+          { iconKey: editStore.activeTool.detail, coordinates: e.latlng },
         ];
         setMarkers(newMarker);
         editStore.addMarker(newMarker); //Add the coordinate to edit store as well

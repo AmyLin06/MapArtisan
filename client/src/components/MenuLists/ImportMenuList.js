@@ -40,14 +40,14 @@ export default function ImportMenuList() {
       // Add the GeoJSON file as a layer to the current map
       fileReader.onload = (event) => {
         const data = JSON.parse(event.target.result);
-        editStore.addLayer(data, "GEOJSON");
+        editStore.addLayer(selectedFile.name, data, "GEOJSON");
       };
       fileReader.readAsText(event.target.files[0]);
     } else if (getFileExtension(selectedFile.name) === "kml") {
       fileReader.onload = (event) => {
         const parser = new DOMParser();
         const text = parser.parseFromString(event.target.result, "text/xml");
-        editStore.addLayer(text, "KML");
+        editStore.addLayer(selectedFile.name, text, "KML");
       };
       fileReader.readAsText(event.target.files[0]);
     } else if (getFileExtension(selectedFile.name) === "shp") {
@@ -60,8 +60,7 @@ export default function ImportMenuList() {
             type: "FeatureCollection",
             features: features || [],
           };
-          editStore.addLayer(geoJson, "SHAPEFILE");
-          console.log(geoJson); // GeoJSON output
+          editStore.addLayer(selectedFile.name, geoJson, "SHAPEFILE");
         } catch (error) {
           console.error("Error parsing shapefile SAD:", error);
         }
@@ -81,18 +80,16 @@ export default function ImportMenuList() {
       />
 
       <IconButton onClick={handleOpen}>
-        <Box
-          style={{
-            display: "flex",
-            alignItems: "center",
-            verticalAlign: "center",
-          }}
-        >
-          <ArrowDownwardIcon style={{ fontSize: "1rem" }} />
-          <Typography style={{ verticalAlign: "middle" }}>Import</Typography>
-        </Box>
+        <ArrowDownwardIcon style={{ fontSize: "1rem" }} />
       </IconButton>
-      <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+        }}
+      >
         <Paper style={{ background: "#FFFDF3" }}>
           <MenuItem
             onClick={handleImportFile}

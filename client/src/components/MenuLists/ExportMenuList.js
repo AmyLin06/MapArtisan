@@ -22,18 +22,16 @@ export default function ExportMenuList() {
   return (
     <>
       <IconButton onClick={handleOpen}>
-        <Box
-          style={{
-            display: "flex",
-            alignItems: "center",
-            verticalAlign: "center",
-          }}
-        >
-          <ArrowUpwardIcon style={{ fontSize: "1rem" }} />
-          <Typography style={{ verticalAlign: "middle" }}>Export</Typography>
-        </Box>
+        <ArrowUpwardIcon style={{ fontSize: "1rem" }} />
       </IconButton>
-      <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+        }}
+      >
         <Paper style={{ background: "#FFFDF3" }}>
           <MenuItem
             onClick={handleClose}

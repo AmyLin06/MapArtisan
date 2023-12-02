@@ -1,15 +1,21 @@
-import * as React from "react";
-import SaveIcon from "@mui/icons-material/Save";
-import UndoIcon from "@mui/icons-material/Undo";
-import RedoIcon from "@mui/icons-material/Redo";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { Typography, Box } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
+import { React, useState, useContext } from "react";
+import { Save as SaveIcon } from "@mui/icons-material";
+import { Popover, ButtonGroup, IconButton } from "@mui/material";
 import ImportMenuList from "./MenuLists/ImportMenuList";
 import ExportMenuList from "./MenuLists/ExportMenuList";
+import MapPins from "./MapPins";
+import FillInMenu from "./MenuLists/FillInMenu";
+import BorderMenu from "./MenuLists/BorderMenu";
+import TextMenu from "./MenuLists/TextMenu";
+import FontMenu from "./MenuLists/FontMenu";
+import LayerList from "./LayerList";
+import { EditMapContext } from "../store/EditMapStore";
+import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
+import PanToolAltOutlinedIcon from "@mui/icons-material/PanToolAltOutlined";
 
 export default function QuickAccessToolbar() {
+  const { editStore } = useContext(EditMapContext);
+
   const handleSave = () => {
     console.log("trying to save in quick access toolbar - not implemented");
   };
@@ -19,105 +25,47 @@ export default function QuickAccessToolbar() {
   const handleRedo = () => {
     console.log("trying to redo in quick access toolbar - not implemented");
   };
+
+  const handlePublish = () => {
+    console.log("trying to publish in quick access toolbar - not implemented");
+  };
+
+  const handleMapScroll = () => {
+    editStore.setScrolling();
+  };
+
   return (
-    <ToggleButtonGroup
-      exclusive
-      aria-label="text alignment"
-      sx={{
-        display: "flex",
-        "& .MuiSvgIcon-root": {
-          color: "#246BAD",
-        },
-        "& .MuiTypography-root": {
-          color: "#246BAD",
-        },
-      }}
-    >
-      <ToggleButton
-        value="save"
+    <ButtonGroup aria-label="leaflet-toolbar" sx={{ height: "30px" }}>
+      <IconButton
+        aria-label="scroll-map"
+        sx={{
+          border:
+            editStore.activeTool.tool === "SCROLL"
+              ? "2px solid #246BAD"
+              : "none",
+        }}
+        onClick={handleMapScroll}
+      >
+        <PanToolAltOutlinedIcon />
+      </IconButton>
+      <IconButton
         aria-label="save"
-        sx={{
-          borderRadius: "70px 0 0 70px",
-          border: "1px solid black",
-          height: "30px",
-        }}
+        onClick={handleSave}
+        sx={{ border: "none" }}
       >
-        <IconButton onClick={handleSave}>
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              verticalAlign: "center",
-            }}
-          >
-            <SaveIcon style={{ fontSize: "1rem" }} />
-            <Typography style={{ verticalAlign: "middle" }}>Save</Typography>
-          </Box>
-        </IconButton>
-      </ToggleButton>
-      <ToggleButton
-        value="undo"
-        aria-label="undo"
-        sx={{
-          border: "1px solid black",
-          height: "30px",
-        }}
-      >
-        <IconButton onClick={handleUndo}>
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              verticalAlign: "center",
-            }}
-          >
-            <UndoIcon style={{ fontSize: "1rem" }} />
-            <Typography style={{ verticalAlign: "middle" }}>Undo</Typography>
-          </Box>
-        </IconButton>
-      </ToggleButton>
-      <ToggleButton
-        value="redo"
-        aria-label="redo"
-        sx={{
-          border: "1px solid black",
-          height: "30px",
-        }}
-      >
-        <IconButton onClick={handleRedo}>
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              verticalAlign: "center",
-            }}
-          >
-            <RedoIcon style={{ fontSize: "1rem" }} />
-            <Typography style={{ verticalAlign: "middle" }}>Redo</Typography>
-          </Box>
-        </IconButton>
-      </ToggleButton>
-      <ToggleButton
-        value="import"
-        aria-label="import"
-        sx={{
-          border: "1px solid black",
-          height: "30px",
-        }}
-      >
-        <ImportMenuList />
-      </ToggleButton>
-      <ToggleButton
-        value="export"
-        aria-label="export"
-        sx={{
-          borderRadius: "0 70px 70px 0",
-          border: "1px solid black",
-          height: "30px",
-        }}
-      >
-        <ExportMenuList />
-      </ToggleButton>
-    </ToggleButtonGroup>
+        <SaveIcon style={{ fontSize: "1rem" }} />
+      </IconButton>
+      <ImportMenuList />
+      <ExportMenuList />
+      <MapPins />
+      <FontMenu />
+      <FillInMenu />
+      <BorderMenu />
+      <TextMenu />
+      <LayerList layers={editStore.currentMap.layers} />
+      <IconButton aria-label="publish" onClick={handlePublish}>
+        <ShareOutlinedIcon />
+      </IconButton>
+    </ButtonGroup>
   );
 }

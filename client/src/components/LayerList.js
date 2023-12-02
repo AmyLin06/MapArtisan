@@ -1,31 +1,44 @@
-import { Box, List, Grid } from "@mui/material";
+import { Box, IconButton, Menu, MenuItem } from "@mui/material";
 import LayerCard from "./LayerCard";
+import React, { useState } from "react";
+import LayersOutlinedIcon from "@mui/icons-material/LayersOutlined";
 
 const LayerList = (props) => {
   const { layers } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleOpenMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
 
   let layercards = "";
-  if (layers) {
-    layercards = layers.map((l, index) => (
-      <Grid
-        item
-        xs={12}
-        key={"grid" + index}
-        sx={{
-          border: "1px solid #fff",
-          color: "#fff",
-        }}
-      >
-        <LayerCard id={"layer" + index} layerName={l.layerName} />
-      </Grid>
+  if (layers && layers.length > 0) {
+    layercards = layers.map((layer, index) => (
+      <MenuItem key={index}>
+        <LayerCard layerName={layer.layerName} />
+      </MenuItem>
     ));
+  } else {
+    layercards = <MenuItem>No layers...Add one :)</MenuItem>;
   }
 
   return (
     <Box>
-      <List sx={{ width: "100%" }}>
-        <Grid container>{layercards}</Grid>
-      </List>
+      <IconButton onClick={handleOpenMenu} size="small">
+        <LayersOutlinedIcon />
+      </IconButton>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+      >
+        {layercards}
+      </Menu>
     </Box>
   );
 };
