@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import { Typography, Box, Paper } from "@mui/material";
+import { Typography, Box, Paper, Tooltip } from "@mui/material";
 
 //menu that opens and displays options for data formats the user can export the map in
 export default function ExportMenuList() {
@@ -21,19 +21,20 @@ export default function ExportMenuList() {
 
   return (
     <>
-      <IconButton onClick={handleOpen}>
-        <Box
-          style={{
-            display: "flex",
-            alignItems: "center",
-            verticalAlign: "center",
-          }}
-        >
+      <Tooltip title="Export Map" disableFocusListener disableTouchListener>
+        <IconButton onClick={handleOpen}>
           <ArrowUpwardIcon style={{ fontSize: "1rem" }} />
-          <Typography style={{ verticalAlign: "middle" }}>Export</Typography>
-        </Box>
-      </IconButton>
-      <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
+        </IconButton>
+      </Tooltip>
+
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+        }}
+      >
         <Paper style={{ background: "#FFFDF3" }}>
           <MenuItem
             onClick={handleClose}

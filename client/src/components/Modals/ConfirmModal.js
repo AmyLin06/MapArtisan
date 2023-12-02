@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalStoreContext } from "../../store/GlobalStore";
-import { EditStoreContext } from "../../store/EditMapStore";
+import { EditMapContext } from "../../store/EditMapStore";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
@@ -16,7 +16,7 @@ import { ConfirmModalTypes } from "./ModalTypes";
 //<ConfirmModal modalType={ConfirmModalTypes.DELETE_LAYER}></ConfirmModal>
 export default function ConfirmModal(props) {
   const { store } = useContext(GlobalStoreContext);
-  const { editStore } = useContext(EditStoreContext);
+  const { editStore } = useContext(EditMapContext);
   const { modalType } = props;
 
   const handleClose = (event) => {

@@ -13,7 +13,7 @@ import WorkspaceScreen from "./screens/WorkspaceScreen";
 import { GlobalStoreContextProvider } from "./store/GlobalStore";
 import ForgetPasswordScreen from "./screens/ForgetPasswordScreen";
 import { AuthContextProvider } from "./auth";
-import { EditStoreContextProvider } from "./store/EditMapStore";
+import { EditMapContextProvider } from "./store/EditMapStore";
 
 function App() {
   return (
@@ -33,7 +33,7 @@ function App() {
 
       <BrowserRouter>
         <AuthContextProvider>
-          <EditStoreContextProvider>
+          <EditMapContextProvider>
             <GlobalStoreContextProvider>
               <Routes>
                 <Route path="/">
@@ -59,7 +59,7 @@ function App() {
                 </Route>
               </Routes>
             </GlobalStoreContextProvider>
-          </EditStoreContextProvider>
+          </EditMapContextProvider>
         </AuthContextProvider>
       </BrowserRouter>
     </div>

@@ -1,32 +1,125 @@
-import React from "react";
-import best from "../assets/mapPins/best-place.png";
-import bus from "../assets/mapPins/bus.png";
-import google from "../assets/mapPins/google-maps.png";
-import loc from "../assets/mapPins/location-1.png";
-import loc2 from "../assets/mapPins/location-pin.png";
-import loc3 from "../assets/mapPins/location.png";
-import park from "../assets/mapPins/park.png";
-import pin from "../assets/mapPins/pin.png";
-import place from "../assets/mapPins/placeholder.png";
-import place2 from "../assets/mapPins/placeholder-1.png";
-
-import Button from "@mui/material/Button";
+import React, { useState, useContext } from "react";
+import mapMarkers from "../assets/mapPins/markers/mapMarkers";
+import {
+  Button,
+  ButtonGroup,
+  Grow,
+  Paper,
+  Popper,
+  MenuItem,
+  MenuList,
+  ClickAwayListener,
+  Tooltip,
+} from "@mui/material";
+import { EditMapContext } from "../store/EditMapStore";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const MapPins = () => {
-  var iconList = [best, bus, google, loc, loc2, loc3, park, pin, place, place2];
+  const { editStore } = useContext(EditMapContext);
+  const [open, setOpen] = useState(false);
+  const anchorRef = React.useRef(null);
+  const activeMarker =
+    editStore.activeTool.tool == "MARKER"
+      ? editStore.activeTool.detail
+      : "busIcon";
+  const [selectedKey, setSelectedKey] = useState(activeMarker);
+
+  const handleIconClick = (key) => {
+    setSelectedKey(key);
+    editStore.setActiveMarker(key);
+  };
+
+  const handleMenuItemClick = (event, key) => {
+    setSelectedKey(key);
+    setOpen(false);
+    handleIconClick(key);
+  };
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+    setOpen(false);
+  };
 
   return (
-    <div>
-      {iconList.map((icon, index) => (
-        <Button key={index} variant="text" color="primary">
-          <img
-            src={icon}
-            alt={`icon-${index}`}
-            style={{ width: "25px", height: "25px" }}
-          />
-        </Button>
-      ))}
-    </div>
+    <React.Fragment>
+      <ButtonGroup aria-label="split button">
+        <Tooltip title="Marker">
+          <Button
+            size="small"
+            sx={{
+              border:
+                editStore.activeTool.tool === "MARKER"
+                  ? "2px solid #246BAD"
+                  : "none",
+              "&:hover": {
+                border:
+                  editStore.activeTool.tool === "MARKER"
+                    ? "2px solid #246BAD"
+                    : "none",
+              },
+            }}
+            aria-controls={open ? "split-button-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
+            aria-label="select marker option"
+            aria-haspopup="menu"
+            ref={anchorRef}
+            onClick={handleToggle}
+          >
+            <img
+              src={mapMarkers[selectedKey]}
+              style={{ width: "25px", height: "25px" }}
+            />
+            <ArrowDropDownIcon />
+          </Button>
+        </Tooltip>
+      </ButtonGroup>
+      <Popper
+        sx={{
+          zIndex: 2,
+        }}
+        open={open}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        transition
+        disablePortal
+      >
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin:
+                placement === "bottom" ? "center top" : "center bottom",
+            }}
+          >
+            <Paper>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MenuList id="split-button-menu" autoFocusItem>
+                  {Object.entries(mapMarkers).map(([key, icon], index) => (
+                    <MenuItem
+                      key={key}
+                      selected={key === selectedKey}
+                      onClick={(event) => handleMenuItemClick(event, key)}
+                    >
+                      <img
+                        src={icon}
+                        alt={`${key}-${index}`}
+                        style={{ width: "25px", height: "25px" }}
+                      />
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+    </React.Fragment>
   );
 };
 

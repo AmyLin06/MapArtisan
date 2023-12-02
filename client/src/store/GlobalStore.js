@@ -102,7 +102,6 @@ function GlobalStoreContextProvider(props) {
   store.createNewMap = async function () {
     let mapName = "Untitled";
     const response = await api.createNewMap(mapName, null, auth.user.email);
-    console.log("createNewMap response: " + response);
     if (response.status === 201) {
       // tps.clearAllTransactions();
       let newMap = response.data.map;
@@ -110,7 +109,11 @@ function GlobalStoreContextProvider(props) {
         type: GlobalStoreActionType.CREATE_NEW_MAP,
         payload: newMap,
       });
-      editStore.setMap(response.data.map);
+      editStore.setMap(response.data.map, {
+        mapID: 12345,
+        layers: [],
+        markers: [],
+      });
       // IF IT'S A VALID MAP THEN LET'S START EDITING IT
       navigate("/edit");
     } else console.log("API FAILED TO CREATE A NEW MAP");

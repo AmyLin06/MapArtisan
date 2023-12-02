@@ -1,18 +1,27 @@
-import * as React from "react";
-import SaveIcon from "@mui/icons-material/Save";
-import UndoIcon from "@mui/icons-material/Undo";
-import RedoIcon from "@mui/icons-material/Redo";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { Typography, Box } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
+import { React, useContext } from "react";
+import {
+  Save as SaveIcon,
+  Undo as UndoIcon,
+  Redo as RedoIcon,
+} from "@mui/icons-material";
+import { ButtonGroup, IconButton, Tooltip } from "@mui/material";
 import ImportMenuList from "./MenuLists/ImportMenuList";
 import ExportMenuList from "./MenuLists/ExportMenuList";
+import MapPins from "./MapPins";
+import FillInMenu from "./MenuLists/FillInMenu";
+import BorderMenu from "./MenuLists/BorderMenu";
+import TextMenu from "./MenuLists/TextMenu";
+import FontMenu from "./MenuLists/FontMenu";
+import LayerList from "./LayerList";
+import { EditMapContext } from "../store/EditMapStore";
+import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
+import PanToolAltOutlinedIcon from "@mui/icons-material/PanToolAltOutlined";
 import AuthContext from "../auth";
-import { useContext } from "react";
 
 export default function QuickAccessToolbar() {
+  const { editStore } = useContext(EditMapContext);
   const { auth } = useContext(AuthContext);
+
   const handleSave = () => {
     console.log("trying to save in quick access toolbar - not implemented");
   };
@@ -22,109 +31,65 @@ export default function QuickAccessToolbar() {
   const handleRedo = () => {
     console.log("trying to redo in quick access toolbar - not implemented");
   };
+
+  const handlePublish = () => {
+    editStore.showPublishMapModal();
+  };
+
+  const handleMapScroll = () => {
+    editStore.setScrolling();
+  };
+
   return (
-    <ToggleButtonGroup
-      exclusive
-      aria-label="text alignment"
-      sx={{
-        display: "flex",
-        "& .MuiSvgIcon-root": {
-          color: "#246BAD",
-        },
-        "& .MuiTypography-root": {
-          color: "#246BAD",
-        },
-      }}
-    >
-      <ToggleButton
-        value="save"
-        aria-label="save"
-        disabled={auth.guest}
-        sx={{
-          borderRadius: "70px 0 0 70px",
-          border: "1px solid black",
-          height: "30px",
-          backgroundColor: auth.guest ? "#808080" : "inherit",
-        }}
-      >
-        <IconButton onClick={handleSave} >
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              verticalAlign: "center",
-            }}
-          >
-            <SaveIcon style={{ fontSize: "1rem" }} />
-            <Typography style={{ verticalAlign: "middle" }}>Save</Typography>
-          </Box>
+    <ButtonGroup aria-label="leaflet-toolbar" sx={{ height: "30px" }}>
+      <Tooltip title="Cursor">
+        <IconButton
+          aria-label="scroll-map"
+          sx={{
+            border:
+              editStore.activeTool.tool === "SCROLL"
+                ? "2px solid #246BAD"
+                : "none",
+          }}
+          onClick={handleMapScroll}
+        >
+          <PanToolAltOutlinedIcon />
         </IconButton>
-      </ToggleButton>
-      <ToggleButton
-        value="undo"
-        aria-label="undo"
-        sx={{
-          border: "1px solid black",
-          height: "30px",
-        }}
-      >
-        <IconButton onClick={handleUndo}>
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              verticalAlign: "center",
-            }}
-          >
-            <UndoIcon style={{ fontSize: "1rem" }} />
-            <Typography style={{ verticalAlign: "middle" }}>Undo</Typography>
-          </Box>
+      </Tooltip>
+      <Tooltip title="Save">
+        <IconButton
+          aria-label="save"
+          onClick={handleSave}
+          sx={{ border: "none" }}
+        >
+          <SaveIcon style={{ fontSize: "1rem" }} />
         </IconButton>
-      </ToggleButton>
-      <ToggleButton
-        value="redo"
-        aria-label="redo"
-        sx={{
-          border: "1px solid black",
-          height: "30px",
-        }}
-      >
-        <IconButton onClick={handleRedo}>
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              verticalAlign: "center",
-            }}
-          >
-            <RedoIcon style={{ fontSize: "1rem" }} />
-            <Typography style={{ verticalAlign: "middle" }}>Redo</Typography>
-          </Box>
+      </Tooltip>
+      <ImportMenuList />
+      <ExportMenuList />
+      <MapPins />
+      <FontMenu />
+      <FillInMenu />
+      <BorderMenu />
+      <TextMenu />
+      <LayerList
+        layers={editStore.currentMap ? editStore.currentMap.layers : []}
+      />
+      <Tooltip title="Publish">
+        <IconButton aria-label="publish" onClick={handlePublish}>
+          <ShareOutlinedIcon />
         </IconButton>
-      </ToggleButton>
-      <ToggleButton
-        value="import"
-        aria-label="import"
-        sx={{
-          border: "1px solid black",
-          height: "30px",
-        }}
-      >
-        <ImportMenuList />
-      </ToggleButton>
-      <ToggleButton
-        value="export"
-        aria-label="export"
-        disabled={auth.guest}
-        sx={{
-          borderRadius: "0 70px 70px 0",
-          border: "1px solid black",
-          height: "30px",
-          backgroundColor: auth.guest ? "#808080" : "inherit",
-        }}
-      >
-        <ExportMenuList />
-      </ToggleButton>
-    </ToggleButtonGroup>
+      </Tooltip>
+      <Tooltip title="Undo">
+        <IconButton aria-label="undo" onClick={handleUndo}>
+          <UndoIcon style={{ fontSize: "1rem" }} />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Redo">
+        <IconButton value="redo" aria-label="redo" onClick={handleRedo}>
+          <RedoIcon style={{ fontSize: "1rem" }} />
+        </IconButton>
+      </Tooltip>
+    </ButtonGroup>
   );
 }
