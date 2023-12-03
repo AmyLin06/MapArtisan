@@ -13,6 +13,7 @@ import { GlobalStoreContextProvider } from "./store/GlobalStore";
 import ForgetPasswordScreen from "./screens/ForgetPasswordScreen";
 import { AuthContextProvider } from "./auth";
 import { EditMapContextProvider } from "./store/EditMapStore";
+import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 
 function App() {
   return (
@@ -43,6 +44,10 @@ function App() {
                     path="forget-password"
                     element={<ForgetPasswordScreen />}
                   />
+                   <Route
+                  path="reset-password/:id/:token"
+                  element={<ResetPasswordScreen />}
+                />
                   <Route path="home" element={<HomeScreen />} />
                   <Route path="community" element={<CommunityScreen />} />
                   <Route path="map-details" element={<MapDetailsScreen />} />

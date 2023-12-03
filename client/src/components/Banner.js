@@ -93,6 +93,21 @@ export default function Banner(props) {
         </Typography>
       );
       break;
+    case "RESET_PASSWORD":
+      middleOfBanner = (
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            color: "#246BAD",
+            fontSize: "2em",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {"Reset Password"}
+        </Typography>
+      );
+      break;
     case "ACCOUNT_DETAIL":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
@@ -169,6 +184,8 @@ export default function Banner(props) {
   const logoTo =
     window.location.pathname === "/login" ||
     window.location.pathname === "/register" ||
+    window.location.pathname.startsWith("/reset-password") ||
+    window.location.pathname === "/forget-password" ||
     window.location.pathname === "/"
       ? "/"
       : "/home";
