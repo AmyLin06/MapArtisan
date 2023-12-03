@@ -14,6 +14,7 @@ export const AuthActionType = {
   UPDATE_USER: "UPDATE_USER",
   HIDE_MODALS: "HIDE_MODALS",
   FORGET_PASSWORD: "FORGET_PASSWORD",
+  FORGET_PASSWORD: "FORGET_PASSWORD",
 };
 
 const CurrentModal = {
@@ -172,6 +173,41 @@ function AuthContextProvider(props) {
           loggedIn: false,
           errorMessage: error.response.data.errorMessage,
           currentModal: CurrentModal.ACCOUNT_REGISTER_FAIL,
+        },
+      });
+    }
+  };
+
+  auth.resetPassword = async function (password, passwordVerify, id, token) {
+    try {
+      const response = await api.resetPassword(
+        password,
+        passwordVerify,
+        id,
+        token
+      );
+      if (response.status === 200) {
+        authReducer({
+          type: AuthActionType.FORGET_PASSWORD,
+          payload: {
+            currentModal: CurrentModal.NONE,
+            user: null,
+            loggedIn: false,
+            errorMessage: null,
+            guest: false,
+          },
+        });
+        history("/login");
+      }
+    } catch (error) {
+      authReducer({
+        type: AuthActionType.FORGET_PASSWORD,
+        payload: {
+          user: null,
+          loggedIn: false,
+          errorMessage: error.response.data.errorMessage,
+          currentModal: CurrentModal.ACCOUNT_LOGIN_FAIL, //need to update to reset fail
+          guest: false,
         },
       });
     }

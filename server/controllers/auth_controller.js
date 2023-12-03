@@ -1,6 +1,16 @@
 const auth = require("../auth");
 const User = require("../models/user-model");
 const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+const jwt = require("jsonwebtoken");
+
+dotenv.config();
+const isDevelopment = process.env.NODE_ENV === "development";
+baseURL = isDevelopment
+  ? "http://localhost:3000/reset-password"
+  : `${process.env.REACT_APP_URL}/reset-password` ||
+    "http://localhost:3000/reset-password";
 
 getLoggedIn = async (req, res) => {
   try {
@@ -28,6 +38,105 @@ getLoggedIn = async (req, res) => {
   } catch (err) {
     console.log("err: " + err);
     res.json(false);
+  }
+};
+
+resetPassword = async (req, res) => {
+  const { id, token } = req.params;
+  const { password, passwordVerify } = req.body;
+  if (password !== passwordVerify) {
+    return res.status(400).json({
+      errorMessage: "Please enter the same password twice.",
+    });
+  }
+  try {
+    // Verify the JWT token
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+      if (err) {
+        return res
+          .status(400)
+          .json({ errorMessage: "Invalid or expired token." });
+      } else {
+        // Generate a salt and hash the new password
+        const saltRounds = 10;
+        const salt = await bcrypt.genSalt(saltRounds);
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        // Update the user's password in the database
+        await User.findByIdAndUpdate(
+          { _id: id },
+          { passwordHash: passwordHash }
+        );
+
+        return res.status(200).json({
+          message: "Password reset successfully.",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    return res.status(500).json({
+      errorMessage: "Internal server error. Please try again later.",
+    });
+  }
+};
+
+forgetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res
+        .status(400)
+        .json({ errorMessage: "Please enter all required fields." });
+    }
+    const existingUser = await User.findOne({ email: email });
+    console.log("existingUser: " + existingUser);
+    if (!existingUser) {
+      return res.status(401).json({
+        errorMessage: "Wrong email provided.",
+      });
+    }
+    const token = auth.signToken(existingUser._id);
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "mapartisannavy@gmail.com",
+        pass: "lrjmvsfuudjbkroe",
+      },
+    });
+    console.log(baseURL);
+    const mailOptions = {
+      from: "mapartisannavy@gmail.com",
+      to: email,
+      subject: "Reset Your Password",
+      text:
+        "Here is your LINK for RESET " +
+        `${baseURL}/${existingUser._id}/${token}`,
+    };
+
+    const sendMailAsync = async () => {
+      return new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error("Email send error:", error);
+            reject(error);
+          } else {
+            console.log("Email sent: %s", info.messageId);
+            resolve(info);
+          }
+        });
+      });
+    };
+    await sendMailAsync();
+    return res.status(200).json({
+      loggedIn: false,
+      user: null,
+      errorMessage: "?",
+    });
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ errorMessage: "We cannot reset your password." });
   }
 };
 
@@ -124,12 +233,9 @@ updateUser = async (req, res) => {
       console.log("Password and password verify match");
 
       if (!currentPassword) {
-        return res
-          .status(400)
-          .json({
-            errorMessage:
-              "Please enter passwords if you want to update password",
-          });
+        return res.status(400).json({
+          errorMessage: "Please filled in all required fields.",
+        });
       }
       const passwordCorrect = await bcrypt.compare(
         currentPassword,
@@ -148,12 +254,10 @@ updateUser = async (req, res) => {
       existingUser.passwordHash = passwordHash;
     } else {
       if (newPassword || confirmNewPassword) {
-        return res
-          .status(400)
-          .json({
-            errorMessage:
-              "Please enter all the password text field if you want to update the password.",
-          });
+        return res.status(400).json({
+          errorMessage:
+            "Please enter all the password text field if you want to update the password.",
+        });
       }
     }
 
@@ -300,4 +404,6 @@ module.exports = {
   loginUser,
   logoutUser,
   updateUser,
+  forgetPassword,
+  resetPassword,
 };
