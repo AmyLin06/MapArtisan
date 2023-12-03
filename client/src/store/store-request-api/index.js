@@ -42,9 +42,14 @@ export const updateMapMetaData = (mapID, field) => {
   });
 };
 
+export const getUserMaps = () => {
+  return api.get(`/usermaps`);
+};
+
 const apis = {
   createNewMap,
   updateMapMetaData,
+  getUserMaps,
 };
 
 export default apis;

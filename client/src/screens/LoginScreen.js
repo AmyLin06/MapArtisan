@@ -8,6 +8,7 @@ import Copyright from "../components/CopyRight";
 import Button from "@mui/material/Button";
 import { useContext, useState } from "react";
 import AuthContext from "../auth";
+import GlobalStoreContext from "../store/GlobalStore";
 import { IconButton } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -16,12 +17,13 @@ import { FailModalTypes } from "../components/Modals/ModalTypes";
 
 const LoginScreen = () => {
   const { auth } = useContext(AuthContext);
+  const { store } = useContext(GlobalStoreContext);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    auth.loginUser(formData.get("email"), formData.get("password"));
+    auth.loginUser(formData.get("email"), formData.get("password"), store);
   };
 
   const handleTogglePasswordVisibility = () => {

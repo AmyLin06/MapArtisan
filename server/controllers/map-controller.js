@@ -147,8 +147,41 @@ updateMapMetaData = async (req, res) => {
   }
 };
 
+getUserMaps = async (req, res) => {
+  console.log("in server getUserMaps");
+
+  try {
+    const user = await User.findOne({ _id: req.userId });
+
+    if (!user) {
+      return res.status(404).json({
+        errorMessage: "User not found",
+      });
+    }
+
+    const mapMetaDataList = user.maps;
+    const detailedMapMetaDataList = await Promise.all(
+      mapMetaDataList.map(async (mapMetaData) => {
+        const detailedMapMetaData = await MapMetaData.findById(mapMetaData._id);
+        return detailedMapMetaData;
+      })
+    );
+
+    return res.status(201).json({
+      maps: detailedMapMetaDataList,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      errorMessage: "Error finding user's maps",
+    });
+  }
+};
+
 module.exports = {
   createMap,
   deleteMap,
   updateMapMetaData,
+  getUserMaps,
 };

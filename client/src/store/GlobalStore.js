@@ -72,6 +72,14 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
         });
       }
+      case GlobalStoreActionType.LOAD_HOME_MAPS: {
+        return setStore({
+          currentModal: CurrentModal.NONE,
+          currentMap: store.currentMap,
+          homeMapLists: payload,
+          communityMapList: store.communityMapList,
+        });
+      }
       default:
         return store;
     }
@@ -118,7 +126,18 @@ function GlobalStoreContextProvider(props) {
       navigate("/edit");
     } else console.log("API FAILED TO CREATE A NEW MAP");
   };
-  // };
+
+  store.getHomeMapMetaData = async function () {
+    const response = await api.getUserMaps();
+    if (response.status === 201) {
+      // tps.clearAllTransactions();
+      storeReducer({
+        type: GlobalStoreActionType.LOAD_HOME_MAPS,
+        payload: response.data.maps,
+      });
+    } else console.log("API FAILED TO LOAD HOME MAPS");
+  };
+
   return (
     <GlobalStoreContext.Provider
       value={{
@@ -129,6 +148,5 @@ function GlobalStoreContextProvider(props) {
     </GlobalStoreContext.Provider>
   );
 }
-
 export default GlobalStoreContext;
 export { GlobalStoreContextProvider };
