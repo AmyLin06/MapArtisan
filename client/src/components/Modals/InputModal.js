@@ -31,10 +31,14 @@ export default function InputModal(props) {
     store.hideModals();
   };
 
+  const handleInputClick = (event) => {
+    event.stopPropagation();
+  };
   var InputField = (
     <TextField
       variant="outlined"
       fullWidth
+      onClick={handleInputClick}
       // defaultValue={
       //   store.currentMap?.titleMap ? store.currentMap.titleMap : "MyMap"
       // }
@@ -56,6 +60,7 @@ export default function InputModal(props) {
           multiline
           rows={10}
           placeholder="Hi, I'm Bob and I just wanted to say that the map you created was awesome..."
+          onClick={handleInputClick}
           style={{
             "& fieldset": { border: "none" },
             width: "100%",

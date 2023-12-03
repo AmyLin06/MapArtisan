@@ -5,11 +5,8 @@
     "forks": 321,
     "ownerUsername": "TomTilly",
     "layers": [
-        {"layerName": "KML layer"},
-        {"layerName": "GeoJSON layer"},
-        {"layerName": "another KML layer"},
-        {"layerName": "another GeoJSON layer"}
     ],
+    "markerCoords": [],
     "profilePic": "https://png.pngtree.com/thumb_back/fh260/background/20230612/pngtree-man-wearing-glasses-is-wearing-colorful-background-image_2905240.jpg", 
     "comments": [
         {
@@ -29,8 +26,7 @@
             "date": "3 month ago"
         }
     ],
-    "likes": 7,
-    "forks": 168,
     "isPublished": true,
-    "publishedDate": "2 days ago"
+    "publishedDate": "2 days ago",
+    "lastOpened": "5 days ago"
 }

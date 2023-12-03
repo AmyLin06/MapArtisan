@@ -1,5 +1,5 @@
 const auth = require("../auth");
-const User = require("../models/user_model");
+const User = require("../models/user-model");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
@@ -179,7 +179,7 @@ loginUser = async (req, res) => {
       .cookie("token", token, {
         httpOnly: false,
         secure: true,
-        sameSite: true,
+        sameSite: "none",
       })
       .status(200)
       .json({
@@ -234,7 +234,7 @@ updateUser = async (req, res) => {
 
       if (!currentPassword) {
         return res.status(400).json({
-          errorMessage: "Please enter passwords if you want to update password",
+          errorMessage: "Please filled in all required fields.",
         });
       }
       const passwordCorrect = await bcrypt.compare(

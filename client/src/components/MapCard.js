@@ -16,13 +16,23 @@ export default function MapCard(props) {
   //By default, screen="HOME"
   const { currentMap, screen } = props;
 
+  const shortMonthDate = (dateObj) => {
+    return dateObj
+      .toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+      .replace(/(\w{3}) (\d+), (\d+)/, "$1 $2, $3");
+  };
+
   var subtextArea = (
     <Grid item container alignItems="center">
       {currentMap.isPublished && (
         <GroupsIcon style={{ fontSize: "1.5rem", marginRight: 4 }} />
       )}
       <Typography variant="h7" color="textSecondary">
-        {"Edited: Nov 10, 2023"}
+        {"Edited: " + shortMonthDate(new Date(currentMap.updatedAt))}
       </Typography>
     </Grid>
   );
@@ -37,7 +47,7 @@ export default function MapCard(props) {
             {currentMap.isPublished && (
               <GroupsIcon style={{ fontSize: "1.3rem", marginRight: 4 }} />
             )}
-            {"Published: " + currentMap.publishedDate}
+            {"Published: " + shortMonthDate(new Date(currentMap.publishedDate))}
           </Grid>
         </Typography>
       </Grid>
@@ -50,11 +60,7 @@ export default function MapCard(props) {
       return;
     }
 
-    if (currentMap.isPublished) {
-      navigate("/map-details");
-    } else {
-      navigate("/edit");
-    }
+    currentMap.isPublished ? navigate("/map-details") : navigate("/edit");
   }
 
   return (
@@ -68,7 +74,9 @@ export default function MapCard(props) {
         <CardMedia
           component="img"
           height="40%"
-          image={currentMap.mapPic}
+          image={
+            "https://cdn.britannica.com/37/245037-050-79129D52/world-map-continents-oceans.jpg"
+          }
           alt="Map of the US"
         />
         <Box display="flex">
@@ -79,7 +87,7 @@ export default function MapCard(props) {
             alignItems="baseline"
           >
             <Grid item xs={12}>
-              <Typography variant="h6">{currentMap.name}</Typography>
+              <Typography variant="h6">{currentMap.mapTitle}</Typography>
             </Grid>
             {subtextArea}
           </Grid>

@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import ProfileMenuList from "./MenuLists/ProfileMenuList";
 import { useContext } from "react";
 import AuthContext from "../auth";
+import { useContext } from "react";
+import AuthContext from "../auth";
 
 //need to pass a "screen" prop to Banner, note that ACCOUNT_DETAIL, PROFILE, and MAP_DETAIL have the same banner
 //Example: <Banner screen={"COMMUNITY"} />

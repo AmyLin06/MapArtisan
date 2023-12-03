@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "./auth-request-api";
 
@@ -13,6 +13,7 @@ export const AuthActionType = {
   REGISTER_USER: "REGISTER_USER",
   UPDATE_USER: "UPDATE_USER",
   HIDE_MODALS: "HIDE_MODALS",
+  FORGET_PASSWORD: "FORGET_PASSWORD",
   FORGET_PASSWORD: "FORGET_PASSWORD",
 };
 
@@ -241,7 +242,7 @@ function AuthContextProvider(props) {
     }
   };
 
-  auth.loginUser = async function (email, password) {
+  auth.loginUser = async function (email, password, store) {
     try {
       const response = await api.loginUser(email, password);
       if (response.status === 200) {
@@ -257,13 +258,13 @@ function AuthContextProvider(props) {
           },
         });
         history("/home");
-        console.log(auth.user);
+        store.getHomeMapMetaData();
       }
     } catch (error) {
       authReducer({
         type: AuthActionType.LOGIN_USER,
         payload: {
-          user: auth.user,
+          user: null,
           loggedIn: false,
           errorMessage: error.response.data.errorMessage,
           currentModal: CurrentModal.ACCOUNT_LOGIN_FAIL,
