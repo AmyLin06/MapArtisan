@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import { React, useState, useRef, useContext } from "react";
 import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { Typography, Box, Paper } from "@mui/material";
+import { Typography, Box, Paper, Tooltip } from "@mui/material";
+import { EditMapContext } from "../../store/EditMapStore";
+import { read } from "shapefile";
 
 //menu that opens and displays options for data formats the user can import
 export default function ImportMenuList() {
+  const { editStore } = useContext(EditMapContext);
   const [anchorEl, setAnchorEl] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -19,24 +23,79 @@ export default function ImportMenuList() {
 
   const open = Boolean(anchorEl);
 
+  const handleImportFile = (event) => {
+    fileInputRef.current.click();
+  };
+
+  const getFileExtension = (filename) => {
+    return filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2);
+  };
+
+  const handleFileChange = (event) => {
+    event.preventDefault();
+    const selectedFile = event.target.files[0];
+    const fileReader = new FileReader();
+
+    if (getFileExtension(selectedFile.name) === "json") {
+      // Add the GeoJSON file as a layer to the current map
+      fileReader.onload = (event) => {
+        const data = JSON.parse(event.target.result);
+        editStore.addLayer(selectedFile.name, data, "GEOJSON");
+      };
+      fileReader.readAsText(event.target.files[0]);
+    } else if (getFileExtension(selectedFile.name) === "kml") {
+      fileReader.onload = (event) => {
+        const parser = new DOMParser();
+        const text = parser.parseFromString(event.target.result, "text/xml");
+        editStore.addLayer(selectedFile.name, text, "KML");
+      };
+      fileReader.readAsText(event.target.files[0]);
+    } else if (getFileExtension(selectedFile.name) === "shp") {
+      fileReader.onload = async (event) => {
+        const arrayBuffer = event.target.result; // ArrayBuffer from FileReader
+
+        try {
+          const { features } = await read(arrayBuffer);
+          const geoJson = {
+            type: "FeatureCollection",
+            features: features || [],
+          };
+          editStore.addLayer(selectedFile.name, geoJson, "SHAPEFILE");
+        } catch (error) {
+          console.error("Error parsing shapefile SAD:", error);
+        }
+      };
+      fileReader.readAsArrayBuffer(event.target.files[0]);
+    }
+    handleClose();
+  };
+
   return (
     <>
-      <IconButton onClick={handleOpen}>
-        <Box
-          style={{
-            display: "flex",
-            alignItems: "center",
-            verticalAlign: "center",
-          }}
-        >
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
+
+      <Tooltip title="Import File" disableFocusListener disableTouchListener>
+        <IconButton onClick={handleOpen}>
           <ArrowDownwardIcon style={{ fontSize: "1rem" }} />
-          <Typography style={{ verticalAlign: "middle" }}>Import</Typography>
-        </Box>
-      </IconButton>
-      <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
+        </IconButton>
+      </Tooltip>
+
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+        }}
+      >
         <Paper style={{ background: "#FFFDF3" }}>
           <MenuItem
-            onClick={handleClose}
+            onClick={handleImportFile}
             sx={{
               "&:hover": {
                 background: "#246BAD",
@@ -46,7 +105,7 @@ export default function ImportMenuList() {
             {"KML"}
           </MenuItem>
           <MenuItem
-            onClick={handleClose}
+            onClick={handleImportFile}
             sx={{
               "&:hover": {
                 background: "#246BAD",
@@ -56,7 +115,7 @@ export default function ImportMenuList() {
             {"GeoJSON"}
           </MenuItem>
           <MenuItem
-            onClick={handleClose}
+            onClick={handleImportFile}
             sx={{
               "&:hover": {
                 background: "#246BAD",

@@ -7,10 +7,6 @@
     background-color: #246BAD;
 }
 
-.workspace-content {
-    display: grid;
-    grid-template-columns: 15% 85%;
-}
 .sidebar{
     height: 100vh;
     background-color: #B4CEE5;
@@ -19,4 +15,9 @@
     padding:1%;
     display: flex;
     justify-content: center;
+}
+
+.leaflet-container {
+    height: 85vh;
+    z-index: 1;
 }

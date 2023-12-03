@@ -1,7 +1,7 @@
 import { createContext, useState, useContext } from "react";
 import api from "./store-request-api";
 import AuthContext from "../auth";
-import EditStoreContext from "./EditMapStore";
+import EditMapContext from "./EditMapStore";
 import { useNavigate } from "react-router-dom";
 
 export const GlobalStoreContext = createContext({});
@@ -27,7 +27,7 @@ const CurrentModal = {
 
 function GlobalStoreContextProvider(props) {
   const { auth } = useContext(AuthContext);
-  const { editStore } = useContext(EditStoreContext);
+  const { editStore } = useContext(EditMapContext);
   const navigate = useNavigate();
 
   const [store, setStore] = useState({
@@ -110,7 +110,6 @@ function GlobalStoreContextProvider(props) {
   store.createNewMap = async function () {
     let mapName = "Untitled";
     const response = await api.createNewMap(mapName, null, auth.user.email);
-    console.log("createNewMap response: " + response);
     if (response.status === 201) {
       // tps.clearAllTransactions();
       let newMap = response.data.map;
@@ -118,10 +117,13 @@ function GlobalStoreContextProvider(props) {
         type: GlobalStoreActionType.CREATE_NEW_MAP,
         payload: newMap,
       });
-      editStore.setMap(response.data.map);
-
-      navigate("/edit"); // IF IT'S A VALID MAP THEN LET'S START EDITING IT
-      store.getHomeMapMetaData(); //update home lists as user has a new map
+      editStore.setMap(response.data.map, {
+        mapID: 12345,
+        layers: [],
+        markers: [],
+      });
+      // IF IT'S A VALID MAP THEN LET'S START EDITING IT
+      navigate("/edit");
     } else console.log("API FAILED TO CREATE A NEW MAP");
   };
 
