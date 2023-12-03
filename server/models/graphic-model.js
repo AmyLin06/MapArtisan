@@ -18,7 +18,7 @@ const GraphicSchema = new Schema(
       default: [],
     },
     markers: {
-      type: [{ icon: String, coordinates: { lat: Number, lng: Number } }],
+      type: [{ iconKey: String, coordinates: { lat: Number, lng: Number } }],
       default: [],
     },
   },

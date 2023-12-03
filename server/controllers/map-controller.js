@@ -155,7 +155,7 @@ updateMapMetaData = async (req, res) => {
   }
 };
 
-updateMapGraphic = async (req, res) => {
+updateMapGraphicById = async (req, res) => {
   const body = req.body;
   console.log("updateMapGraphic body: " + JSON.stringify(body));
   if (!body) {
@@ -167,12 +167,13 @@ updateMapGraphic = async (req, res) => {
 
   try {
     const mapgraphic = await MapGraphic.findOne({ _id: req.params.id });
+    console.log("graphic:", mapgraphic);
     if (!mapgraphic) {
       return res.status(404).json({ message: "Map graphics not found!" });
     }
 
     const user = await User.findOne({ _id: mapgraphic.ownerID });
-    if (user._id !== req.userId) {
+    if (user._id.toString() !== req.userId) {
       return res
         .status(401)
         .json({ success: false, message: "Authentication error" });
@@ -226,10 +227,56 @@ getUserMaps = async (req, res) => {
   }
 };
 
+getMapMetaDataById = async (req, res) => {
+  console.log("in server getMapMetaDataById");
+  try {
+    const detailedMapMetaData = await MapMetaData.findById(req.params.mapId);
+
+    return res.status(201).json({
+      map: detailedMapMetaData,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      errorMessage: "Error finding map by ID",
+    });
+  }
+};
+
+getMapGraphicById = async (req, res) => {
+  try {
+    const mapgraphic = await MapGraphic.findOne({ mapID: req.params.mapId });
+    if (!mapgraphic) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Map graphic nto found" });
+    }
+    const user = await User.findOne({ _id: mapgraphic.ownerID });
+    if (user._id == req.userId) {
+      return res.status(200).json({
+        success: true,
+        mapgraphic: mapgraphic,
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ success: false, errorMessage: "Authentication error" });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
+  }
+};
+
 module.exports = {
   createMap,
   deleteMap,
   updateMapMetaData,
   getUserMaps,
-  updateMapGraphic,
+  getMapMetaDataById,
+  updateMapGraphicById,
+  getMapGraphicById,
 };
