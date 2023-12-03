@@ -129,8 +129,6 @@ function GlobalStoreContextProvider(props) {
 
   store.getHomeMapMetaData = async function () {
     const response = await api.getUserMaps();
-    console.log("getHomeMapMetaData response: " + response.data.maps);
-    console.log(response);
     if (response.status === 201) {
       // tps.clearAllTransactions();
       storeReducer({

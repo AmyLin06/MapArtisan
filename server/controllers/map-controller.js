@@ -160,12 +160,9 @@ getUserMaps = async (req, res) => {
     }
 
     const mapMetaDataList = user.maps;
-    console.log("mapMetaDataList");
-    console.log(mapMetaDataList);
     const detailedMapMetaDataList = await Promise.all(
       mapMetaDataList.map(async (mapMetaData) => {
         const detailedMapMetaData = await MapMetaData.findById(mapMetaData._id);
-        console.log(detailedMapMetaData);
         return detailedMapMetaData;
       })
     );
