@@ -44,6 +44,10 @@ function App() {
                     path="forget-password"
                     element={<ForgetPasswordScreen />}
                   />
+                   <Route
+                  path="reset-password/:id/:token"
+                  element={<ResetPasswordScreen />}
+                />
                   <Route path="home" element={<HomeScreen />} />
                   <Route path="community" element={<CommunityScreen />} />
                   <Route path="map-details" element={<MapDetailsScreen />} />
@@ -57,32 +61,6 @@ function App() {
               </Routes>
             </GlobalStoreContextProvider>
           </EditMapContextProvider>
-          <GlobalStoreContextProvider>
-            <Routes>
-              <Route path="/">
-                <Route index element={<SplashScreen />} />
-                <Route path="login" element={<LoginScreen />} />
-                <Route path="register" element={<RegisterScreen />} />
-                <Route
-                  path="forget-password"
-                  element={<ForgetPasswordScreen />}
-                />
-                <Route
-                  path="reset-password/:id/:token"
-                  element={<ResetPasswordScreen />}
-                />
-                <Route
-                  path="home"
-                  element={<HomeScreen maps={homeMaps.maps} />}
-                />
-                <Route path="community" element={<CommunityScreen />} />
-                <Route path="map-details" element={<MapDetailsScreen />} />
-                <Route path="account-setting" element={<AccountViewScreen />} />
-                <Route path="profile" element={<ProfileScreen />} />
-                <Route path="edit" element={<WorkspaceScreen />} />
-              </Route>
-            </Routes>
-          </GlobalStoreContextProvider>
         </AuthContextProvider>
       </BrowserRouter>
     </div>
