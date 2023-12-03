@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^13.5.0"
+    "cypress": "^13.5.0",
+    "vite-plugin-rewrite-all": "^1.0.2"
   }
 }
