@@ -13,6 +13,7 @@ import WorkspaceScreen from "./screens/WorkspaceScreen";
 import { GlobalStoreContextProvider } from "./store/GlobalStore";
 import { AuthContextProvider } from "./auth";
 import ForgetPasswordScreen from "./screens/ForgetPasswordScreen";
+import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 
 function App() {
   return (
@@ -41,6 +42,10 @@ function App() {
                 <Route
                   path="forget-password"
                   element={<ForgetPasswordScreen />}
+                />
+                <Route
+                  path="reset-password/:id/:token"
+                  element={<ResetPasswordScreen />}
                 />
                 <Route
                   path="home"

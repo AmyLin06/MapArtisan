@@ -47,7 +47,7 @@ const ForgetPasswordScreen = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Reset Password
+              Send Email
             </Button>
           </Stack>
         </Box>

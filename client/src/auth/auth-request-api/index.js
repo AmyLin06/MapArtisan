@@ -37,6 +37,19 @@ export const forgetPassword = (email) => {
   );
 };
 
+export const resetPassword = (password, passwordVerify, id, token) => {
+  console.log(id);
+  console.log(token);
+  return api.post(
+    `/reset-password/${id}/${token}`,
+    {
+      password: password,
+      passwordVerify: passwordVerify,
+    },
+    { withCredentials: true }
+  );
+};
+
 export const loginUser = (email, password) => {
   return api.post(
     `/login/`,
@@ -96,6 +109,7 @@ const apis = {
   logoutUser,
   updateUser,
   forgetPassword,
+  resetPassword,
 };
 
 export default apis;
