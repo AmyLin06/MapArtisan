@@ -18,5 +18,6 @@ const auth = require("../auth");
 router.post("/create", auth.verify, MapController.createMap);
 router.put("/updatemetadata", auth.verify, MapController.updateMapMetaData);
 router.get("/usermaps", auth.verify, MapController.getUserMaps);
+router.get("/mapById/:mapId", auth.verify, MapController.getMapMetaDataById);
 
 module.exports = router;

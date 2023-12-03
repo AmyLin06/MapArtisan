@@ -179,9 +179,27 @@ getUserMaps = async (req, res) => {
   }
 };
 
+getMapMetaDataById = async (req, res) => {
+  console.log("in server getMapMetaDataById");
+  try {
+    const detailedMapMetaData = await MapMetaData.findById(req.params.mapId);
+
+    return res.status(201).json({
+      map: detailedMapMetaData,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      errorMessage: "Error finding map by ID",
+    });
+  }
+};
+
 module.exports = {
   createMap,
   deleteMap,
   updateMapMetaData,
   getUserMaps,
+  getMapMetaDataById,
 };

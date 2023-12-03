@@ -16,7 +16,12 @@ const CommentSection = (props) => {
       </Typography>
 
       <Box display="flex">
-        <Avatar alt="user-profile-pic" src={currentUser.profilePic} />
+        <Avatar
+          alt="user-profile-pic"
+          src={
+            "https://png.pngtree.com/thumb_back/fh260/background/20230612/pngtree-man-wearing-glasses-is-wearing-colorful-background-image_2905240.jpg"
+          }
+        />
         <TextField
           multiline
           variant="standard"
