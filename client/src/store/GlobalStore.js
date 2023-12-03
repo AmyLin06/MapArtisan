@@ -151,7 +151,7 @@ function GlobalStoreContextProvider(props) {
       let newMapMetaData = response.data.map;
       storeReducer({
         type: GlobalStoreActionType.SET_CURRENT_MAP,
-        payload: { newMapMetaData },
+        payload: newMapMetaData,
       });
       return newMapMetaData;
     } else console.log("API FAILED TO GET AND SET MAP");
