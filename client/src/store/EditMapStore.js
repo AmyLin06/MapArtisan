@@ -192,6 +192,17 @@ function EditMapContextProvider(props) {
     } else console.log("API FAILED TO PUBLISH MAP");
   };
 
+  editStore.saveGraphic = async function () {
+    const response = await api.updateMapGraphicById(
+      editStore.currentMapGraphic._id,
+      editStore.currentMapGraphic
+    );
+
+    if (response.status === 200) {
+      console.log(response.message);
+    } else console.log("Failed to save map graphics");
+  };
+
   return (
     <EditMapContext.Provider
       value={{

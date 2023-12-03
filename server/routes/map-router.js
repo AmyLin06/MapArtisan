@@ -17,6 +17,7 @@ const auth = require("../auth");
 
 router.post("/create", auth.verify, MapController.createMap);
 router.put("/updatemetadata", auth.verify, MapController.updateMapMetaData);
+router.put("/updategraphic/:id", auth.verify, MapController.updateMapGraphic);
 router.get("/usermaps", auth.verify, MapController.getUserMaps);
 
 module.exports = router;

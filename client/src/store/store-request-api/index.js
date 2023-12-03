@@ -46,10 +46,18 @@ export const getUserMaps = () => {
   return api.get(`/usermaps`);
 };
 
+export const updateMapGraphicById = (id, mapgraphic) => {
+  return api.put(`/updategraphic/${id}`, {
+    //SPECIFY THE PAYLOAD
+    mapgraphic: mapgraphic,
+  });
+};
+
 const apis = {
   createNewMap,
   updateMapMetaData,
   getUserMaps,
+  updateMapGraphicById,
 };
 
 export default apis;

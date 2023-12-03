@@ -1,4 +1,5 @@
 const MapMetaData = require("../models/map-model");
+const MapGraphic = require("../models/graphic-model");
 const User = require("../models/user-model");
 const auth = require("../auth");
 
@@ -29,6 +30,7 @@ createMap = async (req, res) => {
 
     console.log("user found: " + JSON.stringify(user));
 
+    //create the map meta data object
     const map = new MapMetaData({
       ownerID: user._id,
       ownerUsername: user.userName,
@@ -38,8 +40,14 @@ createMap = async (req, res) => {
 
     user.maps.push(map._id);
 
+    //create the corresponding map graphic object
+    const graphic = new MapGraphic({
+      ownerID: user._id,
+      mapID: map._id,
+    });
+
     // Save the user and the new mapmetadata
-    await Promise.all([user.save(), map.save()]);
+    await Promise.all([user.save(), map.save(), graphic.save()]);
 
     console.log("map: " + map.toString());
 
@@ -147,6 +155,45 @@ updateMapMetaData = async (req, res) => {
   }
 };
 
+updateMapGraphic = async (req, res) => {
+  const body = req.body;
+  console.log("updateMapGraphic body: " + JSON.stringify(body));
+  if (!body) {
+    return res.status(400).json({
+      success: false,
+      error: "You must provide map graphics",
+    });
+  }
+
+  try {
+    const mapgraphic = await MapGraphic.findOne({ _id: req.params.id });
+    if (!mapgraphic) {
+      return res.status(404).json({ message: "Map graphics not found!" });
+    }
+
+    const user = await User.findOne({ _id: mapgraphic.ownerID });
+    if (user._id !== req.userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Authentication error" });
+    }
+
+    mapgraphic.layers = body.mapgraphic.layers;
+    mapgraphic.markers = body.mapgraphic.markers;
+    await mapgraphic.save();
+
+    return res.status(200).json({
+      success: true,
+      id: mapgraphic._id,
+      message: "Map graphic updated successfully!",
+    });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ error, message: "Map graphic failed to update successfully!" });
+  }
+};
+
 getUserMaps = async (req, res) => {
   console.log("in server getUserMaps");
 
@@ -184,4 +231,5 @@ module.exports = {
   deleteMap,
   updateMapMetaData,
   getUserMaps,
+  updateMapGraphic,
 };
