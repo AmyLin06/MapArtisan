@@ -5,7 +5,6 @@ import SplashScreen from "./screens/SplashScreen";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import CommunityScreen from "./screens/CommunityScreen";
-import homeMaps from "./assets/currentUserMaps.json";
 import MapDetailsScreen from "./screens/MapDetailsScreen";
 import AccountViewScreen from "./screens/AccountViewScreen";
 import ProfileScreen from "./screens/ProfileScreen";
@@ -44,10 +43,7 @@ function App() {
                     path="forget-password"
                     element={<ForgetPasswordScreen />}
                   />
-                  <Route
-                    path="home"
-                    element={<HomeScreen maps={homeMaps.maps} />}
-                  />
+                  <Route path="home" element={<HomeScreen />} />
                   <Route path="community" element={<CommunityScreen />} />
                   <Route path="map-details" element={<MapDetailsScreen />} />
                   <Route
