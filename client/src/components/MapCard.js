@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useContext } from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import { Box, Typography, Grid } from "@mui/material";
@@ -6,6 +7,8 @@ import MapCardMenuList from "./MenuLists/MapCardMenuList";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
+import GlobalStoreContext from "../store/GlobalStore";
+import EditMapContext from "../store/EditMapStore";
 
 //Example (currentMap is mock data for a map)
 //  (screen is either "HOME" by default or "COMMMUNITY", representing which screen the map card is for):
@@ -14,7 +17,9 @@ import { Avatar } from "@mui/material";
 export default function MapCard(props) {
   const navigate = useNavigate();
   //By default, screen="HOME"
-  const { currentMap, screen } = props;
+  const { currentMap, screen, id } = props;
+  const { store } = useContext(GlobalStoreContext);
+  const { editStore } = useContext(EditMapContext);
 
   const shortMonthDate = (dateObj) => {
     return dateObj
@@ -54,13 +59,19 @@ export default function MapCard(props) {
     );
   }
 
-  function handleCardClick(event) {
+  async function handleCardClick(event) {
     event.preventDefault();
     if (event.target.closest(".kebab")) {
       return;
     }
-
-    currentMap.isPublished ? navigate("/map-details") : navigate("/edit");
+    //set the current map in the edit store by getting mapByID
+    const mapMetaData = await store.getMapMetaDataById(id);
+    if (currentMap.isPublished) {
+      navigate("/map-details");
+    } else {
+      await editStore.setMap(mapMetaData);
+      navigate("/edit");
+    }
   }
 
   return (

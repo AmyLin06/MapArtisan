@@ -46,10 +46,15 @@ export const getUserMaps = () => {
   return api.get(`/usermaps`);
 };
 
+export const getMapMetaDataById = (mapId) => {
+  return api.get(`/mapById/${mapId}`);
+};
+
 const apis = {
   createNewMap,
   updateMapMetaData,
   getUserMaps,
+  getMapMetaDataById,
 };
 
 export default apis;

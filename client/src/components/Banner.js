@@ -8,12 +8,15 @@ import { Link } from "react-router-dom";
 import ProfileMenuList from "./MenuLists/ProfileMenuList";
 import { useContext } from "react";
 import AuthContext from "../auth";
+import EditMapContext from "../store/EditMapStore";
 
 //need to pass a "screen" prop to Banner, note that ACCOUNT_DETAIL, PROFILE, and MAP_DETAIL have the same banner
 //Example: <Banner screen={"COMMUNITY"} />
 export default function Banner(props) {
   const { screen } = props;
   const { auth } = useContext(AuthContext);
+  const { editStore } = useContext(EditMapContext);
+
   var middleOfBanner = <></>;
   var rightOfBanner = <></>;
   var bannerColor = "transparent";
@@ -180,7 +183,7 @@ export default function Banner(props) {
       sx={{ paddingBottom: 3, backgroundColor: bannerColor }}
     >
       <Grid item xs={2}>
-        <Link to={logoTo}>
+        <Link to={logoTo} onClick={editStore.closeMap}>
           <CustomButton text="MapArtisan" />
         </Link>
       </Grid>

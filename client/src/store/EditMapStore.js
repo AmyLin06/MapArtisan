@@ -95,6 +95,15 @@ function EditMapContextProvider(props) {
           activeTool: editStore.activeTool,
         });
       }
+      case EditMapActionType.CLOSE_CURRENT_MAP: {
+        return setEditStore({
+          currentModal: CurrentModal.NONE,
+          currentMapMetaData: null,
+          currentMapGraphic: null,
+          currentMapIndex: -1,
+          activeTool: { tool: LeafletTool.SCROLL, detail: "NONE" },
+        });
+      }
       default:
         return editStore;
     }
@@ -164,10 +173,22 @@ function EditMapContextProvider(props) {
   };
 
   //when clicking on a private map, set the map to the current active map in the edit store
-  editStore.setMap = (mapMetaData, mapGraphic) => {
+  editStore.setMap = (mapMetaData) => {
+    const mapGraphic = {
+      mapID: 12345,
+      layers: [],
+      markers: [],
+    };
     storeReducer({
       type: EditMapActionType.SET_CURRENT_MAP,
       payload: { mapMetaData, mapGraphic },
+    });
+  };
+
+  editStore.closeMap = () => {
+    storeReducer({
+      type: EditMapActionType.CLOSE_CURRENT_MAP,
+      // payload: {},
     });
   };
 

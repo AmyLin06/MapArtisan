@@ -1,10 +1,10 @@
 import "../styles/RegisterScreen.css";
 import React, { useContext, useState, useEffect, useRef } from "react";
-import AuthContext from '../auth'
+import AuthContext from "../auth";
 import Banner from "../components/Banner";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
-import { Stack, Typography,Box } from "@mui/material";
+import { Stack, Typography, Box } from "@mui/material";
 import Copyright from "../components/CopyRight";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -15,11 +15,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Privacy from "../assets/Privacy";
 import Term from "../assets/Term";
 import { IconButton } from "@mui/material";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import FailModal from "../components/Modals/FailModal"
-import {FailModalTypes} from "../components/Modals/ModalTypes";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import FailModal from "../components/Modals/FailModal";
+import { FailModalTypes } from "../components/Modals/ModalTypes";
+import GlobalStoreContext from "../store/GlobalStore";
 
 const RegisterScreen = () => {
   const [open, setOpen] = useState(false);
@@ -28,6 +28,7 @@ const RegisterScreen = () => {
   const [dialogTitle, setDialogTitle] = useState(null);
   const { auth } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  const { store } = useContext(GlobalStoreContext);
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -45,18 +46,19 @@ const RegisterScreen = () => {
   };
 
   const handleSubmit = (event) => {
-    console.log("Here")
+    console.log("Here");
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     auth.registerUser(
-        formData.get('username'),
-        formData.get('firstname'),
-        formData.get('lastname'),
-        formData.get('email'),
-        formData.get('password'),
-        formData.get('passwordverified'),
+      formData.get("username"),
+      formData.get("firstname"),
+      formData.get("lastname"),
+      formData.get("email"),
+      formData.get("password"),
+      formData.get("passwordverified"),
+      store
     );
-};
+  };
 
   const descriptionElementRef = useRef(null);
 
@@ -92,7 +94,7 @@ const RegisterScreen = () => {
                 },
               }}
             />
-             <div className="label">Firstname</div>
+            <div className="label">Firstname</div>
             <TextField
               className="textfield"
               margin="normal"
@@ -151,7 +153,7 @@ const RegisterScreen = () => {
               fullWidth
               name="password"
               label="password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               InputProps={{
@@ -159,7 +161,10 @@ const RegisterScreen = () => {
                   borderRadius: "50px",
                 },
                 endAdornment: (
-                  <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                  <IconButton
+                    onClick={handleTogglePasswordVisibility}
+                    edge="end"
+                  >
                     {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                   </IconButton>
                 ),
@@ -173,7 +178,7 @@ const RegisterScreen = () => {
               fullWidth
               name="passwordverified"
               label="passwordverified"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               id="passwordverified"
               autoComplete="current-password"
               InputProps={{
@@ -181,7 +186,10 @@ const RegisterScreen = () => {
                   borderRadius: "50px",
                 },
                 endAdornment: (
-                  <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                  <IconButton
+                    onClick={handleTogglePasswordVisibility}
+                    edge="end"
+                  >
                     {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                   </IconButton>
                 ),
@@ -252,7 +260,7 @@ const RegisterScreen = () => {
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-      <FailModal modalType = {FailModalTypes.ACCOUNT_REGISTER_FAIL} />
+      <FailModal modalType={FailModalTypes.ACCOUNT_REGISTER_FAIL} />
     </>
   );
 };
