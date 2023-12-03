@@ -2,7 +2,15 @@ const auth = require("../auth");
 const User = require("../models/user_model");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
+
+dotenv.config();
+const isDevelopment = process.env.NODE_ENV === "development";
+baseURL = isDevelopment
+  ? "http://localhost:3000/reset-password"
+  : `${process.env.REACT_APP_URL}/reset-password` ||
+    "http://localhost:3000/reset-password";
 
 getLoggedIn = async (req, res) => {
   try {
@@ -96,14 +104,14 @@ forgetPassword = async (req, res) => {
         pass: "lrjmvsfuudjbkroe",
       },
     });
-
+    console.log(baseURL);
     const mailOptions = {
       from: "mapartisannavy@gmail.com",
       to: email,
       subject: "Reset Your Password",
       text:
         "Here is your LINK for RESET " +
-        `http://localhost:3000/reset-password/${existingUser._id}/${token}`,
+        `${baseURL}/${existingUser._id}/${token}`,
     };
 
     const sendMailAsync = async () => {
