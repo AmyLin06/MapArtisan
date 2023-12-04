@@ -81,6 +81,14 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
         });
       }
+      case GlobalStoreActionType.LOAD_COMMUNITY_MAPS: {
+        return setStore({
+          currentModal: CurrentModal.NONE,
+          currentMap: store.currentMap,
+          homeMapList: store.homeMapList,
+          communityMapList: payload,
+        });
+      }
       case GlobalStoreActionType.SET_CURRENT_MAP: {
         return setStore({
           currentModal: CurrentModal.NONE,
@@ -141,6 +149,17 @@ function GlobalStoreContextProvider(props) {
         payload: response.data.maps,
       });
     } else console.log("API FAILED TO LOAD HOME MAPS");
+  };
+
+  store.getCommunityMapMetaData = async function () {
+    const response = await api.getCommunityMaps();
+    if (response.status === 201) {
+      // tps.clearAllTransactions();
+      storeReducer({
+        type: GlobalStoreActionType.LOAD_COMMUNITY_MAPS,
+        payload: response.data.maps,
+      });
+    } else console.log("API FAILED TO LOAD COMMUNITY MAPS");
   };
 
   store.getMapMetaDataById = async function (mapId) {

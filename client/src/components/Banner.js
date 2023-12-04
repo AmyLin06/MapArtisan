@@ -9,12 +9,14 @@ import ProfileMenuList from "./MenuLists/ProfileMenuList";
 import { useContext } from "react";
 import AuthContext from "../auth";
 import EditMapContext from "../store/EditMapStore";
+import GlobalStoreContext from "../store/GlobalStore";
 
 //need to pass a "screen" prop to Banner, note that ACCOUNT_DETAIL, PROFILE, and MAP_DETAIL have the same banner
 //Example: <Banner screen={"COMMUNITY"} />
 export default function Banner(props) {
   const { screen } = props;
   const { auth } = useContext(AuthContext);
+  const { store } = useContext(GlobalStoreContext);
   const { editStore } = useContext(EditMapContext);
 
   var middleOfBanner = <></>;
@@ -24,7 +26,10 @@ export default function Banner(props) {
   const communityLink = (
     <Link to="/community">
       <Avatar sx={{ bgcolor: "#246BAD" }}>
-        <GroupsIcon style={{ fontSize: "2rem" }} />
+        <GroupsIcon
+          style={{ fontSize: "2rem" }}
+          onClick={store.getCommunityMapMetaData}
+        />
       </Avatar>
     </Link>
   );

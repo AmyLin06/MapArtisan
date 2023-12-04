@@ -234,6 +234,26 @@ getUserMaps = async (req, res) => {
   }
 };
 
+getCommunityMaps = async (req, res) => {
+  console.log("in server getCommunityMaps");
+
+  try {
+    const detailedMapMetaDataList = await MapMetaData.find({
+      isPublished: true,
+    });
+
+    return res.status(201).json({
+      maps: detailedMapMetaDataList,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      errorMessage: "Error finding user's maps",
+    });
+  }
+};
+
 getMapMetaDataById = async (req, res) => {
   console.log("in server getMapMetaDataById");
   try {
@@ -283,6 +303,7 @@ module.exports = {
   deleteMap,
   updateMapMetaData,
   getUserMaps,
+  getCommunityMaps,
   getMapMetaDataById,
   updateMapGraphicById,
   getMapGraphicById,
