@@ -250,7 +250,7 @@ getMapGraphicById = async (req, res) => {
     if (!mapgraphic) {
       return res
         .status(400)
-        .json({ success: false, error: "Map graphic nto found" });
+        .json({ success: false, error: "Map graphic not found" });
     }
     const user = await User.findOne({ _id: mapgraphic.ownerID });
     if (user._id == req.userId) {

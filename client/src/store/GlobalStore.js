@@ -156,8 +156,24 @@ function GlobalStoreContextProvider(props) {
     } else console.log("API FAILED TO GET AND SET MAP");
   };
 
-  store.renameMap = async function () {
-    console.log("in rename - needs to be implemented");
+  store.renameMap = async function (newMapName) {
+    const updatingField = {
+      mapTitle: newMapName,
+    };
+    const response = await api.updateMapMetaData(
+      store.currentMap._id,
+      updatingField
+    );
+    console.log("renameMap response: " + response.data);
+    if (response.status === 201) {
+      // tps.clearAllTransactions();
+      let newMapMetaData = response.data.map;
+      storeReducer({
+        type: GlobalStoreActionType.UPDATE_MAP_META_DATA,
+        payload: newMapMetaData,
+      });
+      store.getHomeMapMetaData();
+    } else console.log("API FAILED TO RENAME MAP");
   };
 
   return (
