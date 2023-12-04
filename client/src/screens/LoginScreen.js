@@ -14,6 +14,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import FailModal from "../components/Modals/FailModal";
 import { FailModalTypes } from "../components/Modals/ModalTypes";
+import SuccessModal from "../components/Modals/SuccessModal";
+import { SuccessModalTypes } from "../components/Modals/ModalTypes";
 
 const LoginScreen = () => {
   const { auth } = useContext(AuthContext);
@@ -105,6 +107,8 @@ const LoginScreen = () => {
         <Copyright />
       </div>
       <FailModal modalType={FailModalTypes.ACCOUNT_LOGIN_FAIL} />
+      <SuccessModal modalType={SuccessModalTypes.EMAIL_SEND_SUCCESS} />
+      <SuccessModal modalType={SuccessModalTypes.PASSWORD_RESET_SUCCESS} />
     </>
   );
 };
