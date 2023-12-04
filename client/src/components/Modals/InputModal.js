@@ -34,15 +34,13 @@ export default function InputModal(props) {
   const handleInputClick = (event) => {
     event.stopPropagation();
   };
+
   var InputField = (
     <TextField
       variant="outlined"
       fullWidth
       onClick={handleInputClick}
-      // defaultValue={
-      //   store.currentMap?.titleMap ? store.currentMap.titleMap : "MyMap"
-      // }
-      defaultValue={"some map name"}
+      defaultValue={store.currentMap?.mapTitle || ""}
     />
   );
   if (modalType.name === "MESSAGE_MODAL") {

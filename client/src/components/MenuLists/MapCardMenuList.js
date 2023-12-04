@@ -30,7 +30,7 @@ export default function MapCardMenuList(props) {
   };
 
   const handleRename = (event) => {
-    store.showEditMapNameModal(map);
+    store.showEditMapNameModal();
     handleClose(event);
   };
 

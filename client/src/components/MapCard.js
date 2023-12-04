@@ -73,6 +73,10 @@ export default function MapCard(props) {
       navigate("/edit");
     }
   }
+  async function handleKebabClick() {
+    //get and set the map so that when the user later selects a kebab option, it operates on the correct map
+    await store.getMapMetaDataById(id);
+  }
 
   return (
     <Link to="#" style={{ textDecoration: "none" }} onClick={handleCardClick}>
@@ -102,7 +106,11 @@ export default function MapCard(props) {
             </Grid>
             {subtextArea}
           </Grid>
-          <Avatar className="kebab" sx={{ background: "transparent" }}>
+          <Avatar
+            className="kebab"
+            sx={{ background: "transparent" }}
+            onClick={handleKebabClick}
+          >
             <MapCardMenuList
               isPublished={currentMap.isPublished}
               screen={screen}
