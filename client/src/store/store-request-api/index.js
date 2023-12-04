@@ -61,6 +61,10 @@ export const updateMapGraphicById = (id, mapgraphic) => {
   });
 };
 
+export const getCommunityMaps = () => {
+  return api.get(`/communitymaps`);
+};
+
 const apis = {
   createNewMap,
   updateMapMetaData,
@@ -68,6 +72,7 @@ const apis = {
   getMapMetaDataById,
   updateMapGraphicById,
   getMapGraphicById,
+  getCommunityMaps,
 };
 
 export default apis;

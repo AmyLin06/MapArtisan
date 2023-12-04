@@ -34,7 +34,7 @@ function GlobalStoreContextProvider(props) {
   const [store, setStore] = useState({
     currentModal: CurrentModal.NONE,
     currentMap: null,
-    homeMapLists: [],
+    homeMapList: [],
     communityMapList: [],
   });
 
@@ -45,7 +45,7 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.RENAME_MAP,
           currentMap: store.currentMap,
-          homeMapLists: store.homeMapLists,
+          homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
       }
@@ -53,7 +53,7 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.DELETE_MAP,
           currentMap: payload,
-          homeMapLists: store.homeMapLists,
+          homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
       }
@@ -61,7 +61,7 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.NONE,
           currentMap: null,
-          homeMapLists: store.homeMapLists,
+          homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
       }
@@ -69,7 +69,7 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.NONE,
           currentMap: payload,
-          homeMapLists: store.homeMapLists,
+          homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
       }
@@ -77,15 +77,23 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.NONE,
           currentMap: store.currentMap,
-          homeMapLists: payload,
+          homeMapList: payload,
           communityMapList: store.communityMapList,
+        });
+      }
+      case GlobalStoreActionType.LOAD_COMMUNITY_MAPS: {
+        return setStore({
+          currentModal: CurrentModal.NONE,
+          currentMap: store.currentMap,
+          homeMapList: store.homeMapList,
+          communityMapList: payload,
         });
       }
       case GlobalStoreActionType.SET_CURRENT_MAP: {
         return setStore({
           currentModal: CurrentModal.NONE,
           currentMap: payload,
-          homeMapLists: store.homeMapLists,
+          homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
       }
@@ -143,6 +151,17 @@ function GlobalStoreContextProvider(props) {
     } else console.log("API FAILED TO LOAD HOME MAPS");
   };
 
+  store.getCommunityMapMetaData = async function () {
+    const response = await api.getCommunityMaps();
+    if (response.status === 201) {
+      // tps.clearAllTransactions();
+      storeReducer({
+        type: GlobalStoreActionType.LOAD_COMMUNITY_MAPS,
+        payload: response.data.maps,
+      });
+    } else console.log("API FAILED TO LOAD COMMUNITY MAPS");
+  };
+
   store.getMapMetaDataById = async function (mapId) {
     const response = await api.getMapMetaDataById(mapId);
     if (response.status === 201) {
@@ -156,8 +175,24 @@ function GlobalStoreContextProvider(props) {
     } else console.log("API FAILED TO GET AND SET MAP");
   };
 
-  store.renameMap = async function () {
-    console.log("in rename - needs to be implemented");
+  store.renameMap = async function (newMapName) {
+    const updatingField = {
+      mapTitle: newMapName,
+    };
+    const response = await api.updateMapMetaData(
+      store.currentMap._id,
+      updatingField
+    );
+    console.log("renameMap response: " + response.data);
+    if (response.status === 201) {
+      // tps.clearAllTransactions();
+      let newMapMetaData = response.data.map;
+      storeReducer({
+        type: GlobalStoreActionType.UPDATE_MAP_META_DATA,
+        payload: newMapMetaData,
+      });
+      store.getHomeMapMetaData();
+    } else console.log("API FAILED TO RENAME MAP");
   };
 
   return (
