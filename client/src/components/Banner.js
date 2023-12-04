@@ -21,6 +21,13 @@ export default function Banner(props) {
   var rightOfBanner = <></>;
   var bannerColor = "transparent";
 
+  const communityLink = (
+    <Link to="/community">
+      <Avatar sx={{ bgcolor: "#246BAD" }}>
+        <GroupsIcon style={{ fontSize: "2rem" }} />
+      </Avatar>
+    </Link>
+  );
   const communityScreenStyle = {
     fontFamily: "Londrina Outline, sans-serif",
     fontSize: "40px",
@@ -114,9 +121,7 @@ export default function Banner(props) {
     case "ACCOUNT_DETAIL":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
-          <Avatar sx={{ bgcolor: "#246BAD" }}>
-            <GroupsIcon style={{ fontSize: "2rem" }} />
-          </Avatar>
+          {communityLink}
           <ProfileMenuList />
         </Stack>
       );
@@ -124,9 +129,7 @@ export default function Banner(props) {
     case "PROFILE":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
-          <Avatar sx={{ bgcolor: "#246BAD" }}>
-            <GroupsIcon style={{ fontSize: "2rem" }} />
-          </Avatar>
+          {communityLink}
           <ProfileMenuList />
         </Stack>
       );
@@ -134,11 +137,7 @@ export default function Banner(props) {
     case "MAP_DETAIL":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
-          <Link to="/community">
-            <Avatar sx={{ bgcolor: "#246BAD" }}>
-              <GroupsIcon style={{ fontSize: "2rem" }} />
-            </Avatar>
-          </Link>
+          {communityLink}
           <ProfileMenuList />
         </Stack>
       );
@@ -146,11 +145,7 @@ export default function Banner(props) {
     case "HOME":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
-          <Link to="/community">
-            <Avatar sx={{ bgcolor: "#246BAD" }}>
-              <GroupsIcon style={{ fontSize: "2rem" }} />
-            </Avatar>
-          </Link>
+          {communityLink}
           <ProfileMenuList />
         </Stack>
       );
@@ -159,9 +154,7 @@ export default function Banner(props) {
     case "COMMUNITY":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
-          <Avatar sx={{ bgcolor: "#246BAD" }}>
-            <GroupsIcon style={{ fontSize: "2rem" }} />
-          </Avatar>
+          {communityLink}
           <ProfileMenuList />
         </Stack>
       );
@@ -172,9 +165,7 @@ export default function Banner(props) {
     case "EDIT":
       rightOfBanner = (
         <Stack spacing={2.5} direction="row">
-          <Avatar sx={{ bgcolor: "#246BAD" }}>
-            <GroupsIcon style={{ fontSize: "2rem" }} />
-          </Avatar>
+          {communityLink}
           <ProfileMenuList />
         </Stack>
       );

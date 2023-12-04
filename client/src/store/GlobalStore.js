@@ -34,7 +34,7 @@ function GlobalStoreContextProvider(props) {
   const [store, setStore] = useState({
     currentModal: CurrentModal.NONE,
     currentMap: null,
-    homeMapLists: [],
+    homeMapList: [],
     communityMapList: [],
   });
 
@@ -45,7 +45,7 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.RENAME_MAP,
           currentMap: store.currentMap,
-          homeMapLists: store.homeMapLists,
+          homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
       }
@@ -53,7 +53,7 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.DELETE_MAP,
           currentMap: payload,
-          homeMapLists: store.homeMapLists,
+          homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
       }
@@ -61,7 +61,7 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.NONE,
           currentMap: null,
-          homeMapLists: store.homeMapLists,
+          homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
       }
@@ -69,7 +69,7 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.NONE,
           currentMap: payload,
-          homeMapLists: store.homeMapLists,
+          homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
       }
@@ -77,7 +77,7 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.NONE,
           currentMap: store.currentMap,
-          homeMapLists: payload,
+          homeMapList: payload,
           communityMapList: store.communityMapList,
         });
       }
@@ -85,7 +85,7 @@ function GlobalStoreContextProvider(props) {
         return setStore({
           currentModal: CurrentModal.NONE,
           currentMap: payload,
-          homeMapLists: store.homeMapLists,
+          homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
       }
