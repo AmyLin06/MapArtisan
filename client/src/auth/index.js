@@ -24,6 +24,10 @@ const CurrentModal = {
   ACCOUNT_LOGIN_FAIL: "ACCOUNT_LOGIN_FAIL",
   ACCOUNT_LOGIN_SUCCESS: "ACCOUNT_LOGIN_SUCCESS",
   ACCOUNT_REGISTER_FAIL: "ACCOUNT_REGISTER_FAIL",
+  EMAIL_SEND_FAIL: "EMAIL_SEND_FAIL",
+  EMAIL_SEND_SUCCESS: "EMAIL_SEND_SUCCESS",
+  PASSWORD_RESET_SUCCESS: "PASSWORD_RESET_SUCCESS",
+  PASSWORD_RESET_FAIL: "PASSWORD_RESET_FAIL",
   ERROR: "ERROR",
 };
 
@@ -178,19 +182,26 @@ function AuthContextProvider(props) {
     }
   };
 
-  auth.resetPassword = async function (password, passwordVerify, id, token) {
+  auth.resetPassword = async function (
+    password,
+    passwordVerify,
+    id,
+    token,
+    expires
+  ) {
     try {
       const response = await api.resetPassword(
         password,
         passwordVerify,
         id,
-        token
+        token,
+        expires
       );
       if (response.status === 200) {
         authReducer({
           type: AuthActionType.FORGET_PASSWORD,
           payload: {
-            currentModal: CurrentModal.NONE,
+            currentModal: CurrentModal.PASSWORD_RESET_SUCCESS,
             user: null,
             loggedIn: false,
             errorMessage: null,
@@ -206,7 +217,7 @@ function AuthContextProvider(props) {
           user: null,
           loggedIn: false,
           errorMessage: error.response.data.errorMessage,
-          currentModal: CurrentModal.ACCOUNT_LOGIN_FAIL, //need to update to reset fail
+          currentModal: CurrentModal.PASSWORD_RESET_FAIL,
           guest: false,
         },
       });
@@ -220,7 +231,7 @@ function AuthContextProvider(props) {
         authReducer({
           type: AuthActionType.FORGET_PASSWORD,
           payload: {
-            currentModal: CurrentModal.NONE,
+            currentModal: CurrentModal.EMAIL_SEND_SUCCESS,
             user: null,
             loggedIn: false,
             errorMessage: null,
@@ -236,7 +247,7 @@ function AuthContextProvider(props) {
           user: null,
           loggedIn: false,
           errorMessage: error.response.data.errorMessage,
-          currentModal: CurrentModal.ACCOUNT_LOGIN_FAIL, //need to update to reset fail
+          currentModal: CurrentModal.EMAIL_SEND_FAIL,
           guest: false,
         },
       });

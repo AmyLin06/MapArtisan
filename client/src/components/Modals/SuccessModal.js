@@ -32,7 +32,13 @@ export default function SuccessModal(props) {
   if (modalType === SuccessModalTypes.ACCOUNT_LOGIN_SUCCESS) {
     text = modalType.text;
   }
-  
+  if (modalType === SuccessModalTypes.EMAIL_SEND_SUCCESS) {
+    text = modalType.text;
+  }
+  if (modalType === SuccessModalTypes.PASSWORD_RESET_SUCCESS) {
+    text = modalType.text;
+  }
+
   return (
     <Snackbar
       open={

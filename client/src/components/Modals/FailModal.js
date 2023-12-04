@@ -22,7 +22,7 @@ export default function FailModal(props) {
       minWidth: 400, // Adjust the width as needed
     },
     biggerText: {
-        fontSize: '1.5rem', // Adjust the font size as needed
+      fontSize: "1.5rem", // Adjust the font size as needed
     },
   };
 
@@ -34,7 +34,6 @@ export default function FailModal(props) {
     return () => clearTimeout(timer);
   }, []);
 
-
   var text = modalType.text + "MYMAP";
   if (modalType === FailModalTypes.ACCOUNT_UPDATE_FAIL) {
     text = modalType.text;
@@ -45,7 +44,13 @@ export default function FailModal(props) {
   if (modalType === FailModalTypes.ACCOUNT_REGISTER_FAIL) {
     text = modalType.text;
   }
-  
+  if (modalType === FailModalTypes.EMAIL_SEND_FAIL) {
+    text = modalType.text;
+  }
+  if (modalType === FailModalTypes.PASSWORD_RESET_FAIL) {
+    text = modalType.text;
+  }
+
   return (
     <Snackbar
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -68,7 +73,7 @@ export default function FailModal(props) {
         <Typography variant="body1" sx={styles.biggerText}>
           {text}
         </Typography>
-        {'' + modalType.subtext}
+        {"" + modalType.subtext}
         {auth.errorMessage}
       </Alert>
     </Snackbar>

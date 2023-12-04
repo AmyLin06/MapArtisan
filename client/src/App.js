@@ -44,10 +44,10 @@ function App() {
                     path="forget-password"
                     element={<ForgetPasswordScreen />}
                   />
-                   <Route
-                  path="reset-password/:id/:token"
-                  element={<ResetPasswordScreen />}
-                />
+                  <Route
+                    path="reset-password/:id/:token/:expires"
+                    element={<ResetPasswordScreen />}
+                  />
                   <Route path="home" element={<HomeScreen />} />
                   <Route path="community" element={<CommunityScreen />} />
                   <Route path="map-details" element={<MapDetailsScreen />} />
