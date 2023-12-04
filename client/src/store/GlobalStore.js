@@ -13,7 +13,7 @@ export const GlobalStoreActionType = {
   LOAD_HOME_MAPS: "LOAD_HOME_MAPS",
   LOAD_COMMUNITY_MAPS: "LOAD_COMMUNITY_MAPS",
   MARK_MAP_FOR_DELETION: "MARK_MAP_FOR_DELETION",
-  CHANGE_MAP_NAME: "CHANGE_MAP_NAME",
+  SHOW_RENAME_MODAL: "SHOW_RENAME_MODAL",
   SET_CURRENT_MAP: "SET_CURRENT_MAP",
 };
 
@@ -41,10 +41,10 @@ function GlobalStoreContextProvider(props) {
   const storeReducer = (action) => {
     const { type, payload } = action;
     switch (type) {
-      case GlobalStoreActionType.CHANGE_MAP_NAME: {
+      case GlobalStoreActionType.SHOW_RENAME_MODAL: {
         return setStore({
           currentModal: CurrentModal.RENAME_MAP,
-          currentMap: payload,
+          currentMap: store.currentMap,
           homeMapLists: store.homeMapLists,
           communityMapList: store.communityMapList,
         });
@@ -95,10 +95,9 @@ function GlobalStoreContextProvider(props) {
   };
 
   // This should display the modal that allows the user to enter a new map name
-  store.showEditMapNameModal = (map) => {
+  store.showEditMapNameModal = () => {
     storeReducer({
-      type: GlobalStoreActionType.CHANGE_MAP_NAME,
-      payload: { map },
+      type: GlobalStoreActionType.SHOW_RENAME_MODAL,
     });
   };
 
@@ -155,6 +154,10 @@ function GlobalStoreContextProvider(props) {
       });
       return newMapMetaData;
     } else console.log("API FAILED TO GET AND SET MAP");
+  };
+
+  store.renameMap = async function () {
+    console.log("in rename - needs to be implemented");
   };
 
   return (
