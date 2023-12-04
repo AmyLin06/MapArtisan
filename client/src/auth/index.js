@@ -14,6 +14,7 @@ export const AuthActionType = {
   UPDATE_USER: "UPDATE_USER",
   HIDE_MODALS: "HIDE_MODALS",
   FORGET_PASSWORD: "FORGET_PASSWORD",
+  FORGET_PASSWORD: "FORGET_PASSWORD",
 };
 
 const CurrentModal = {
@@ -138,7 +139,8 @@ function AuthContextProvider(props) {
     lastName,
     email,
     password,
-    passwordverified
+    passwordverified,
+    store
   ) {
     console.log("REGISTERING USER");
     try {
@@ -164,7 +166,7 @@ function AuthContextProvider(props) {
         });
         // history("/login");
         console.log("NOW WE LOGIN");
-        auth.loginUser(email, password);
+        auth.loginUser(email, password, store);
         console.log("LOGGED IN");
       }
     } catch (error) {

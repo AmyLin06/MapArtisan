@@ -13,7 +13,8 @@ export const GlobalStoreActionType = {
   LOAD_HOME_MAPS: "LOAD_HOME_MAPS",
   LOAD_COMMUNITY_MAPS: "LOAD_COMMUNITY_MAPS",
   MARK_MAP_FOR_DELETION: "MARK_MAP_FOR_DELETION",
-  CHANGE_MAP_NAME: "CHANGE_MAP_NAME",
+  SHOW_RENAME_MODAL: "SHOW_RENAME_MODAL",
+  SET_CURRENT_MAP: "SET_CURRENT_MAP",
 };
 
 const CurrentModal = {
@@ -40,10 +41,10 @@ function GlobalStoreContextProvider(props) {
   const storeReducer = (action) => {
     const { type, payload } = action;
     switch (type) {
-      case GlobalStoreActionType.CHANGE_MAP_NAME: {
+      case GlobalStoreActionType.SHOW_RENAME_MODAL: {
         return setStore({
           currentModal: CurrentModal.RENAME_MAP,
-          currentMap: payload,
+          currentMap: store.currentMap,
           homeMapLists: store.homeMapLists,
           communityMapList: store.communityMapList,
         });
@@ -80,16 +81,23 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
         });
       }
+      case GlobalStoreActionType.SET_CURRENT_MAP: {
+        return setStore({
+          currentModal: CurrentModal.NONE,
+          currentMap: payload,
+          homeMapLists: store.homeMapLists,
+          communityMapList: store.communityMapList,
+        });
+      }
       default:
         return store;
     }
   };
 
   // This should display the modal that allows the user to enter a new map name
-  store.showEditMapNameModal = (map) => {
+  store.showEditMapNameModal = () => {
     storeReducer({
-      type: GlobalStoreActionType.CHANGE_MAP_NAME,
-      payload: { map },
+      type: GlobalStoreActionType.SHOW_RENAME_MODAL,
     });
   };
 
@@ -117,13 +125,10 @@ function GlobalStoreContextProvider(props) {
         type: GlobalStoreActionType.CREATE_NEW_MAP,
         payload: newMap,
       });
-      editStore.setMap(response.data.map, {
-        mapID: 12345,
-        layers: [],
-        markers: [],
-      });
+      editStore.setMap(response.data.map);
       // IF IT'S A VALID MAP THEN LET'S START EDITING IT
       navigate("/edit");
+      store.getHomeMapMetaData();
     } else console.log("API FAILED TO CREATE A NEW MAP");
   };
 
@@ -136,6 +141,23 @@ function GlobalStoreContextProvider(props) {
         payload: response.data.maps,
       });
     } else console.log("API FAILED TO LOAD HOME MAPS");
+  };
+
+  store.getMapMetaDataById = async function (mapId) {
+    const response = await api.getMapMetaDataById(mapId);
+    if (response.status === 201) {
+      // tps.clearAllTransactions();
+      let newMapMetaData = response.data.map;
+      storeReducer({
+        type: GlobalStoreActionType.SET_CURRENT_MAP,
+        payload: newMapMetaData,
+      });
+      return newMapMetaData;
+    } else console.log("API FAILED TO GET AND SET MAP");
+  };
+
+  store.renameMap = async function () {
+    console.log("in rename - needs to be implemented");
   };
 
   return (

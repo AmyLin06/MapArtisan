@@ -95,6 +95,15 @@ function EditMapContextProvider(props) {
           activeTool: editStore.activeTool,
         });
       }
+      case EditMapActionType.CLOSE_CURRENT_MAP: {
+        return setEditStore({
+          currentModal: CurrentModal.NONE,
+          currentMapMetaData: null,
+          currentMapGraphic: null,
+          currentMapIndex: -1,
+          activeTool: { tool: LeafletTool.SCROLL, detail: "NONE" },
+        });
+      }
       default:
         return editStore;
     }
@@ -164,10 +173,23 @@ function EditMapContextProvider(props) {
   };
 
   //when clicking on a private map, set the map to the current active map in the edit store
-  editStore.setMap = (mapMetaData, mapGraphic) => {
+  editStore.setMap = async function (mapMetaData) {
+    const response = await api.getMapGraphicById(mapMetaData._id);
+    if (response.status === 200) {
+      const mapGraphic = response.data.mapgraphic;
+      storeReducer({
+        type: EditMapActionType.SET_CURRENT_MAP,
+        payload: { mapMetaData, mapGraphic },
+      });
+    } else {
+      console.log(response.errorMessage);
+    }
+  };
+
+  editStore.closeMap = () => {
     storeReducer({
-      type: EditMapActionType.SET_CURRENT_MAP,
-      payload: { mapMetaData, mapGraphic },
+      type: EditMapActionType.CLOSE_CURRENT_MAP,
+      // payload: {},
     });
   };
 
@@ -190,6 +212,17 @@ function EditMapContextProvider(props) {
       });
       navigate("/map-details");
     } else console.log("API FAILED TO PUBLISH MAP");
+  };
+
+  editStore.saveGraphic = async function () {
+    const response = await api.updateMapGraphicById(
+      editStore.currentMapGraphic._id,
+      editStore.currentMapGraphic
+    );
+
+    if (response.status === 200) {
+      console.log(response.message);
+    } else console.log("Failed to save map graphics");
   };
 
   return (

@@ -23,7 +23,7 @@ export default function QuickAccessToolbar() {
   const { auth } = useContext(AuthContext);
 
   const handleSave = () => {
-    console.log("trying to save in quick access toolbar - not implemented");
+    editStore.saveGraphic();
   };
   const handleUndo = () => {
     console.log("trying to undo in quick access toolbar - not implemented");
