@@ -127,6 +127,13 @@ updateMapMetaData = async (req, res) => {
 
     console.log("map found: " + JSON.stringify(mapMetaData));
 
+    //verify if this user is allowed to make changes to the MapMetaData
+    const user = await User.findOne({ _id: mapMetaData.ownerID });
+    if (user._id.toString() !== req.userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Authentication error" });
+    }
     const updateQuery = { $set: body.field };
     const options = { new: true }; // This option returns the updated document
     const updatedDocument = await MapMetaData.findOneAndUpdate(
