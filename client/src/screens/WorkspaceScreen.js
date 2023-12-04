@@ -21,7 +21,7 @@ const WorkspaceScreen = () => {
               fontWeight="bold"
               sx={{ color: "#246BAD", paddingLeft: 1 }}
             >
-              {editStore.currentMapMetaData.mapTitle || ""}
+              {editStore.currentMapMetaData?.mapTitle || ""}
             </Typography>
           </Grid>
           <Grid item className="map-editing" xs={10}>
