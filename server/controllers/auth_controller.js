@@ -11,16 +11,6 @@ baseURL = isDevelopment
   ? "http://localhost:3000/reset-password"
   : `${process.env.REACT_APP_URL}/reset-password` ||
     "http://localhost:3000/reset-password";
-const nodemailer = require("nodemailer");
-const dotenv = require("dotenv");
-const jwt = require("jsonwebtoken");
-
-dotenv.config();
-const isDevelopment = process.env.NODE_ENV === "development";
-baseURL = isDevelopment
-  ? "http://localhost:3000/reset-password"
-  : `${process.env.REACT_APP_URL}/reset-password` ||
-    "http://localhost:3000/reset-password";
 
 getLoggedIn = async (req, res) => {
   try {
