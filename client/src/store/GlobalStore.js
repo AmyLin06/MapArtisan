@@ -156,6 +156,10 @@ function GlobalStoreContextProvider(props) {
     } else console.log("API FAILED TO GET AND SET MAP");
   };
 
+  store.renameMap = async function () {
+    console.log("in rename - needs to be implemented");
+  };
+
   return (
     <GlobalStoreContext.Provider
       value={{

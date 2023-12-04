@@ -3,6 +3,8 @@ import { Box, Modal, Typography, Button, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomButton from "../CustomButton";
 import { GlobalStoreContext } from "../../store/GlobalStore";
+import { InputModalTypes } from "./ModalTypes";
+import EditMapContext from "../../store/EditMapStore";
 
 //Modal that displays in the middle of the screen allowing the user to enter input
 //Example of a way to create a InputModal, see ModalTypes.js for definition of "InputModalTypes.MESSAGE_MODAL"
@@ -10,6 +12,7 @@ import { GlobalStoreContext } from "../../store/GlobalStore";
 
 export default function InputModal(props) {
   const { store } = useContext(GlobalStoreContext);
+  const { editStore } = useContext(EditMapContext);
   const { modalType } = props;
   const heightValue = modalType.name === "RENAME_MAP" ? 150 : 450;
   const InputModalStyle = {
@@ -33,6 +36,19 @@ export default function InputModal(props) {
 
   const handleInputClick = (event) => {
     event.stopPropagation();
+  };
+
+  const handleConfirm = (event) => {
+    event.stopPropagation();
+    switch (modalType) {
+      case InputModalTypes.RENAME_MAP:
+        store.renameMap();
+        break;
+      default:
+        break;
+    }
+    store.hideModals();
+    editStore.hideModals();
   };
 
   var InputField = (
@@ -128,7 +144,7 @@ export default function InputModal(props) {
             gap: "15px",
           }}
         >
-          <CustomButton text={"Confirm"} onPress={handleClose}></CustomButton>
+          <CustomButton text={"Confirm"} onPress={handleConfirm}></CustomButton>
           <CustomButton text={"Cancel"} onPress={handleClose}></CustomButton>
         </Box>
       </Box>
