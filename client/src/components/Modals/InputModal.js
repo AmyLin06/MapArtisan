@@ -1,16 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Box, Modal, Typography, Button, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomButton from "../CustomButton";
 import { GlobalStoreContext } from "../../store/GlobalStore";
+import { InputModalTypes } from "./ModalTypes";
+import EditMapContext from "../../store/EditMapStore";
 
 //Modal that displays in the middle of the screen allowing the user to enter input
 //Example of a way to create a InputModal, see ModalTypes.js for definition of "InputModalTypes.MESSAGE_MODAL"
 //<InputModal modalType={InputModalTypes.MESSAGE_MODAL}></InputModal>
 
 export default function InputModal(props) {
-  const { store } = useContext(GlobalStoreContext);
   const { modalType } = props;
+  const { store } = useContext(GlobalStoreContext);
+  const { editStore } = useContext(EditMapContext);
+  const [mapName, setMapName] = useState(store.currentMap?.mapTitle);
+
+  useEffect(() => {
+    setMapName(store.currentMap?.mapTitle);
+  }, [store.currentMap]);
+
   const heightValue = modalType.name === "RENAME_MAP" ? 150 : 450;
   const InputModalStyle = {
     position: "absolute",
@@ -34,15 +43,31 @@ export default function InputModal(props) {
   const handleInputClick = (event) => {
     event.stopPropagation();
   };
+
+  const handleMapNameChange = (event) => {
+    event.stopPropagation();
+    setMapName(event.target.value);
+  };
+  const handleConfirm = (event) => {
+    event.stopPropagation();
+    switch (modalType) {
+      case InputModalTypes.RENAME_MAP:
+        store.renameMap(mapName);
+        break;
+      default:
+        break;
+    }
+    store.hideModals();
+    editStore.hideModals();
+  };
+
   var InputField = (
     <TextField
       variant="outlined"
       fullWidth
+      onChange={handleMapNameChange}
       onClick={handleInputClick}
-      // defaultValue={
-      //   store.currentMap?.titleMap ? store.currentMap.titleMap : "MyMap"
-      // }
-      defaultValue={"some map name"}
+      value={mapName}
     />
   );
   if (modalType.name === "MESSAGE_MODAL") {
@@ -83,11 +108,11 @@ export default function InputModal(props) {
       slotProps={{
         backdrop: {
           sx: {
-            //Your style here....
             backgroundColor: "rgba(0,0,0,0.05)",
           },
         },
       }}
+      onClick={handleInputClick}
     >
       <Box sx={InputModalStyle}>
         <Box
@@ -130,7 +155,7 @@ export default function InputModal(props) {
             gap: "15px",
           }}
         >
-          <CustomButton text={"Confirm"} onPress={handleClose}></CustomButton>
+          <CustomButton text={"Confirm"} onPress={handleConfirm}></CustomButton>
           <CustomButton text={"Cancel"} onPress={handleClose}></CustomButton>
         </Box>
       </Box>

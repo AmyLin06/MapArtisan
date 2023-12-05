@@ -61,6 +61,18 @@ export const SuccessModalTypes = {
     subtext: "",
     close: close,
   },
+  EMAIL_SEND_SUCCESS: {
+    name: "EMAIL_SEND_SUCCESS",
+    text: "Email successful send. You can go and reset with the link.",
+    subtext: "",
+    close: close,
+  },
+  PASSWORD_RESET_SUCCESS: {
+    name: "PASSWORD_RESET_SUCCESS",
+    text: "Sucessfully reset password",
+    subtext: "",
+    close: close,
+  },
 };
 export const FailModalTypes = {
   ACCOUNT_UPDATE_FAIL: {
@@ -78,6 +90,18 @@ export const FailModalTypes = {
   ACCOUNT_REGISTER_FAIL: {
     name: "ACCOUNT_REGISTER_FAIL",
     text: "Failed to register",
+    subtext: "",
+    close: close,
+  },
+  EMAIL_SEND_FAIL: {
+    name: "EMAIL_SEND_FAIL",
+    text: "Failed to send reset email",
+    subtext: "",
+    close: close,
+  },
+  PASSWORD_RESET_FAIL: {
+    name: "PASSWORD_RESET_FAIL",
+    text: "Failed to reset password",
     subtext: "",
     close: close,
   },

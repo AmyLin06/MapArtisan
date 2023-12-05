@@ -11,11 +11,13 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton } from "@mui/material";
 import { useParams } from "react-router-dom";
+import FailModal from "../components/Modals/FailModal";
+import { FailModalTypes } from "../components/Modals/ModalTypes";
 
 const ResetPasswordScreen = () => {
   const { auth } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
-  const { id, token } = useParams();
+  const { id, token, expires } = useParams();
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -27,7 +29,8 @@ const ResetPasswordScreen = () => {
       formData.get("password"),
       formData.get("passwordverified"),
       id,
-      token
+      token,
+      expires
     );
   };
 
@@ -101,6 +104,7 @@ const ResetPasswordScreen = () => {
         <br />
         <Copyright />
       </div>
+      <FailModal modalType={FailModalTypes.PASSWORD_RESET_FAIL} />
     </>
   );
 };

@@ -39,8 +39,8 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    setMaps(store.homeMapLists);
-  }, [store.homeMapLists]);
+    setMaps(store.homeMapList);
+  }, [store.homeMapList]);
 
   return (
     <Box className="home-container" sx={{ padding: 2 }}>

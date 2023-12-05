@@ -46,10 +46,33 @@ export const getUserMaps = () => {
   return api.get(`/usermaps`);
 };
 
+export const getMapMetaDataById = (mapId) => {
+  return api.get(`/mapById/${mapId}`);
+};
+
+export const getMapGraphicById = (mapId) => {
+  return api.get(`/mapgraphic/${mapId}`);
+};
+
+export const updateMapGraphicById = (id, mapgraphic) => {
+  return api.put(`/updategraphic/${id}`, {
+    //SPECIFY THE PAYLOAD
+    mapgraphic: mapgraphic,
+  });
+};
+
+export const getCommunityMaps = () => {
+  return api.get(`/communitymaps`);
+};
+
 const apis = {
   createNewMap,
   updateMapMetaData,
   getUserMaps,
+  getMapMetaDataById,
+  updateMapGraphicById,
+  getMapGraphicById,
+  getCommunityMaps,
 };
 
 export default apis;

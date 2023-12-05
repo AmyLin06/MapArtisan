@@ -37,11 +37,11 @@ export const forgetPassword = (email) => {
   );
 };
 
-export const resetPassword = (password, passwordVerify, id, token) => {
+export const resetPassword = (password, passwordVerify, id, token, expires) => {
   console.log(id);
   console.log(token);
   return api.post(
-    `/reset-password/${id}/${token}`,
+    `/reset-password/${id}/${token}/${expires}`,
     {
       password: password,
       passwordVerify: passwordVerify,
