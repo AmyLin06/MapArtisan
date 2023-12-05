@@ -135,7 +135,7 @@ updateMapMetaData = async (req, res) => {
         .json({ success: false, message: "Authentication error" });
     }
     const updateQuery = { $set: body.field };
-    const options = { new: true }; // This option returns the updated document
+    const options = { new: true }; // returns the updated document
     const updatedDocument = await MapMetaData.findOneAndUpdate(
       { _id: body.mapID },
       updateQuery,
