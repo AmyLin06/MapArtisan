@@ -6,6 +6,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Typography, Box, Paper, Tooltip } from "@mui/material";
 import { EditMapContext } from "../../store/EditMapStore";
 import { read } from "shapefile";
+import toGeoJSON from "togeojson";
 
 //menu that opens and displays options for data formats the user can import
 export default function ImportMenuList() {
@@ -36,7 +37,10 @@ export default function ImportMenuList() {
     const selectedFile = event.target.files[0];
     const fileReader = new FileReader();
 
-    if (getFileExtension(selectedFile.name) === "json") {
+    if (
+      getFileExtension(selectedFile.name) === "json" ||
+      getFileExtension(selectedFile.name) === "geojson"
+    ) {
       // Add the GeoJSON file as a layer to the current map
       fileReader.onload = (event) => {
         const data = JSON.parse(event.target.result);
@@ -47,7 +51,8 @@ export default function ImportMenuList() {
       fileReader.onload = (event) => {
         const parser = new DOMParser();
         const text = parser.parseFromString(event.target.result, "text/xml");
-        editStore.addLayer(selectedFile.name, text, "KML");
+        const data = toGeoJSON.kml(text);
+        editStore.addLayer(selectedFile.name, data, "GEOJSON");
       };
       fileReader.readAsText(event.target.files[0]);
     } else if (getFileExtension(selectedFile.name) === "shp") {

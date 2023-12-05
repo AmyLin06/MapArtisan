@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 // import AuthContext from "../auth";
 import { useNavigate } from "react-router-dom";
 import api from "./store-request-api";
@@ -17,6 +17,7 @@ export const EditMapActionType = {
   HIDE_MODALS: "HIDE_MODALS",
   PUBLISH_MAP: "PUBLISH_MAP",
   MARK_MAP_FOR_PUBLISH: "MARK_MAP_FOR_PUBLISH",
+  UPDATE_MAP_COLOR: "UPDATE_MAP_COLOR",
 };
 
 const CurrentModal = {
@@ -38,11 +39,11 @@ const LeafletTool = {
 function EditMapContextProvider(props) {
   // const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const [editStore, setEditStore] = useState({
     currentModal: CurrentModal.NONE,
     currentMapMetaData: null,
     currentMapGraphic: null,
+    currentcoloredPolygon: [],
     currentMapIndex: -1,
     activeTool: { tool: LeafletTool.SCROLL, detail: "NONE" },
   });
@@ -56,7 +57,19 @@ function EditMapContextProvider(props) {
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: editStore.currentcoloredPolygon,
           activeTool: editStore.activeTool,
+        });
+      }
+      case EditMapActionType.UPDATE_MAP_COLOR: {
+        console.log("inside case: ", payload);
+        return setEditStore({
+          currentModel: editStore.currentModal,
+          currentMapMetaData: editStore.currentMapMetaData,
+          currentMapGraphic: editStore.currentMapGraphic,
+          currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: editStore.currentcoloredPolygon,
+          activeTool: payload,
         });
       }
       case EditMapActionType.SET_MAP_NAME_EDIT_ACTIVE: {
@@ -65,6 +78,7 @@ function EditMapContextProvider(props) {
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: editStore.currentcoloredPolygon,
           activeTool: editStore.activeTool,
         });
       }
@@ -74,6 +88,7 @@ function EditMapContextProvider(props) {
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: editStore.currentcoloredPolygon,
           activeTool: editStore.activeTool,
         });
       }
@@ -83,6 +98,7 @@ function EditMapContextProvider(props) {
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: editStore.currentcoloredPolygon,
           activeTool: editStore.activeTool,
         });
       }
@@ -92,6 +108,7 @@ function EditMapContextProvider(props) {
           currentMapMetaData: payload.mapMetaData,
           currentMapGraphic: payload.mapGraphic,
           currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: [],
           activeTool: editStore.activeTool,
         });
       }
@@ -139,6 +156,91 @@ function EditMapContextProvider(props) {
       type: EditMapActionType.UPDATE_MAP_GRAPHIC,
       payload: {},
     });
+  };
+
+  editStore.setActiveBorder = (color) => {
+    editStore.activeTool.tool = LeafletTool.BORDER;
+    editStore.activeTool.detail = color;
+    storeReducer({
+      type: EditMapActionType.UPDATE_MAP_COLOR,
+      payload: editStore.activeTool,
+    });
+  };
+
+  editStore.setActiveFillin = (color) => {
+    editStore.activeTool.tool = LeafletTool.FILLIN;
+    editStore.activeTool.detail = color;
+
+    storeReducer({
+      type: EditMapActionType.UPDATE_MAP_COLOR,
+      payload: editStore.activeTool,
+    });
+  };
+
+  editStore.polygonOnclick = (layer) => {
+    const activeTool = editStore.activeTool;
+    if (activeTool.tool === "BORDER") {
+      editStore.colorBorder(layer, activeTool.detail.hex);
+    }
+    if (activeTool.tool === "FILLIN") {
+      editStore.colorPolygon(layer, activeTool.detail.hex);
+    }
+  };
+
+  // Setting the border color of a selected polygon
+  editStore.colorBorder = (currLayer, currColor) => {
+    const polygonList = editStore.currentcoloredPolygon;
+    let index = null;
+    for (let i = 0; i < polygonList.length; i++) {
+      if (polygonList[i].layer === currLayer) {
+        index = i;
+        break;
+      }
+    }
+    if (index == null) {
+      polygonList.push({
+        layer: currLayer,
+        color: "#3388ff",
+        border: currColor,
+      });
+      currLayer.setStyle({
+        color: currColor,
+        fillColor: "#3388ff",
+      });
+    } else {
+      polygonList[index].border = currColor;
+      currLayer.setStyle({
+        color: polygonList[index].border,
+        fillColor: polygonList[index].color,
+      });
+    }
+  };
+
+  // Coloring in a selected polygon
+  editStore.colorPolygon = (currLayer, currColor) => {
+    const polygonList = editStore.currentcoloredPolygon;
+    let index = null;
+    for (let i = 0; i < polygonList.length; i++) {
+      if (polygonList[i].layer === currLayer) {
+        index = i;
+        break;
+      }
+    }
+    if (index == null) {
+      currLayer.setStyle({
+        fillColor: currColor,
+      });
+      polygonList.push({
+        layer: currLayer,
+        color: currColor,
+        border: "#3388ff",
+      });
+    } else {
+      polygonList[index].color = currColor;
+      currLayer.setStyle({
+        fillColor: polygonList[index].color,
+      });
+    }
   };
 
   //set the current leaflet tool to scrolling
