@@ -25,8 +25,9 @@ jobs:
         working-directory: client
 
       - name: Install server dependencies
-        run: npm install
-        working-directory: server
+        run: |
+          cd server
+          npm install
 
   Supertest-run:
     needs: Install-dependencies
@@ -54,6 +55,8 @@ jobs:
           working-directory: client
           build: npm run build
           start: npm start
+        env:
+          CI: false
 
   Cypress-component-test:
     runs-on: ubuntu-22.04
