@@ -15,6 +15,7 @@ const LocationMarker = () => {
     });
   };
 
+  // eslint-disable-next-line
   const map = useMapEvents({
     click(e) {
       if (editStore.activeTool.tool === "MARKER") {
