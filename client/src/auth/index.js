@@ -55,6 +55,7 @@ function AuthContextProvider(props) {
     };
 
     fetchData();
+    // eslint-disable-next-line
   }, [auth.loggedIn]);
 
   const authReducer = (action) => {
