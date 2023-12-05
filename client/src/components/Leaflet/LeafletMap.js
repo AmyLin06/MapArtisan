@@ -4,7 +4,6 @@ import "leaflet/dist/leaflet.css";
 import { useContext, useRef } from "react";
 import { EditMapContext } from "../../store/EditMapStore";
 import RenderGeoJson from "./GeoJsonLayer";
-import RenderKML from "./KMLLayer";
 import LocationMarker from "./LocationMarker";
 
 function LeafletMap() {
