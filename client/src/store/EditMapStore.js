@@ -308,11 +308,14 @@ function EditMapContextProvider(props) {
     if (response.status === 201) {
       // tps.clearAllTransactions();
       let newMapMetaData = response.data.map;
+      console.log("updated map info:", newMapMetaData);
+      let currentMapGraphic = editStore.currentMapGraphic;
+
       storeReducer({
-        type: EditMapActionType.UPDATE_MAP_META_DATA,
-        payload: newMapMetaData,
+        type: EditMapActionType.SET_CURRENT_MAP,
+        payload: { newMapMetaData, currentMapGraphic },
       });
-      navigate("/map-details");
+      // navigate(`/map-details/${newMapMetaData._id}`);
     } else console.log("API FAILED TO PUBLISH MAP");
   };
 

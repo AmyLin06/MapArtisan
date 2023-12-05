@@ -254,6 +254,8 @@ getCommunityMaps = async (req, res) => {
   }
 };
 
+getPublishedMapsByUserId = async (req, res) => {};
+
 getMapMetaDataById = async (req, res) => {
   console.log("in server getMapMetaDataById");
   try {
@@ -295,6 +297,33 @@ getMapGraphicById = async (req, res) => {
       success: false,
       error: "Internal server error",
     });
+  }
+};
+
+deleteMap = async (req, res) => {
+  try {
+    const mapMetaData = await MapMetaData.findOne({ _id: req.params.mapId });
+    if (!mapMetaData) {
+      return res.status(404).json({ errorMessage: "Map not found!" });
+    }
+    const user = await User.findOne({ _id: mapMetaData.ownerID });
+    if (user._id.toString() !== req.userId) {
+      return res.status(400).json({ errorMessage: "Authentication error" });
+    }
+
+    await MapMetaData.findOneAndDelete({ _id: req.params.mapId });
+    await MapGraphic.findOneAndDelete({ mapID: req.params.mapId });
+    user.maps = user.maps.filter(
+      (mapId) => mapId.toString() !== req.params.mapId
+    );
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Map sucessfully deleted!",
+    });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: "Internal server error" });
   }
 };
 

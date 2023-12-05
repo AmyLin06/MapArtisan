@@ -65,6 +65,10 @@ export const getCommunityMaps = () => {
   return api.get(`/communitymaps`);
 };
 
+export const deleteMapById = (mapId) => {
+  return api.delete(`/deletemap/${mapId}`);
+};
+
 const apis = {
   createNewMap,
   updateMapMetaData,
@@ -73,6 +77,7 @@ const apis = {
   updateMapGraphicById,
   getMapGraphicById,
   getCommunityMaps,
+  deleteMapById,
 };
 
 export default apis;
