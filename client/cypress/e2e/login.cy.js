@@ -1,5 +1,5 @@
-describe('login spec', () => {
-  it('visit local host sucessfully', () => {
-    cy.visit('http://localhost:3000')
-  })
-})
+describe("login spec", () => {
+  it("visit mapartisan site sucessfully", () => {
+    cy.visit("https://mapartisan.onrender.com");
+  });
+});
