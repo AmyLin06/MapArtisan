@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import "../styles/MapDetailsScreen.css";
 import CommentSection from "../components/CommentSection";
 import { Avatar, Box, Typography } from "@mui/material";

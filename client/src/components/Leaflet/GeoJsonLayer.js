@@ -1,5 +1,5 @@
 import { GeoJSON } from "react-leaflet";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { EditMapContext } from "../../store/EditMapStore";
 
 const RenderGeoJson = (mapData) => {

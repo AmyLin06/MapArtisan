@@ -142,9 +142,7 @@ export default function InputModal(props) {
             id="modal-modal-description"
             variant="h6"
             sx={{ fontStyle: "italic" }}
-          >
-            {" MYFRIEND"}
-          </Typography>
+          ></Typography>
           {InputField}
         </Box>
         <Box

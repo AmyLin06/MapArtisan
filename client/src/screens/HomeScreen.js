@@ -40,6 +40,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     store.getHomeMapMetaData();
+    // eslint-disable-next-line
   }, [auth.loggedIn]);
 
   useEffect(() => {

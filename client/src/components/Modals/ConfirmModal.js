@@ -10,7 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CustomButton from "../CustomButton";
 import { ConfirmModalStyle } from "../../styles/ConfirmModalStyle";
 import { ConfirmModalTypes } from "./ModalTypes";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //Modal that displays in the middle of the screen asking the user to confirm the change they initialized
 //Example of a way to create a ConfirmModal, see ModalTypes.js for definition of "ConfirmModalTypes.DELETE_LAYER"
@@ -100,7 +100,7 @@ export default function ConfirmModal(props) {
               variant="h7"
               sx={{ fontStyle: "italic" }}
             >
-              {"MYMAP"}
+              {store.currentMap?.mapTitle}
             </Typography>{" "}
           </Typography>
 

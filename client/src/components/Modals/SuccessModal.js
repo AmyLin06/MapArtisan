@@ -23,6 +23,7 @@ export default function SuccessModal(props) {
     }, 5000);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line
   }, []);
 
   var text = modalType.text + "MYMAP";

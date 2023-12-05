@@ -1,6 +1,6 @@
 import { CirclePicker } from "react-color";
 import { BorderColor as BorderColorIcon } from "@mui/icons-material";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { IconButton, Popover, Tooltip } from "@mui/material";
 import { EditMapContext } from "../../store/EditMapStore";
 
