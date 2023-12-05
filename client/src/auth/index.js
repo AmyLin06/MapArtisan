@@ -13,7 +13,6 @@ export const AuthActionType = {
   UPDATE_USER: "UPDATE_USER",
   HIDE_MODALS: "HIDE_MODALS",
   FORGET_PASSWORD: "FORGET_PASSWORD",
-  FORGET_PASSWORD: "FORGET_PASSWORD",
 };
 
 const CurrentModal = {

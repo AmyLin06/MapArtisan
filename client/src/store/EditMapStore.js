@@ -1,8 +1,6 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 // import AuthContext from "../auth";
-import { useNavigate } from "react-router-dom";
 import api from "./store-request-api";
-import fakeMap from "../assets/currentMap.json";
 
 export const EditMapContext = createContext({});
 
@@ -38,7 +36,6 @@ const LeafletTool = {
 
 function EditMapContextProvider(props) {
   // const { auth } = useContext(AuthContext);
-  const navigate = useNavigate();
   const [editStore, setEditStore] = useState({
     currentModal: CurrentModal.NONE,
     currentMapMetaData: null,

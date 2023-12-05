@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { Typography, Box, Paper, Tooltip } from "@mui/material";
+import { Paper, Tooltip } from "@mui/material";
 import { EditMapContext } from "../../store/EditMapStore";
 import { read } from "shapefile";
 import toGeoJSON from "togeojson";

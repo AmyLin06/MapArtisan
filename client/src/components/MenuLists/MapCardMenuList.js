@@ -15,7 +15,7 @@ import AuthContext from "../../auth";
 
 //menu that opens and displays options for the map card in home screen and community screen
 export default function MapCardMenuList(props) {
-  const { isPublished, screen, map } = props;
+  const { isPublished, screen } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const { store } = useContext(GlobalStoreContext);
   const { auth } = useContext(AuthContext);
