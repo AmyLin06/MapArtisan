@@ -37,7 +37,10 @@ export default function ImportMenuList() {
     const selectedFile = event.target.files[0];
     const fileReader = new FileReader();
 
-    if (getFileExtension(selectedFile.name) === "json") {
+    if (
+      getFileExtension(selectedFile.name) === "json" ||
+      getFileExtension(selectedFile.name) === "geojson"
+    ) {
       // Add the GeoJSON file as a layer to the current map
       fileReader.onload = (event) => {
         const data = JSON.parse(event.target.result);
