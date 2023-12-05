@@ -39,6 +39,10 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
+    store.getHomeMapMetaData();
+  }, [auth.loggedIn]);
+
+  useEffect(() => {
     setMaps(store.homeMapLists);
   }, [store.homeMapLists]);
 

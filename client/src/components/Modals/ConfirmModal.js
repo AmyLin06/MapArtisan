@@ -30,6 +30,9 @@ export default function ConfirmModal(props) {
       case ConfirmModalTypes.PUBLISH_MAP:
         editStore.publishMap();
         break;
+      case ConfirmModalTypes.DELETE_MAP:
+        store.deleteMap();
+        break;
       default:
         break;
     }

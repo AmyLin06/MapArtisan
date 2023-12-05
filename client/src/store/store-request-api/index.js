@@ -61,6 +61,10 @@ export const updateMapGraphicById = (id, mapgraphic) => {
   });
 };
 
+export const deleteMapById = (mapId) => {
+  return api.delete(`/deletemap/${mapId}`);
+};
+
 const apis = {
   createNewMap,
   updateMapMetaData,
@@ -68,6 +72,7 @@ const apis = {
   getMapMetaDataById,
   updateMapGraphicById,
   getMapGraphicById,
+  deleteMapById,
 };
 
 export default apis;

@@ -52,7 +52,7 @@ function GlobalStoreContextProvider(props) {
       case GlobalStoreActionType.MARK_MAP_FOR_DELETION: {
         return setStore({
           currentModal: CurrentModal.DELETE_MAP,
-          currentMap: payload,
+          currentMap: store.currentMap,
           homeMapLists: store.homeMapLists,
           communityMapList: store.communityMapList,
         });
@@ -101,10 +101,9 @@ function GlobalStoreContextProvider(props) {
     });
   };
 
-  store.showDeleteMapModal = (map) => {
+  store.showDeleteMapModal = () => {
     storeReducer({
       type: GlobalStoreActionType.MARK_MAP_FOR_DELETION,
-      payload: { map },
     });
   };
 
@@ -158,6 +157,15 @@ function GlobalStoreContextProvider(props) {
 
   store.renameMap = async function () {
     console.log("in rename - needs to be implemented");
+  };
+
+  store.deleteMap = async function () {
+    let response = await api.deleteMapById(store.currentMap._id);
+    if (response.status === 200) {
+      store.getHomeMapMetaData();
+    } else {
+      console.log("Map failed to delete");
+    }
   };
 
   return (
