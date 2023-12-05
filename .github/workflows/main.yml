@@ -49,6 +49,7 @@ jobs:
       - name: Supertest run
         run: |
           cd server
+          npm i
           npm test
 
   Cypress-e2e-test:
@@ -58,6 +59,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set CI Environment Variable
+        run: echo "CI=false" >> $GITHUB_ENV
+
       - name: Cypress-run-e2e
         uses: cypress-io/github-action@v6
         with:
@@ -65,7 +69,7 @@ jobs:
           build: npm run build
           start: npm start
         env:
-          CI: ""
+          CI: false
 
   Cypress-component-test:
     runs-on: ubuntu-22.04
