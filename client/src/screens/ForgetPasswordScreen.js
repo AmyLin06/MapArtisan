@@ -7,6 +7,8 @@ import Copyright from "../components/CopyRight";
 import Button from "@mui/material/Button";
 import { useContext } from "react";
 import AuthContext from "../auth";
+import FailModal from "../components/Modals/FailModal";
+import { FailModalTypes } from "../components/Modals/ModalTypes";
 
 const ForgetPasswordScreen = () => {
   const { auth } = useContext(AuthContext);
@@ -54,6 +56,7 @@ const ForgetPasswordScreen = () => {
         <br />
         <Copyright />
       </div>
+      <FailModal modalType={FailModalTypes.EMAIL_SEND_FAIL} />
     </>
   );
 };

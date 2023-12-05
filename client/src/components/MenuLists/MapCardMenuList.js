@@ -35,7 +35,7 @@ export default function MapCardMenuList(props) {
   };
 
   const handleDelete = (event) => {
-    store.showDeleteMapModal(map);
+    store.showDeleteMapModal();
     handleClose(event);
     event.stopPropagation();
   };

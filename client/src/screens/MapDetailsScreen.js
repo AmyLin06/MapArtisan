@@ -8,11 +8,11 @@ import ForkRightIcon from "@mui/icons-material/ForkRight";
 import sampleMap from "../assets/currentMap.json";
 import Banner from "../components/Banner";
 import AuthContext from "../auth";
-import GlobalStoreContext from "../store/GlobalStore";
+import EditMapContext from "../store/EditMapStore";
 
 function MapDetailsScreen() {
   const { auth } = useContext(AuthContext);
-  const { store } = useContext(GlobalStoreContext);
+  const { editStore } = useContext(EditMapContext);
 
   const shortMonthDate = (dateObj) => {
     return dateObj
@@ -31,7 +31,7 @@ function MapDetailsScreen() {
       <Box display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h4" fontWeight="bold">
-            {store.currentMap?.mapTitle || ""}
+            {editStore.currentMapMetaData?.mapTitle || ""}
           </Typography>
           <Box display="flex">
             <Avatar src={sampleMap.profilePic} sx={{ marginRight: 1 }} />
@@ -40,14 +40,14 @@ function MapDetailsScreen() {
               color="textSecondary"
               sx={{ paddingTop: 0.5 }}
             >
-              @{store.currentMap?.ownerUsername}
+              @{editStore.currentMapMetaData?.ownerUsername}
             </Typography>
           </Box>
         </Box>
         <Box sx={{ display: "flex", gap: "5%" }}>
           <CustomButton
             icon={ThumbUpOffAltIcon}
-            text={store.currentMap?.userLiked.length}
+            text={editStore.currentMapMetaData?.userLiked.length}
             fontSize="25px"
           />
           <CustomButton
@@ -60,9 +60,11 @@ function MapDetailsScreen() {
 
       <Box sx={{ marginTop: 1, marginBottom: 1 }}>
         <Typography>
-          {shortMonthDate(new Date(store.currentMap?.publishedDate))}
+          {shortMonthDate(
+            new Date(editStore.currentMapMetaData?.publishedDate)
+          )}
           <br />
-          {store.currentMap?.forks} duplicates
+          {editStore.currentMapMetaData?.forks} duplicates
         </Typography>
       </Box>
 

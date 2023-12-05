@@ -42,8 +42,16 @@ getLoggedIn = async (req, res) => {
 };
 
 resetPassword = async (req, res) => {
-  const { id, token } = req.params;
+  console.log("Here");
+  const { id, token, expires } = req.params;
+  console.log("user_id: " + id + "   token: " + token);
+  const expirationTime = new Date(expires);
+  console.log("expiration time: " + expirationTime);
   const { password, passwordVerify } = req.body;
+  if (expirationTime <= new Date()) {
+    // Display a message to the user indicating that the link has expired
+    return res.status(400).json({ errorMessage: "Expired Link." });
+  }
   if (password !== passwordVerify) {
     return res.status(400).json({
       errorMessage: "Please enter the same password twice.",
@@ -96,22 +104,28 @@ forgetPassword = async (req, res) => {
         errorMessage: "Wrong email provided.",
       });
     }
+
     const token = auth.signToken(existingUser._id);
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: "mapartisannavy@gmail.com",
-        pass: "lrjmvsfuudjbkroe",
+        pass: process.env.GMAIL_PASS,
       },
     });
     console.log(baseURL);
+    const expirationTime = new Date();
+    expirationTime.setMinutes(expirationTime.getMinutes() + 5);
     const mailOptions = {
       from: "mapartisannavy@gmail.com",
       to: email,
       subject: "Reset Your Password",
       text:
         "Here is your LINK for RESET " +
-        `${baseURL}/${existingUser._id}/${token}`,
+        `${baseURL}/${
+          existingUser._id
+        }/${token}/${expirationTime.toISOString()}` +
+        " PLEASE NOTE: THE LINK IS ONLY AVAILABLE FOR 5 MINS",
     };
 
     const sendMailAsync = async () => {

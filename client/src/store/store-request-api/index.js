@@ -61,6 +61,10 @@ export const updateMapGraphicById = (id, mapgraphic) => {
   });
 };
 
+export const getCommunityMaps = () => {
+  return api.get(`/communitymaps`);
+};
+
 export const deleteMapById = (mapId) => {
   return api.delete(`/deletemap/${mapId}`);
 };
@@ -72,6 +76,7 @@ const apis = {
   getMapMetaDataById,
   updateMapGraphicById,
   getMapGraphicById,
+  getCommunityMaps,
   deleteMapById,
 };
 

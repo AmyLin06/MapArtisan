@@ -127,6 +127,13 @@ updateMapMetaData = async (req, res) => {
 
     console.log("map found: " + JSON.stringify(mapMetaData));
 
+    //verify if this user is allowed to make changes to the MapMetaData
+    const user = await User.findOne({ _id: mapMetaData.ownerID });
+    if (user._id.toString() !== req.userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Authentication error" });
+    }
     const updateQuery = { $set: body.field };
     const options = { new: true }; // This option returns the updated document
     const updatedDocument = await MapMetaData.findOneAndUpdate(
@@ -227,6 +234,28 @@ getUserMaps = async (req, res) => {
   }
 };
 
+getCommunityMaps = async (req, res) => {
+  console.log("in server getCommunityMaps");
+
+  try {
+    const detailedMapMetaDataList = await MapMetaData.find({
+      isPublished: true,
+    });
+
+    return res.status(201).json({
+      maps: detailedMapMetaDataList,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      errorMessage: "Error finding user's maps",
+    });
+  }
+};
+
+getPublishedMapsByUserId = async (req, res) => {};
+
 getMapMetaDataById = async (req, res) => {
   console.log("in server getMapMetaDataById");
   try {
@@ -250,7 +279,7 @@ getMapGraphicById = async (req, res) => {
     if (!mapgraphic) {
       return res
         .status(400)
-        .json({ success: false, error: "Map graphic nto found" });
+        .json({ success: false, error: "Map graphic not found" });
     }
     const user = await User.findOne({ _id: mapgraphic.ownerID });
     if (user._id == req.userId) {
@@ -303,6 +332,7 @@ module.exports = {
   deleteMap,
   updateMapMetaData,
   getUserMaps,
+  getCommunityMaps,
   getMapMetaDataById,
   updateMapGraphicById,
   getMapGraphicById,
