@@ -65,7 +65,7 @@ function AuthContextProvider(props) {
     switch (type) {
       case AuthActionType.GET_LOGGED_IN: {
         return setAuth({
-          currentModal: CurrentModal.NONE,
+          currentModal: auth.currentModal,
           user: payload.user,
           loggedIn: payload.loggedIn,
           errorMessage: null,
@@ -250,7 +250,7 @@ function AuthContextProvider(props) {
             guest: false,
           },
         });
-        history("/login");
+        // history("/login");
       }
     } catch (error) {
       authReducer({

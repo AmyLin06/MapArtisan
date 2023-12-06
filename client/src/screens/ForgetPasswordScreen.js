@@ -5,18 +5,41 @@ import TextField from "@mui/material/TextField";
 import { Stack, Box } from "@mui/material";
 import Copyright from "../components/CopyRight";
 import Button from "@mui/material/Button";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import AuthContext from "../auth";
 import FailModal from "../components/Modals/FailModal";
 import { FailModalTypes } from "../components/Modals/ModalTypes";
+import SuccessModal from "../components/Modals/SuccessModal";
+import { SuccessModalTypes } from "../components/Modals/ModalTypes";
 
 const ForgetPasswordScreen = () => {
   const { auth } = useContext(AuthContext);
+  const [attemptCount, setAttemptCount] = useState(0);
+  const [firstAttemptTime, setFirstAttemptTime] = useState(null);
+  const isButtonDisabled = attemptCount >= 3;
+
+  useEffect(() => {
+    if (firstAttemptTime) {
+      const timer = setTimeout(() => {
+        setAttemptCount(0);
+        setFirstAttemptTime(null);
+      }, 300000); // 300000 ms = 5 minutes
+
+      return () => clearTimeout(timer);
+    }
+  }, [firstAttemptTime]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    auth.forgetPassword(formData.get("email"));
+    if (attemptCount < 3) {
+      const formData = new FormData(event.currentTarget);
+      auth.forgetPassword(formData.get("email"));
+
+      if (attemptCount === 0) {
+        setFirstAttemptTime(Date.now());
+      }
+      setAttemptCount(attemptCount + 1);
+    }
   };
 
   return (
@@ -47,6 +70,7 @@ const ForgetPasswordScreen = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={isButtonDisabled}
               sx={{ mt: 3, mb: 2 }}
             >
               Send Email
@@ -57,6 +81,7 @@ const ForgetPasswordScreen = () => {
         <Copyright />
       </div>
       <FailModal modalType={FailModalTypes.EMAIL_SEND_FAIL} />
+      <SuccessModal modalType={SuccessModalTypes.EMAIL_SEND_SUCCESS} />
     </>
   );
 };
