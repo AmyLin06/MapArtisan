@@ -39,8 +39,13 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    setMaps(store.homeMapLists);
-  }, [store.homeMapLists]);
+    store.getHomeMapMetaData();
+    // eslint-disable-next-line
+  }, [auth.loggedIn]);
+
+  useEffect(() => {
+    setMaps(store.homeMapList);
+  }, [store.homeMapList]);
 
   return (
     <Box className="home-container" sx={{ padding: 2 }}>

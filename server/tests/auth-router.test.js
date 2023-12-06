@@ -265,6 +265,61 @@ describe("Update user information", () => {
   });
 });
 
+describe("Send Reset Link", () => {
+  it("No email address given", async () => {
+    const response = await request(app).post("/auth/forget-password").send({
+      email: "",
+    });
+    expect(response.status).toEqual(400);
+  });
+  it("No correspoding Email Address in data Base", async () => {
+    const response = await request(app).post("/auth/forget-password").send({
+      email: "1324@gmail.com",
+    });
+    expect(response.status).toEqual(401);
+  });
+});
+
+describe("Reset Password", () => {
+  const id = "656d74bf5615c6f87abb35e2";
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTZkNzRiZjU2MTVjNmY4N2FiYjM1ZTIiLCJpYXQiOjE3MDE3NTM4NTV9.KI52xEvAVK0V0ACOkTJLWhnB-47SKbb0ap6XcCdadkg";
+  const wrongExpiredDate = "2023-12-05T05:20:15.649Z";
+  const correctExpiredDate = new Date();
+  correctExpiredDate.setMinutes(correctExpiredDate.getMinutes() + 5);
+  it("Link Expired", async () => {
+    const response = await request(app)
+      .post(`/auth/reset-password/${id}/${token}/${wrongExpiredDate}`)
+      .send({
+        password: "12345678",
+        passwordVerify: "12345678",
+      });
+    expect(response.status).toEqual(400);
+  });
+  it("Not same password twice", async () => {
+    const response = await request(app)
+      .post(
+        `/auth/reset-password/${id}/${token}/${correctExpiredDate.toISOString()}`
+      )
+      .send({
+        password: "12345678",
+        passwordVerify: "987654321",
+      });
+    expect(response.status).toEqual(400);
+  });
+  it("Empty field", async () => {
+    const response = await request(app)
+      .post(
+        `/auth/reset-password/${id}/${token}/${correctExpiredDate.toISOString()}`
+      )
+      .send({
+        password: "12345678",
+        passwordVerify: "",
+      });
+    expect(response.status).toEqual(400);
+  });
+});
+
 afterAll((done) => {
   // Closing the DB connection allows Jest to exit successfully.
   mongoose.connection.close();

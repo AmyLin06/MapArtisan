@@ -4,7 +4,6 @@ import "leaflet/dist/leaflet.css";
 import { useContext, useRef } from "react";
 import { EditMapContext } from "../../store/EditMapStore";
 import RenderGeoJson from "./GeoJsonLayer";
-import RenderKML from "./KMLLayer";
 import LocationMarker from "./LocationMarker";
 
 function LeafletMap() {
@@ -15,14 +14,7 @@ function LeafletMap() {
   let mapLayers = null;
   if (editStore.currentMapGraphic) {
     mapLayers = editStore.currentMapGraphic.layers.map((layer, index) => {
-      if (layer.layerType === "GEOJSON" || layer.layerType === "SHAPEFILE") {
-        return <RenderGeoJson mapData={layer.data} />;
-      }
-      if (layer.layerType === "KML") {
-        return <RenderKML mapData={layer.data} />;
-      }
-      // Add additional conditions for other layer types if needed
-      return null; // or a default component if the layer type is unknown
+      return <RenderGeoJson mapData={layer.data} />;
     });
   }
 

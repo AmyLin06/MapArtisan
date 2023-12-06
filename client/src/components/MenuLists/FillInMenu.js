@@ -1,11 +1,19 @@
 import { CirclePicker } from "react-color";
 import { FormatColorFill as FormatColorFillIcon } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { IconButton, Popover, Tooltip } from "@mui/material";
+import { EditMapContext } from "../../store/EditMapStore";
 
 export default function ExportMenuList() {
+  const { editStore } = useContext(EditMapContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFillColor, setSelectedColor] = useState(""); // Set a default color
+
+  // useEffect(() => {
+  //   console.log(editStore.activeTool);
+  //   console.log(editStore.activeTool.detail.hex);
+  //   // Perform actions here that rely on the updated activeTool state
+  // }, [editStore.activeTool]); // This useEffect will re-run when editStore.activeTool changes
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -17,6 +25,7 @@ export default function ExportMenuList() {
 
   const handleColorChange = (color) => {
     setSelectedColor(color.hex);
+    editStore.setActiveFillin(color);
     // You can perform additional actions on color change if needed
     handleClose();
   };
@@ -30,7 +39,13 @@ export default function ExportMenuList() {
         <IconButton
           aria-label="fill-in"
           onClick={handleClick}
-          sx={{ color: selectedFillColor }}
+          sx={{
+            color: selectedFillColor,
+            border:
+              editStore.activeTool.tool === "FILLIN"
+                ? "2px solid #246BAD"
+                : "none",
+          }}
         >
           <FormatColorFillIcon />
         </IconButton>

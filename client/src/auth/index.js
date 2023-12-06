@@ -1,9 +1,8 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "./auth-request-api";
 
 const AuthContext = createContext();
-console.log("create AuthContext: " + AuthContext);
 
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR AUTH STATE THAT CAN BE PROCESSED
 export const AuthActionType = {
@@ -13,7 +12,6 @@ export const AuthActionType = {
   REGISTER_USER: "REGISTER_USER",
   UPDATE_USER: "UPDATE_USER",
   HIDE_MODALS: "HIDE_MODALS",
-  FORGET_PASSWORD: "FORGET_PASSWORD",
   FORGET_PASSWORD: "FORGET_PASSWORD",
 };
 
@@ -43,13 +41,27 @@ function AuthContextProvider(props) {
 
   const history = useNavigate();
 
-  // useEffect(() => {
-  //     auth.getLoggedIn();
-  // }, [auth]);
-  // here
+  useEffect(() => {
+    const fetchData = async () => {
+      await auth.getLoggedIn();
+      // Now the user information is available, and you can perform other actions
+      if (auth.user !== null && auth.loggedIn) {
+        // Perform actions or call functions that depend on the user being logged in
+        console.log("User is logged in:", auth.user);
+      } else {
+        // Handle the case where the user is not logged in
+        console.log("User is not logged in");
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line
+  }, [auth.loggedIn]);
 
   const authReducer = (action) => {
     const { type, payload } = action;
+    console.log(type);
+    console.log(payload);
     switch (type) {
       case AuthActionType.GET_LOGGED_IN: {
         return setAuth({

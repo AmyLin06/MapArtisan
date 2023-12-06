@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Box, Modal, Typography, Button, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomButton from "../CustomButton";
@@ -11,9 +11,15 @@ import EditMapContext from "../../store/EditMapStore";
 //<InputModal modalType={InputModalTypes.MESSAGE_MODAL}></InputModal>
 
 export default function InputModal(props) {
+  const { modalType } = props;
   const { store } = useContext(GlobalStoreContext);
   const { editStore } = useContext(EditMapContext);
-  const { modalType } = props;
+  const [mapName, setMapName] = useState(store.currentMap?.mapTitle);
+
+  useEffect(() => {
+    setMapName(store.currentMap?.mapTitle);
+  }, [store.currentMap]);
+
   const heightValue = modalType.name === "RENAME_MAP" ? 150 : 450;
   const InputModalStyle = {
     position: "absolute",
@@ -38,11 +44,15 @@ export default function InputModal(props) {
     event.stopPropagation();
   };
 
+  const handleMapNameChange = (event) => {
+    event.stopPropagation();
+    setMapName(event.target.value);
+  };
   const handleConfirm = (event) => {
     event.stopPropagation();
     switch (modalType) {
       case InputModalTypes.RENAME_MAP:
-        store.renameMap();
+        store.renameMap(mapName);
         break;
       default:
         break;
@@ -55,8 +65,9 @@ export default function InputModal(props) {
     <TextField
       variant="outlined"
       fullWidth
+      onChange={handleMapNameChange}
       onClick={handleInputClick}
-      defaultValue={store.currentMap?.mapTitle || ""}
+      value={mapName}
     />
   );
   if (modalType.name === "MESSAGE_MODAL") {
@@ -97,11 +108,11 @@ export default function InputModal(props) {
       slotProps={{
         backdrop: {
           sx: {
-            //Your style here....
             backgroundColor: "rgba(0,0,0,0.05)",
           },
         },
       }}
+      onClick={handleInputClick}
     >
       <Box sx={InputModalStyle}>
         <Box
@@ -131,9 +142,7 @@ export default function InputModal(props) {
             id="modal-modal-description"
             variant="h6"
             sx={{ fontStyle: "italic" }}
-          >
-            {" MYFRIEND"}
-          </Typography>
+          ></Typography>
           {InputField}
         </Box>
         <Box

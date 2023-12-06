@@ -25,5 +25,6 @@ router.put(
 router.get("/usermaps", auth.verify, MapController.getUserMaps);
 router.get("/mapgraphic/:mapId", auth.verify, MapController.getMapGraphicById);
 router.get("/mapById/:mapId", auth.verify, MapController.getMapMetaDataById);
-
+router.get("/communitymaps", auth.verify, MapController.getCommunityMaps);
+router.delete("/deletemap/:mapId", auth.verify, MapController.deleteMap);
 module.exports = router;

@@ -19,7 +19,7 @@ getLoggedIn = async (req, res) => {
       return res.status(200).json({
         loggedIn: false,
         user: null,
-        errorMessage: "?",
+        errorMessage: "Not logged in",
       });
     }
 
@@ -32,7 +32,7 @@ getLoggedIn = async (req, res) => {
         firstName: loggedInUser.firstName,
         lastName: loggedInUser.lastName,
         email: loggedInUser.email,
-        userName: existingUser.userName,
+        userName: loggedInUser.userName,
       },
     });
   } catch (err) {
@@ -51,6 +51,11 @@ resetPassword = async (req, res) => {
   if (expirationTime <= new Date()) {
     // Display a message to the user indicating that the link has expired
     return res.status(400).json({ errorMessage: "Expired Link." });
+  }
+  if (!password || !passwordVerify) {
+    return res.status(400).json({
+      errorMessage: "All provided field need to be filled in.",
+    });
   }
   if (password !== passwordVerify) {
     return res.status(400).json({

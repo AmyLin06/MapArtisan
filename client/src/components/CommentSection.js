@@ -2,7 +2,7 @@ import { List, Box, Typography, Avatar, TextField } from "@mui/material";
 import CommentCard from "./CommentCard";
 
 const CommentSection = (props) => {
-  const { comments, currentUser } = props;
+  const { comments } = props;
 
   let JSX = "";
   JSX = comments.map((c, index) => (

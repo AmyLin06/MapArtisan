@@ -50,7 +50,10 @@ function App() {
                   />
                   <Route path="home" element={<HomeScreen />} />
                   <Route path="community" element={<CommunityScreen />} />
-                  <Route path="map-details" element={<MapDetailsScreen />} />
+                  <Route
+                    path="map-details/:mapId"
+                    element={<MapDetailsScreen />}
+                  />
                   <Route
                     path="account-setting"
                     element={<AccountViewScreen />}

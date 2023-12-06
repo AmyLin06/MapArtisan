@@ -66,10 +66,11 @@ export default function MapCard(props) {
     }
     //set the current map in the edit store by getting mapByID
     const mapMetaData = await store.getMapMetaDataById(id);
+    await editStore.setMap(mapMetaData);
     if (currentMap.isPublished) {
-      navigate("/map-details");
+      console.log(mapMetaData);
+      navigate(`/map-details/${mapMetaData._id}`);
     } else {
-      await editStore.setMap(mapMetaData);
       navigate("/edit");
     }
   }
