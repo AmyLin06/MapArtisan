@@ -39,8 +39,7 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    store.getHomeMapMetaData();
-    // eslint-disable-next-line
+    if (auth.user) store.getHomeMapMetaData();
   }, [auth.loggedIn]);
 
   useEffect(() => {
@@ -135,14 +134,14 @@ const HomeScreen = () => {
             )}
           </Box>
         </div>
-        {auth.guest ? null : (
+        {
           <div class="container">
             <div className="white-area">
               <Box sx={{ paddingTop: 2 }}>
                 <Typography variant="h5" fontWeight="bold">
                   Maps
                 </Typography>
-                {maps.length === 0 ? (
+                {auth.guest || maps.length === 0 ? (
                   <Box
                     display="flex"
                     flexDirection="row"
@@ -165,7 +164,7 @@ const HomeScreen = () => {
               </Box>
             </div>
           </div>
-        )}
+        }
       </div>
       <SuccessModal modalType={SuccessModalTypes.ACCOUNT_LOGIN_SUCCESS} />
     </Box>
