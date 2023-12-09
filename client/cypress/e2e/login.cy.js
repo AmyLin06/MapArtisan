@@ -5,16 +5,16 @@ describe("login spec", () => {
   });
   it("allows the user to log in", () => {
     // Find the email input field and type in an email
-    cy.get('input[name="email"]').type("ronghao20010322@gmail.com");
+    cy.get('input[name="email"]').type("xyz987@gmail.com");
     // Find the password input field and type in a password
-    cy.get('input[name="password"]').type("20010322");
+    cy.get('input[name="password"]').type("87654321");
     cy.get('button[type="submit"]').click();
     cy.url().should("include", "/home");
     cy.get('[role="alert"]').should("be.visible");
     cy.contains("Sucessfully login").should("be.visible");
   });
   it("failed to login as wrong email or password provided.", () => {
-    cy.get('input[name="email"]').type("ronghao20010322@gmail.com");
+    cy.get('input[name="email"]').type("xyz987@gmail.com");
     cy.get('input[name="password"]').type("11111111");
     cy.get('button[type="submit"]').click();
     cy.get('[role="alert"]').should("be.visible");
