@@ -186,16 +186,15 @@ getUserMaps = async (req, res) => {
     //     .json({ success: false, errorMessage: "Authentication error" });
     // }
 
-    const mapMetaDataList = user.maps;
-    const detailedMapMetaDataList = await Promise.all(
-      mapMetaDataList.map(async (mapMetaData) => {
-        const detailedMapMetaData = await MapMetaData.findById(mapMetaData._id);
-        return detailedMapMetaData;
-      })
-    );
+    const mapMetaDataList = await MapMetaData.find({
+      $or: [
+        { ownerID: req.userId }, // Maps owned by the currently logged-in user
+        { isPublished: true }, // Published maps
+      ],
+    });
 
     return res.status(201).json({
-      maps: detailedMapMetaDataList,
+      maps: mapMetaDataList,
     });
   } catch (error) {
     console.error(error);
