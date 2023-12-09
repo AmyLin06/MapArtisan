@@ -40,6 +40,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     if (auth.user) store?.getHomeMapMetaData();
+    // eslint-disable-next-line
   }, [auth.loggedIn, auth.user, store.currentMap]);
 
   useEffect(() => {
