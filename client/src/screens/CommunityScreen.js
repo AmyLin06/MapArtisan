@@ -98,7 +98,7 @@ export default function CommunityScreen() {
           <DrawIcon fontSize="medium" color="action" />
         </Box>
       ) : (
-        <MapList maps={maps} sscreen={"COMMUNITY"} />
+        <MapList maps={maps} screen={"COMMUNITY"} />
       )}
     </Box>
   );

@@ -140,7 +140,7 @@ function GlobalStoreContextProvider(props) {
   };
 
   store.getHomeMapMetaData = async function () {
-    const response = await api.getUserMaps();
+    const response = await api.getUserMaps(auth.user?.email);
     if (response.status === 201) {
       // tps.clearAllTransactions();
       storeReducer({

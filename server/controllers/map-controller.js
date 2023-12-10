@@ -180,21 +180,28 @@ getUserMaps = async (req, res) => {
         errorMessage: "User not found",
       });
     }
-    // } else if (user._id != auth.user._id ) {
-    //   return res
-    //     .status(400)
-    //     .json({ success: false, errorMessage: "Authentication error" });
-    // }
 
-    const mapMetaDataList = await MapMetaData.find({
-      $or: [
-        { ownerID: req.userId }, // Maps owned by the currently logged-in user
-        { isPublished: true }, // Published maps
-      ],
-    });
+    //user is asking for their own maps
+    let detailedMapMetaDataList;
+    if (user.email == req.params.userEmail) {
+      const mapMetaDataList = user.maps;
+      detailedMapMetaDataList = await Promise.all(
+        mapMetaDataList.map(async (mapMetaData) => {
+          const detailedMapMetaData = await MapMetaData.findById(
+            mapMetaData._id
+          );
+          return detailedMapMetaData;
+        })
+      );
+    } else {
+      //asking for another user's maps -> can only view their published maps
+      detailedMapMetaDataList = await MapMetaData.find({
+        $and: [{ ownerID: req.userId }, { isPublished: true }],
+      });
+    }
 
     return res.status(201).json({
-      maps: mapMetaDataList,
+      maps: detailedMapMetaDataList,
     });
   } catch (error) {
     console.error(error);
@@ -253,7 +260,10 @@ getMapGraphicById = async (req, res) => {
         .json({ success: false, error: "Map graphic not found" });
     }
     const user = await User.findOne({ _id: mapgraphic.ownerID });
-    if (user._id == req.userId) {
+    const detailedMapMetaData = await MapMetaData.findById(req.params.mapId);
+
+    //user is asking for their own maps OR graphics of another user's published map
+    if (user._id == req.userId || detailedMapMetaData.isPublished) {
       return res.status(200).json({
         success: true,
         mapgraphic: mapgraphic,
