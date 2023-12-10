@@ -14,7 +14,7 @@ const GraphicSchema = new Schema(
       required: true,
     },
     layers: {
-      type: [{ layerName: String, layerType: String, data: Buffer }],
+      type: [String],
       default: [],
     },
     markers: {

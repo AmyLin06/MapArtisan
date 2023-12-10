@@ -55,10 +55,18 @@ export const getMapGraphicById = (mapId) => {
 };
 
 export const updateMapGraphicById = (id, mapgraphic) => {
-  return api.put(`/updategraphic/${id}`, {
-    //SPECIFY THE PAYLOAD
-    mapgraphic: mapgraphic,
-  });
+  return api.put(
+    `/updategraphic/${id}`,
+    {
+      //SPECIFY THE PAYLOAD
+      mapgraphic: mapgraphic,
+    }
+    // {
+    //   headers: {
+    //     "Content-Type": "application/octet-stream",
+    //   },
+    // }
+  );
 };
 
 export const getCommunityMaps = () => {

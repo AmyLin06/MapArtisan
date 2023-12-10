@@ -2,7 +2,6 @@ import { createContext, useState, useEffect } from "react";
 // import AuthContext from "../auth";
 import { useNavigate } from "react-router-dom";
 import api from "./store-request-api";
-import fakeMap from "../assets/currentMap.json";
 
 export const EditMapContext = createContext({});
 
@@ -127,11 +126,9 @@ function EditMapContextProvider(props) {
   };
 
   //add a layer to the current map
-  editStore.addLayer = (name, data, type) => {
+  editStore.addLayer = (file) => {
     let mapGraphic = editStore.currentMapGraphic;
-    console.log(mapGraphic.layers);
-    let newLayer = { layerName: name, layerType: type, data: data };
-    mapGraphic.layers.push(newLayer);
+    mapGraphic.layers.push(file);
     console.log(mapGraphic.layers);
     storeReducer({
       type: EditMapActionType.UPDATE_MAP_GRAPHIC,
@@ -320,13 +317,32 @@ function EditMapContextProvider(props) {
   };
 
   editStore.saveGraphic = async function () {
+    const graphics = editStore.currentMapGraphic;
+    // Convert File objects to base64 strings
+    const layersBase64 = graphics.layers.map((file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(",")[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    });
+
+    // Wait for all conversions to complete
+    const layersBase64Strings = await Promise.all(layersBase64);
+
+    // Create a copy of the graphics object with layers replaced by base64 strings
+    const graphicsCopy = {
+      ...graphics,
+      layers: layersBase64Strings,
+    };
     const response = await api.updateMapGraphicById(
       editStore.currentMapGraphic._id,
-      editStore.currentMapGraphic
+      graphicsCopy
     );
 
     if (response.status === 200) {
-      console.log(response.message);
+      console.log(response.data.message);
     } else console.log("Failed to save map graphics");
   };
 

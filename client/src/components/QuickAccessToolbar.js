@@ -4,7 +4,15 @@ import {
   Undo as UndoIcon,
   Redo as RedoIcon,
 } from "@mui/icons-material";
-import { ButtonGroup, IconButton, Tooltip } from "@mui/material";
+import {
+  ButtonGroup,
+  IconButton,
+  Tooltip,
+  Typography,
+  Stack,
+  Divider,
+  Box,
+} from "@mui/material";
 import ImportMenuList from "./MenuLists/ImportMenuList";
 import ExportMenuList from "./MenuLists/ExportMenuList";
 import MapPins from "./MapPins";
@@ -41,55 +49,75 @@ export default function QuickAccessToolbar() {
   };
 
   return (
-    <ButtonGroup aria-label="leaflet-toolbar" sx={{ height: "30px" }}>
-      <Tooltip title="Cursor">
-        <IconButton
-          aria-label="scroll-map"
-          sx={{
-            border:
-              editStore.activeTool.tool === "SCROLL"
-                ? "2px solid #246BAD"
-                : "none",
-          }}
-          onClick={handleMapScroll}
-        >
-          <PanToolAltOutlinedIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Save">
-        <IconButton
-          aria-label="save"
-          onClick={handleSave}
-          sx={{ border: "none" }}
-        >
-          <SaveIcon style={{ fontSize: "1rem" }} />
-        </IconButton>
-      </Tooltip>
-      <ImportMenuList />
-      <ExportMenuList />
-      <MapPins />
-      <FontMenu />
-      <FillInMenu />
-      <BorderMenu />
-      <TextMenu />
-      <LayerList
-        layers={editStore.currentMap ? editStore.currentMap.layers : []}
-      />
-      <Tooltip title="Publish">
-        <IconButton aria-label="publish" onClick={handlePublish}>
-          <ShareOutlinedIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Undo">
-        <IconButton aria-label="undo" onClick={handleUndo}>
-          <UndoIcon style={{ fontSize: "1rem" }} />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Redo">
-        <IconButton value="redo" aria-label="redo" onClick={handleRedo}>
-          <RedoIcon style={{ fontSize: "1rem" }} />
-        </IconButton>
-      </Tooltip>
-    </ButtonGroup>
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      sx={{ height: "30px", backgroundColor: "#eaeff3" }}
+    >
+      <Box display="flex">
+        <Typography fontWeight="bold" sx={{ color: "#246BAD", paddingLeft: 1 }}>
+          {editStore.currentMapMetaData?.mapTitle || "Untitied"}
+        </Typography>
+        <Tooltip title="Publish">
+          <IconButton aria-label="publish" onClick={handlePublish}>
+            <ShareOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+
+      <Stack direction="row">
+        <ButtonGroup aria-label="undo-redo">
+          <Tooltip title="Undo">
+            <IconButton aria-label="undo" onClick={handleUndo}>
+              <UndoIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Redo">
+            <IconButton value="redo" aria-label="redo" onClick={handleRedo}>
+              <RedoIcon />
+            </IconButton>
+          </Tooltip>
+        </ButtonGroup>
+
+        <Divider orientation="vertical" variant="middle" flexItem />
+
+        <ButtonGroup aria-label="leaflet-toolbar">
+          <Tooltip title="Save">
+            <IconButton
+              aria-label="save"
+              onClick={handleSave}
+              sx={{ border: "none" }}
+            >
+              <SaveIcon />
+            </IconButton>
+          </Tooltip>
+          <LayerList
+            layers={editStore.currentMap ? editStore.currentMap.layers : []}
+          />
+          <ImportMenuList />
+          <ExportMenuList />
+          <Divider orientation="vertical" variant="middle" flexItem />
+          <Tooltip title="Cursor">
+            <IconButton
+              aria-label="scroll-map"
+              sx={{
+                border:
+                  editStore.activeTool.tool === "SCROLL"
+                    ? "2px solid #246BAD"
+                    : "none",
+              }}
+              onClick={handleMapScroll}
+            >
+              <PanToolAltOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+          <MapPins />
+          <FontMenu />
+          <FillInMenu />
+          <BorderMenu />
+          <TextMenu />
+        </ButtonGroup>
+      </Stack>
+    </Stack>
   );
 }

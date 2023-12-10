@@ -1,4 +1,4 @@
-import { CirclePicker } from "react-color";
+import { SketchPicker } from "react-color";
 import { FormatColorText as FormatColorTextIcon } from "@mui/icons-material";
 import React, { useState } from "react";
 import { IconButton, Popover, Tooltip } from "@mui/material";
@@ -17,8 +17,6 @@ export default function TextMenu() {
 
   const handleColorChange = (color) => {
     setSelectedColor(color.hex);
-    // You can perform additional actions on color change if needed
-    handleClose();
   };
 
   const open = Boolean(anchorEl);
@@ -45,16 +43,11 @@ export default function TextMenu() {
           vertical: "bottom",
           horizontal: "left",
         }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        sx={{ width: "60%" }}
       >
-        <CirclePicker
+        <SketchPicker
           color={selectedTextColor}
           onChangeComplete={handleColorChange}
-          width={"100%"}
+          disableAlpha
         />
       </Popover>
     </>

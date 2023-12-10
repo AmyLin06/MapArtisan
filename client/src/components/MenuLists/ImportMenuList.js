@@ -5,8 +5,6 @@ import MenuItem from "@mui/material/MenuItem";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Typography, Box, Paper, Tooltip } from "@mui/material";
 import { EditMapContext } from "../../store/EditMapStore";
-import { read } from "shapefile";
-import toGeoJSON from "togeojson";
 
 //menu that opens and displays options for data formats the user can import
 export default function ImportMenuList() {
@@ -28,50 +26,10 @@ export default function ImportMenuList() {
     fileInputRef.current.click();
   };
 
-  const getFileExtension = (filename) => {
-    return filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2);
-  };
-
   const handleFileChange = (event) => {
     event.preventDefault();
     const selectedFile = event.target.files[0];
-    const fileReader = new FileReader();
-
-    if (
-      getFileExtension(selectedFile.name) === "json" ||
-      getFileExtension(selectedFile.name) === "geojson"
-    ) {
-      // Add the GeoJSON file as a layer to the current map
-      fileReader.onload = (event) => {
-        const data = JSON.parse(event.target.result);
-        editStore.addLayer(selectedFile.name, data, "GEOJSON");
-      };
-      fileReader.readAsText(event.target.files[0]);
-    } else if (getFileExtension(selectedFile.name) === "kml") {
-      fileReader.onload = (event) => {
-        const parser = new DOMParser();
-        const text = parser.parseFromString(event.target.result, "text/xml");
-        const data = toGeoJSON.kml(text);
-        editStore.addLayer(selectedFile.name, data, "GEOJSON");
-      };
-      fileReader.readAsText(event.target.files[0]);
-    } else if (getFileExtension(selectedFile.name) === "shp") {
-      fileReader.onload = async (event) => {
-        const arrayBuffer = event.target.result; // ArrayBuffer from FileReader
-
-        try {
-          const { features } = await read(arrayBuffer);
-          const geoJson = {
-            type: "FeatureCollection",
-            features: features || [],
-          };
-          editStore.addLayer(selectedFile.name, geoJson, "SHAPEFILE");
-        } catch (error) {
-          console.error("Error parsing shapefile SAD:", error);
-        }
-      };
-      fileReader.readAsArrayBuffer(event.target.files[0]);
-    }
+    editStore.addLayer(selectedFile);
     handleClose();
   };
 
@@ -86,7 +44,7 @@ export default function ImportMenuList() {
 
       <Tooltip title="Import File" disableFocusListener disableTouchListener>
         <IconButton onClick={handleOpen}>
-          <ArrowDownwardIcon style={{ fontSize: "1rem" }} />
+          <ArrowDownwardIcon />
         </IconButton>
       </Tooltip>
 

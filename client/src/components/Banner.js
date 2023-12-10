@@ -174,7 +174,7 @@ export default function Banner(props) {
           <ProfileMenuList />
         </Stack>
       );
-      bannerColor = "#246BAD";
+      // bannerColor = "#246BAD";
       break;
     default:
       break;
