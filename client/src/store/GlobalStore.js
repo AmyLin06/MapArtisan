@@ -140,7 +140,7 @@ function GlobalStoreContextProvider(props) {
   };
 
   store.getHomeMapMetaData = async function () {
-    const response = await api.getUserMaps();
+    const response = await api.getUserMaps(auth.user?.email);
     if (response.status === 201) {
       // tps.clearAllTransactions();
       storeReducer({
@@ -193,6 +193,8 @@ function GlobalStoreContextProvider(props) {
       store.getHomeMapMetaData();
     } else console.log("API FAILED TO RENAME MAP");
   };
+
+  store.likeMap = async function () {};
 
   store.deleteMap = async function () {
     let response = await api.deleteMapById(store.currentMap._id);

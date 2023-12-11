@@ -42,8 +42,8 @@ export const updateMapMetaData = (mapID, field) => {
   });
 };
 
-export const getUserMaps = () => {
-  return api.get(`/usermaps`);
+export const getUserMaps = (userEmail) => {
+  return api.get(`/usermaps/${userEmail}`);
 };
 
 export const getMapMetaDataById = (mapId) => {
