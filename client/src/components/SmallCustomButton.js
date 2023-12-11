@@ -1,7 +1,7 @@
 import React from "react";
 import { Tooltip, Button } from "@mui/material";
 
-//this custom button has a shorter height
+//this custom button has a shorter height and can be disabled
 export const SmallCustomButton = ({
   onClick,
   icon,
