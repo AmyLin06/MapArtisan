@@ -10,10 +10,12 @@ import AuthContext from "../auth";
 import EditMapContext from "../store/EditMapStore";
 import LeafletMap from "../components/Leaflet/LeafletMap";
 import { SmallCustomButton } from "../components/SmallCustomButton";
+import GlobalStoreContext from "../store/GlobalStore";
 
 function MapDetailsScreen() {
   const { auth } = useContext(AuthContext);
   const { editStore } = useContext(EditMapContext);
+  const { store } = useContext(GlobalStoreContext);
 
   const shortMonthDate = (dateObj) => {
     return dateObj
@@ -26,7 +28,7 @@ function MapDetailsScreen() {
   };
 
   const handleLike = () => {
-    console.log("handle like - not implemented");
+    store.likeMap();
   };
   const handleDuplicate = () => {
     console.log("handle duplicate - not implemented");
@@ -37,7 +39,7 @@ function MapDetailsScreen() {
       <Banner screen={"MAP_DETAIL"} />
       <>
         <Grid container>
-          <Grid item className="name-name" xs={4} sx={{ overflow: "hidden" }}>
+          <Grid item xs={4} sx={{ overflow: "hidden" }}>
             <Typography fontWeight="bold" sx={{ color: "#246BAD" }}>
               {editStore.currentMapMetaData?.mapTitle || ""}
             </Typography>
@@ -67,19 +69,21 @@ function MapDetailsScreen() {
             </Box>
           </Grid>
           <Grid item xs={6} />
-          <Grid item className="map-editing" xs={2}>
+          <Grid item xs={2}>
             <Box sx={{ display: "flex", gap: "3%" }}>
               <SmallCustomButton
                 onClick={handleLike}
                 icon={ThumbUpOffAltIcon}
                 tooltipTitle="Like"
                 text={editStore.currentMapMetaData?.userLiked.length}
+                disable={auth?.guest}
               />
               <SmallCustomButton
                 onClick={handleDuplicate}
                 icon={ForkRightIcon}
                 tooltipTitle="Duplicate"
                 text={editStore.currentMapMetaData?.forks}
+                disable={false}
               />
               <CommentSection
                 comments={sampleMap.comments}

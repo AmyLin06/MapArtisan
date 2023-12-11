@@ -27,6 +27,7 @@ const CommentSection = (props) => {
             onClick={() => setOpen(true)}
             tooltipTitle="View/Write comments"
             text={"Comments"}
+            disable={false}
           />
           <SwipeableDrawer
             anchor={anchor}

@@ -194,6 +194,8 @@ function GlobalStoreContextProvider(props) {
     } else console.log("API FAILED TO RENAME MAP");
   };
 
+  store.likeMap = async function () {};
+
   store.deleteMap = async function () {
     let response = await api.deleteMapById(store.currentMap._id);
     if (response.status === 200) {
