@@ -194,20 +194,13 @@ function AuthContextProvider(props) {
     }
   };
 
-  auth.resetPassword = async function (
-    password,
-    passwordVerify,
-    id,
-    token,
-    expires
-  ) {
+  auth.resetPassword = async function (password, passwordVerify, id, token) {
     try {
       const response = await api.resetPassword(
         password,
         passwordVerify,
         id,
-        token,
-        expires
+        token
       );
       if (response.status === 200) {
         authReducer({

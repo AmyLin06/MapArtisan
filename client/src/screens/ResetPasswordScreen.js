@@ -17,7 +17,7 @@ import { FailModalTypes } from "../components/Modals/ModalTypes";
 const ResetPasswordScreen = () => {
   const { auth } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
-  const { id, token, expires } = useParams();
+  const { id, token } = useParams();
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -29,8 +29,7 @@ const ResetPasswordScreen = () => {
       formData.get("password"),
       formData.get("passwordverified"),
       id,
-      token,
-      expires
+      token
     );
   };
 

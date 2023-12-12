@@ -43,15 +43,10 @@ getLoggedIn = async (req, res) => {
 
 resetPassword = async (req, res) => {
   console.log("Here");
-  const { id, token, expires } = req.params;
+  const { id, token } = req.params;
   console.log("user_id: " + id + "   token: " + token);
-  const expirationTime = new Date(expires);
-  console.log("expiration time: " + expirationTime);
   const { password, passwordVerify } = req.body;
-  if (expirationTime <= new Date()) {
-    // Display a message to the user indicating that the link has expired
-    return res.status(400).json({ errorMessage: "Expired Link." });
-  }
+
   if (!password || !passwordVerify) {
     return res.status(400).json({
       errorMessage: "All provided field need to be filled in.",
@@ -80,7 +75,6 @@ resetPassword = async (req, res) => {
           { _id: id },
           { passwordHash: passwordHash }
         );
-
         return res.status(200).json({
           message: "Password reset successfully.",
         });
@@ -110,7 +104,6 @@ forgetPassword = async (req, res) => {
       });
     }
 
-    const token = auth.signToken(existingUser._id);
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -118,35 +111,35 @@ forgetPassword = async (req, res) => {
         pass: process.env.GMAIL_PASS,
       },
     });
+
     console.log(baseURL);
-    const expirationTime = new Date();
-    expirationTime.setMinutes(expirationTime.getMinutes() + 5);
+    const token = auth.signLimitUseToken(existingUser._id);
     const mailOptions = {
       from: "mapartisannavy@gmail.com",
       to: email,
       subject: "Reset Your Password",
       text:
         "Here is your LINK for RESET " +
-        `${baseURL}/${
-          existingUser._id
-        }/${token}/${expirationTime.toISOString()}` +
+        `${baseURL}/${existingUser._id}/${token}` +
         " PLEASE NOTE: THE LINK IS ONLY AVAILABLE FOR 5 MINS",
     };
 
-    const sendMailAsync = async () => {
-      return new Promise((resolve, reject) => {
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.error("Email send error:", error);
-            reject(error);
-          } else {
-            console.log("Email sent: %s", info.messageId);
-            resolve(info);
-          }
-        });
-      });
-    };
-    await sendMailAsync();
+    // const sendMailAsync = async () => {
+    //   return new Promise((resolve, reject) => {
+    //     transporter.sendMail(mailOptions, (error, info) => {
+    //       if (error) {
+    //         console.error("Email send error:", error);
+    //         reject(error);
+    //       } else {
+    //         console.log("Email sent: %s", info.messageId);
+    //         resolve(info);
+    //       }
+    //     });
+    //   });
+    // };
+    // await sendMailAsync();
+    await transporter.sendMail(mailOptions);
+
     return res.status(200).json({
       loggedIn: false,
       user: null,

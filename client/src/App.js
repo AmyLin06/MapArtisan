@@ -45,7 +45,7 @@ function App() {
                     element={<ForgetPasswordScreen />}
                   />
                   <Route
-                    path="reset-password/:id/:token/:expires"
+                    path="reset-password/:id/:token"
                     element={<ResetPasswordScreen />}
                   />
                   <Route path="home" element={<HomeScreen />} />
