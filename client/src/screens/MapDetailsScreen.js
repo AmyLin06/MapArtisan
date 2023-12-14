@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "../styles/MapDetailsScreen.css";
 import CommentSection from "../components/CommentSection";
-import { Avatar, Box, Typography, Divider, Grid } from "@mui/material";
+import { Avatar, Box, Typography, Divider, Grid, Button } from "@mui/material";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ForkRightIcon from "@mui/icons-material/ForkRight";
 import sampleMap from "../assets/currentMap.json";
@@ -11,11 +11,13 @@ import EditMapContext from "../store/EditMapStore";
 import LeafletMap from "../components/Leaflet/LeafletMap";
 import { SmallCustomButton } from "../components/SmallCustomButton";
 import GlobalStoreContext from "../store/GlobalStore";
+import { useNavigate } from "react-router-dom";
 
 function MapDetailsScreen() {
   const { auth } = useContext(AuthContext);
   const { editStore } = useContext(EditMapContext);
   const { store } = useContext(GlobalStoreContext);
+  const navigate = useNavigate();
 
   const shortMonthDate = (dateObj) => {
     return dateObj
@@ -33,6 +35,12 @@ function MapDetailsScreen() {
   const handleDuplicate = () => {
     console.log("handle duplicate - not implemented");
   };
+
+  function handleProfile() {
+    navigate("/profile", {
+      state: { id: editStore.currentMapMetaData?.ownerID },
+    });
+  }
 
   return (
     <>
@@ -52,9 +60,11 @@ function MapDetailsScreen() {
                   height: "1.5rem",
                 }}
               />
-              <Typography variant="h9" color="textSecondary">
-                @{editStore.currentMapMetaData?.ownerUsername}
-              </Typography>
+              <Button onClick={handleProfile}>
+                <Typography variant="h9" color="textSecondary">
+                  @{editStore.currentMapMetaData?.ownerUsername}
+                </Typography>
+              </Button>
               <Divider
                 orientation="vertical"
                 flexItem

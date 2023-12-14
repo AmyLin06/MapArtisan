@@ -1,7 +1,6 @@
 import React from "react";
 import "../styles/ProfileScreen.css";
 import Banner from "../components/Banner";
-import ProfilePicture from "../components/profilepicture.jpg";
 // import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 // import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -9,7 +8,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Button from "@mui/material/Button";
-import { TextField, Grid, InputLabel, Box } from "@mui/material";
+import { TextField, Grid, InputLabel, Box, Avatar } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useContext, useState } from "react";
 import AuthContext from "../auth";
@@ -25,6 +24,19 @@ const AccountViewScreen = () => {
   const { auth } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordPart, setShowPasswordPart] = useState(false);
+
+  function getRandomColor() {
+    const colors = [
+      "#e57373",
+      "#64b5f6",
+      "#aed581",
+      "#ffb74d",
+      "#ba68c8",
+      "#4db6ac",
+    ]; // add more colors as needed
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -61,7 +73,27 @@ const AccountViewScreen = () => {
       </div>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
         <div className="profile-container">
-          <img className="profile-picture" src={ProfilePicture} alt="Profile" />
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ width: "100%", height: "100%" }} // Adjust width and height as needed
+          >
+            <Avatar
+              alt="profile-pic"
+              sx={{
+                width: 200,
+                height: 200,
+                marginRight: 2,
+                bgcolor: getRandomColor(), // Random background color
+                fontSize: "3rem", // Larger text
+              }}
+            >
+              {auth.user?.firstName.charAt(0) + auth.user?.lastName.charAt(0)}
+            </Avatar>
+          </Box>
+
+          {/* <img className="profile-picture" src={ProfilePicture} alt="Profile" /> */}
           {/* <div className="icon-buttons">
                     <Button className="icon-button" style={{color: "#333"}}>
                         <span role="img" aria-label="Icon 1">

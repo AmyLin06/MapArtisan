@@ -38,6 +38,7 @@ createMap = async (req, res) => {
     const map = new MapMetaData({
       ownerID: user._id,
       ownerUsername: user.userName,
+      // ownerEmail: user.email, //added to the meta
       mapTitle: body.name || "Untitled",
       lastOpened: new Date(),
     });
@@ -212,6 +213,50 @@ getUserMaps = async (req, res) => {
   }
 };
 
+getProfileMaps = async (req, res) => {
+  console.log("in server getProfileMaps");
+
+  try {
+    const user = await User.findOne({ _id: req.userId });
+    const listUser = await User.findOne({ _id: req.params.id }); //other users list
+    console.log("listUser:" + listUser);
+    if (!user) {
+      return res.status(404).json({
+        errorMessage: "User not found",
+      });
+    }
+
+    //user is asking for their own published maps
+    let detailedMapMetaDataList;
+    if (user.email == req.params.userEmail) {
+      detailedMapMetaDataList = await MapMetaData.find({
+        $and: [{ ownerUsername: listUser.userName }, { isPublished: true }],
+      });
+    } else {
+      //asking for another user's maps -> can only view their published maps
+      detailedMapMetaDataList = await MapMetaData.find({
+        $and: [{ ownerUsername: listUser.userName }, { isPublished: true }],
+      });
+    }
+    // console.log(listUser);
+    return res.status(201).json({
+      currentUser: {
+        firstName: listUser.firstName,
+        lastName: listUser.lastName,
+        email: listUser.email,
+        userName: listUser.userName,
+      },
+      profileMapList: detailedMapMetaDataList,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      errorMessage: "Error finding profile's maps",
+    });
+  }
+};
+
 getCommunityMaps = async (req, res) => {
   console.log("in server getCommunityMaps");
 
@@ -313,6 +358,7 @@ module.exports = {
   deleteMap,
   updateMapMetaData,
   getUserMaps,
+  getProfileMaps,
   getCommunityMaps,
   getMapMetaDataById,
   updateMapGraphicById,

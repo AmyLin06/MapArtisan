@@ -46,6 +46,10 @@ export const getUserMaps = (userEmail) => {
   return api.get(`/usermaps/${userEmail}`);
 };
 
+export const getProfileMaps = (id) => {
+  return api.get(`/profilemaps/${id}`);
+};
+
 export const getMapMetaDataById = (mapId) => {
   return api.get(`/mapById/${mapId}`);
 };
@@ -78,6 +82,7 @@ const apis = {
   getMapGraphicById,
   getCommunityMaps,
   deleteMapById,
+  getProfileMaps,
 };
 
 export default apis;
