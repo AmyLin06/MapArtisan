@@ -14,7 +14,7 @@ function LeafletMap() {
   let mapLayers = null;
   if (editStore.currentMapGraphic) {
     mapLayers = editStore.currentMapGraphic.layers.map((layer, index) => {
-      return <RenderGeoJson file={layer} />;
+      return <RenderGeoJson layer={layer} />;
     });
   }
 

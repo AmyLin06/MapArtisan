@@ -1,6 +1,4 @@
-import { createContext, useState, useEffect } from "react";
-// import AuthContext from "../auth";
-import { useNavigate } from "react-router-dom";
+import { createContext, useState } from "react";
 import api from "./store-request-api";
 
 export const EditMapContext = createContext({});
@@ -36,13 +34,10 @@ const LeafletTool = {
 };
 
 function EditMapContextProvider(props) {
-  // const { auth } = useContext(AuthContext);
-  const navigate = useNavigate();
   const [editStore, setEditStore] = useState({
     currentModal: CurrentModal.NONE,
     currentMapMetaData: null,
     currentMapGraphic: null,
-    currentcoloredPolygon: [],
     currentMapIndex: -1,
     activeTool: { tool: LeafletTool.SCROLL, detail: "NONE" },
   });
@@ -56,7 +51,6 @@ function EditMapContextProvider(props) {
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: editStore.currentcoloredPolygon,
           activeTool: editStore.activeTool,
         });
       }
@@ -67,7 +61,6 @@ function EditMapContextProvider(props) {
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: editStore.currentcoloredPolygon,
           activeTool: payload,
         });
       }
@@ -77,7 +70,6 @@ function EditMapContextProvider(props) {
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: editStore.currentcoloredPolygon,
           activeTool: editStore.activeTool,
         });
       }
@@ -87,7 +79,6 @@ function EditMapContextProvider(props) {
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: editStore.currentcoloredPolygon,
           activeTool: editStore.activeTool,
         });
       }
@@ -97,7 +88,6 @@ function EditMapContextProvider(props) {
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: editStore.currentcoloredPolygon,
           activeTool: editStore.activeTool,
         });
       }
@@ -107,7 +97,6 @@ function EditMapContextProvider(props) {
           currentMapMetaData: payload.mapMetaData,
           currentMapGraphic: payload.mapGraphic,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: [],
           activeTool: editStore.activeTool,
         });
       }
@@ -126,10 +115,14 @@ function EditMapContextProvider(props) {
   };
 
   //add a layer to the current map
-  editStore.addLayer = (file) => {
+  editStore.addLayer = (filename, url) => {
     let mapGraphic = editStore.currentMapGraphic;
-    mapGraphic.layers.push(file);
-    console.log(mapGraphic.layers);
+    const newLayer = {
+      filename: filename,
+      fileRef: url,
+      polygonColorStyle: [],
+    };
+    mapGraphic.layers.push(newLayer);
     storeReducer({
       type: EditMapActionType.UPDATE_MAP_GRAPHIC,
       payload: {},
@@ -186,17 +179,20 @@ function EditMapContextProvider(props) {
 
   // Setting the border color of a selected polygon
   editStore.colorBorder = (currLayer, currColor) => {
-    const polygonList = editStore.currentcoloredPolygon;
+    const targetLayer = editStore.currentMapGraphic.layers.find(
+      (layer) => layer.fileRef === currLayer.fileRef
+    );
+    const polygonList = targetLayer.polygonColorStyle;
     let index = null;
     for (let i = 0; i < polygonList.length; i++) {
-      if (polygonList[i].layer === currLayer) {
+      if (polygonList[i].layerKey === currLayer.uniqueKey) {
         index = i;
         break;
       }
     }
     if (index == null) {
       polygonList.push({
-        layer: currLayer,
+        layerKey: currLayer.uniqueKey,
         color: "#3388ff",
         border: currColor,
       });
@@ -215,20 +211,24 @@ function EditMapContextProvider(props) {
 
   // Coloring in a selected polygon
   editStore.colorPolygon = (currLayer, currColor) => {
-    const polygonList = editStore.currentcoloredPolygon;
+    const targetLayer = editStore.currentMapGraphic.layers.find(
+      (layer) => layer.fileRef === currLayer.fileRef
+    );
+    const polygonList = targetLayer.polygonColorStyle;
     let index = null;
     for (let i = 0; i < polygonList.length; i++) {
-      if (polygonList[i].layer === currLayer) {
+      if (polygonList[i].layerKey === currLayer.uniqueKey) {
         index = i;
         break;
       }
     }
+    console.log(index);
     if (index == null) {
       currLayer.setStyle({
         fillColor: currColor,
       });
       polygonList.push({
-        layer: currLayer,
+        layerKey: currLayer.uniqueKey,
         color: currColor,
         border: "#3388ff",
       });
@@ -318,27 +318,10 @@ function EditMapContextProvider(props) {
 
   editStore.saveGraphic = async function () {
     const graphics = editStore.currentMapGraphic;
-    // Convert File objects to base64 strings
-    const layersBase64 = graphics.layers.map((file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result.split(",")[1]);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    });
-
-    // Wait for all conversions to complete
-    const layersBase64Strings = await Promise.all(layersBase64);
-
-    // Create a copy of the graphics object with layers replaced by base64 strings
-    const graphicsCopy = {
-      ...graphics,
-      layers: layersBase64Strings,
-    };
+    console.log(graphics.layers);
     const response = await api.updateMapGraphicById(
       editStore.currentMapGraphic._id,
-      graphicsCopy
+      graphics
     );
 
     if (response.status === 200) {

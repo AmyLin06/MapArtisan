@@ -28,7 +28,6 @@ import AuthContext from "../auth";
 
 export default function QuickAccessToolbar() {
   const { editStore } = useContext(EditMapContext);
-  const { auth } = useContext(AuthContext);
 
   const handleSave = () => {
     editStore.saveGraphic();
@@ -92,7 +91,11 @@ export default function QuickAccessToolbar() {
             </IconButton>
           </Tooltip>
           <LayerList
-            layers={editStore.currentMap ? editStore.currentMap.layers : []}
+            layers={
+              editStore.currentMapGraphic
+                ? editStore.currentMapGraphic.layers
+                : []
+            }
           />
           <ImportMenuList />
           <ExportMenuList />

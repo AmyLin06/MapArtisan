@@ -14,7 +14,15 @@ const GraphicSchema = new Schema(
       required: true,
     },
     layers: {
-      type: [String],
+      type: [
+        {
+          filename: String,
+          fileRef: String,
+          polygonColorStyle: [
+            { layerKey: Number, color: String, border: String },
+          ],
+        },
+      ],
       default: [],
     },
     markers: {
