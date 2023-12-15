@@ -18,6 +18,7 @@ const RenderGeoJson = (props) => {
       setMapData(geojsonData);
     };
     downloadAndParseFile(layer);
+    // eslint-disable-next-line
   }, []);
 
   const geoJSONStyle = {

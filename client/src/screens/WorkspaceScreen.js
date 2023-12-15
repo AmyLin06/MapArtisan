@@ -3,8 +3,7 @@ import "../styles/WorkspaceScreen.css";
 import QuickAccessToolbar from "../components/QuickAccessToolbar";
 import LeafletMap from "../components/Leaflet/LeafletMap";
 import { Grid } from "@mui/material";
-import { EditMapContext } from "../store/EditMapStore";
-import React, { useContext } from "react";
+import React from "react";
 import ConfirmModal from "../components/Modals/ConfirmModal";
 import { ConfirmModalTypes } from "../components/Modals/ModalTypes";
 
