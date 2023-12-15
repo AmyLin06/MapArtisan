@@ -3,20 +3,6 @@
     height: 100vh;
 }
 
-.workspace-banner{
-    background-color: #246BAD;
-}
-
-.sidebar{
-    height: 100vh;
-    background-color: #B4CEE5;
-}
-.quick-toolbar{
-    padding:1%;
-    display: flex;
-    justify-content: center;
-}
-
 .leaflet-container {
     height: 85vh;
     z-index: 1;
