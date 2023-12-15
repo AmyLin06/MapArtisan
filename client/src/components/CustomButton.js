@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
+import { Tooltip } from "@mui/material";
 
 const OutlinedStyledButton = styled(Button)(({ fontSize }) => ({
   boxShadow: "none",
@@ -23,16 +24,16 @@ const ContainedStyledButton = styled(Button)(({ fontSize }) => ({
   fontSize: fontSize || "14px",
 }));
 
-//onClick lines should be working, but commented out to avoid breaking change
 const CustomButton = ({
   text,
   onPress,
   type = "outlined",
   icon: Icon,
   fontSize,
+  tooltipTitle = "",
 }) => {
   return (
-    <>
+    <Tooltip title={tooltipTitle}>
       {type === "outlined" ? (
         <OutlinedStyledButton
           variant={type}
@@ -52,7 +53,7 @@ const CustomButton = ({
           {text}
         </ContainedStyledButton>
       )}
-    </>
+    </Tooltip>
   );
 };
 

@@ -24,7 +24,6 @@ import LayerList from "./LayerList";
 import { EditMapContext } from "../store/EditMapStore";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import PanToolAltOutlinedIcon from "@mui/icons-material/PanToolAltOutlined";
-import AuthContext from "../auth";
 
 export default function QuickAccessToolbar() {
   const { editStore } = useContext(EditMapContext);

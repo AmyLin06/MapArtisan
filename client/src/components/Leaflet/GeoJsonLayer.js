@@ -1,5 +1,5 @@
 import { GeoJSON } from "react-leaflet";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { EditMapContext } from "../../store/EditMapStore";
 import storage from "../../firebaseConfig";
 import { getDownloadURL, ref } from "firebase/storage";

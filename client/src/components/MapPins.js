@@ -19,7 +19,7 @@ const MapPins = () => {
   const [open, setOpen] = useState(false);
   const anchorRef = React.useRef(null);
   const activeMarker =
-    editStore.activeTool.tool == "MARKER"
+    editStore.activeTool.tool === "MARKER"
       ? editStore.activeTool.detail
       : "busIcon";
   const [selectedKey, setSelectedKey] = useState(activeMarker);
@@ -73,6 +73,7 @@ const MapPins = () => {
           >
             <img
               src={mapMarkers[selectedKey]}
+              alt={selectedKey}
               style={{ width: "25px", height: "25px" }}
             />
             <ArrowDropDownIcon />

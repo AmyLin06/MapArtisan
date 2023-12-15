@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import { EditMapContext } from "../../store/EditMapStore";
 import L from "leaflet";
@@ -15,6 +15,7 @@ const LocationMarker = () => {
     });
   };
 
+  // eslint-disable-next-line
   const map = useMapEvents({
     click(e) {
       if (editStore.activeTool.tool === "MARKER") {

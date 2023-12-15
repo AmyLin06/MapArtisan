@@ -52,6 +52,11 @@ resetPassword = async (req, res) => {
     // Display a message to the user indicating that the link has expired
     return res.status(400).json({ errorMessage: "Expired Link." });
   }
+  if (!password || !passwordVerify) {
+    return res.status(400).json({
+      errorMessage: "All provided field need to be filled in.",
+    });
+  }
   if (password !== passwordVerify) {
     return res.status(400).json({
       errorMessage: "Please enter the same password twice.",

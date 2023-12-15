@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import { Typography, Box, Paper, Tooltip } from "@mui/material";
+import { Paper, Tooltip } from "@mui/material";
 
 //menu that opens and displays options for data formats the user can export the map in
 export default function ExportMenuList() {
