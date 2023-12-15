@@ -37,6 +37,8 @@ const RenderGeoJson = (props) => {
     leafletLayer.fileRef = layer.fileRef;
     leafletLayer.uniqueKey = layerKey;
     layerKey = layerKey + 1;
+
+    //get the existing styles for each feature & apply them if it matches current feature
     const storedColorStyle = layer.polygonColorStyle;
     const colorInfo = storedColorStyle.find(
       (item) => item.layerKey === leafletLayer.uniqueKey
