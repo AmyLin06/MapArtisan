@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { Tooltip } from "@mui/material";
 
-const OutlinedStyledButton = styled(Button)(({ fontSize }) => ({
+const OutlinedStyledButton = styled(Button)(({ fontSize, sx }) => ({
   boxShadow: "none",
   fontSize: fontSize || "14px",
   border: "1px solid",
@@ -13,15 +13,17 @@ const OutlinedStyledButton = styled(Button)(({ fontSize }) => ({
   "&:hover": {
     backgroundColor: "rgba(169, 169, 169, 0.3)",
   },
+  ...sx,
 }));
 
-const ContainedStyledButton = styled(Button)(({ fontSize }) => ({
+const ContainedStyledButton = styled(Button)(({ fontSize, sx }) => ({
   boxShadow: "none",
   backgroundColor: "#246BAD",
   borderRadius: 32,
   border: "1px solid",
   padding: "5px 15px",
   fontSize: fontSize || "14px",
+  ...sx,
 }));
 
 const CustomButton = ({
@@ -31,6 +33,7 @@ const CustomButton = ({
   icon: Icon,
   fontSize,
   tooltipTitle = "",
+  sx, //additional styles
 }) => {
   return (
     <Tooltip title={tooltipTitle}>
@@ -39,6 +42,7 @@ const CustomButton = ({
           variant={type}
           fontSize={fontSize}
           onClick={onPress}
+          sx={sx}
         >
           {Icon && <Icon sx={{ fontSize: fontSize, marginRight: 1 }} />}
           {text}
@@ -48,6 +52,7 @@ const CustomButton = ({
           variant={type}
           fontSize={fontSize}
           onClick={onPress}
+          sx={sx}
         >
           {Icon && <Icon sx={{ fontSize: fontSize, marginRight: 1 }} />}
           {text}

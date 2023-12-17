@@ -1,10 +1,10 @@
-import { React, useContext } from "react";
+import { React, useContext, useState } from "react";
 import {
   Save as SaveIcon,
   Undo as UndoIcon,
   Redo as RedoIcon,
 } from "@mui/icons-material";
-import { ButtonGroup, IconButton, Tooltip } from "@mui/material";
+import { ButtonGroup, IconButton, Tooltip, Popover } from "@mui/material";
 import ImportMenuList from "./MenuLists/ImportMenuList";
 import ExportMenuList from "./MenuLists/ExportMenuList";
 import MapPins from "./MapPins";
@@ -16,12 +16,24 @@ import LayerList from "./LayerList";
 import { EditMapContext } from "../store/EditMapStore";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import PanToolAltOutlinedIcon from "@mui/icons-material/PanToolAltOutlined";
+import GuestModal from "./Modals/GuestModal";
+import { GuestModalTypes } from "./Modals/ModalTypes";
+import AuthContext from "../auth";
 
 export default function QuickAccessToolbar() {
   const { editStore } = useContext(EditMapContext);
+  const { auth } = useContext(AuthContext);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleSave = () => {
-    editStore.saveGraphic();
+  const handleOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleSave = (event) => {
+    if (auth.guest) {
+      handleOpen(event);
+      editStore.showGuestSaveModal();
+    } else editStore.saveGraphic();
   };
   const handleUndo = () => {
     console.log("trying to undo in quick access toolbar - not implemented");
@@ -30,8 +42,11 @@ export default function QuickAccessToolbar() {
     console.log("trying to redo in quick access toolbar - not implemented");
   };
 
-  const handlePublish = () => {
-    editStore.showPublishMapModal();
+  const handlePublish = (event) => {
+    if (auth.guest) {
+      handleOpen(event);
+      editStore.showGuestPublishModal();
+    } else editStore.showPublishMapModal();
   };
 
   const handleMapScroll = () => {
@@ -57,12 +72,34 @@ export default function QuickAccessToolbar() {
       <Tooltip title="Save">
         <IconButton
           aria-label="save"
-          onClick={handleSave}
+          onClick={(event) => {
+            handleSave(event);
+          }}
           sx={{ border: "none" }}
+          anchorEl={anchorEl}
         >
           <SaveIcon style={{ fontSize: "1rem" }} />
         </IconButton>
       </Tooltip>
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+      >
+        <GuestModal
+          modalType={GuestModalTypes.SAVE_MAP}
+          initialAnchorEl={anchorEl}
+          handleClose={() => setAnchorEl(null)}
+        />
+      </Popover>
       <ImportMenuList />
       <ExportMenuList />
       <MapPins />
@@ -74,10 +111,34 @@ export default function QuickAccessToolbar() {
         layers={editStore.currentMap ? editStore.currentMap.layers : []}
       />
       <Tooltip title="Publish">
-        <IconButton aria-label="publish" onClick={handlePublish}>
+        <IconButton
+          aria-label="publish"
+          onClick={(event) => {
+            handlePublish(event);
+          }}
+        >
           <ShareOutlinedIcon />
         </IconButton>
       </Tooltip>
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+      >
+        <GuestModal
+          modalType={GuestModalTypes.PUBLISH_MAP}
+          initialAnchorEl={anchorEl}
+          handleClose={() => setAnchorEl(null)}
+        />
+      </Popover>
       <Tooltip title="Undo">
         <IconButton aria-label="undo" onClick={handleUndo}>
           <UndoIcon style={{ fontSize: "1rem" }} />

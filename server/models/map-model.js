@@ -7,7 +7,7 @@ const mapMetaData = new Schema(
     userLiked: {
       type: [
         {
-          userID: mongoose.Schema.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
         },
       ],
       default: [],

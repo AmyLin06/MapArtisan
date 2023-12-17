@@ -34,6 +34,15 @@ export const createNewMap = (newMapName, newMap, userEmail) => {
     ownerEmail: userEmail,
   });
 };
+
+export const duplicateMap = (mapId, ownerEmail) => {
+  return api.post(`/duplicate/`, {
+    // SPECIFY THE PAYLOAD
+    mapId: mapId,
+    ownerEmail: ownerEmail,
+  });
+};
+
 export const updateMapMetaData = (mapID, field) => {
   return api.put(`/updatemetadata/`, {
     // SPECIFY THE PAYLOAD
@@ -69,8 +78,13 @@ export const deleteMapById = (mapId) => {
   return api.delete(`/deletemap/${mapId}`);
 };
 
+export const isLikedMap = (mapId) => {
+  return api.get(`/likedmap/${mapId}`);
+};
+
 const apis = {
   createNewMap,
+  duplicateMap,
   updateMapMetaData,
   getUserMaps,
   getMapMetaDataById,
@@ -78,6 +92,7 @@ const apis = {
   getMapGraphicById,
   getCommunityMaps,
   deleteMapById,
+  isLikedMap,
 };
 
 export default apis;

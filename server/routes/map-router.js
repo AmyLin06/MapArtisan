@@ -16,6 +16,7 @@ const auth = require("../auth");
 // });
 
 router.post("/create", auth.verify, MapController.createMap);
+router.post("/duplicate", auth.verify, MapController.duplicateMap);
 router.put("/updatemetadata", auth.verify, MapController.updateMapMetaData);
 router.put(
   "/updategraphic/:id",
@@ -26,5 +27,7 @@ router.get("/usermaps/:userEmail", auth.verify, MapController.getUserMaps);
 router.get("/mapgraphic/:mapId", auth.verify, MapController.getMapGraphicById);
 router.get("/mapById/:mapId", auth.verify, MapController.getMapMetaDataById);
 router.get("/communitymaps", auth.verify, MapController.getCommunityMaps);
+router.get("/likedmap/:mapId", auth.verify, MapController.isLikedMap);
 router.delete("/deletemap/:mapId", auth.verify, MapController.deleteMap);
+
 module.exports = router;

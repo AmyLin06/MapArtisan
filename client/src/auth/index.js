@@ -312,6 +312,20 @@ function AuthContextProvider(props) {
     console.log(auth.user);
   };
 
+  auth.logoutGuest = async function () {
+    //logouts the user without routing anywhere, mainly used to logout Guest
+    setGuest(false);
+    const response = await api.logoutUser();
+    console.log(response.status);
+    if (response.status === 200) {
+      authReducer({
+        type: AuthActionType.LOGOUT_USER,
+        payload: null,
+      });
+    }
+    console.log(auth.user);
+  };
+
   auth.getUserInitials = function () {
     let initials = "";
     if (auth.user) {
