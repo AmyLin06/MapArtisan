@@ -39,9 +39,9 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    if (auth.user) store.getHomeMapMetaData();
+    if (auth.user && !auth.guest) store.getHomeMapMetaData();
     // eslint-disable-next-line
-  }, [auth.loggedIn]);
+  }, [auth.loggedIn, store.currentMap]);
 
   useEffect(() => {
     setMaps(store.homeMapList);
@@ -62,9 +62,8 @@ const HomeScreen = () => {
               </Typography>
               <Link to="/community">
                 <Box display="flex" justifyContent="flex-end">
-                  <Button>
-                    {" "}
-                    Community Inspiration <ArrowForwardIcon />{" "}
+                  <Button onClick={store.getCommunityMapMetaData}>
+                    Community Inspiration <ArrowForwardIcon />
                   </Button>
                 </Box>
               </Link>

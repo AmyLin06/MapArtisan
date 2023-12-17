@@ -67,8 +67,79 @@ createMap = async (req, res) => {
   }
 };
 
+duplicateMap = async (req, res) => {
+  console.log("in server duplicate map");
+  const body = req.body;
+  console.log("duplicateMap body: " + JSON.stringify(body));
+  if (!body) {
+    return res.status(400).json({
+      success: false,
+      error: "You must provide a Map",
+    });
+  }
+
+  try {
+    const user = await User.findOne({ email: body.ownerEmail });
+    const mapMetaData = await MapMetaData.findById(body.mapId);
+    const mapgraphic = await MapGraphic.findOne({ mapID: body.mapId });
+
+    console.log("mapMetaData: ");
+    console.log(mapMetaData);
+    if (!user || !mapMetaData || !mapgraphic) {
+      return res.status(404).json({
+        errorMessage: "Missing necessary information to duplicate",
+      });
+    } else if (!mapMetaData.isPublished) {
+      return res
+        .status(400)
+        .json({ success: false, errorMessage: "Authentication error" });
+    }
+
+    console.log("user found: " + JSON.stringify(user));
+
+    //create the map meta data object
+    const map = new MapMetaData({
+      ownerID: user._id,
+      ownerUsername: user.userName,
+      mapTitle: mapMetaData.mapTitle,
+      lastOpened: new Date(),
+    });
+
+    user.maps.push(map._id);
+
+    //create the corresponding map graphic object
+    const graphic = new MapGraphic({
+      ownerID: user._id,
+      mapID: map._id,
+      layers: mapgraphic.layers,
+      markers: mapgraphic.markers,
+    });
+    mapMetaData.forks = mapMetaData.forks + 1; //increment the number of forks
+
+    // Save the user and the new mapmetadata
+    await Promise.all([
+      user.save(),
+      map.save(),
+      graphic.save(),
+      mapMetaData.save(),
+    ]);
+    console.log("map: " + map.toString());
+
+    return res.status(201).json({
+      map: map,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      errorMessage: "Error duplicating map",
+    });
+  }
+};
+
 updateMapMetaData = async (req, res) => {
   console.log("in server update map");
+
   if (auth.verifyUser(req) === null) {
     return res.status(400).json({
       errorMessage: "UNAUTHORIZED",
@@ -96,13 +167,38 @@ updateMapMetaData = async (req, res) => {
 
     //verify if this user is allowed to make changes to the MapMetaData
     const user = await User.findOne({ _id: mapMetaData.ownerID });
-    if (user._id.toString() !== req.userId) {
+    if (user._id.toString() !== req.userId && !body.field.userLiked) {
       return res
         .status(401)
         .json({ success: false, message: "Authentication error" });
     }
-    const updateQuery = { $set: body.field };
+
+    let updateQuery = { $set: body.field };
     const options = { new: true }; // This option returns the updated document
+
+    //used for liking/un-liking a map
+    if (body.field.userLiked) {
+      let userLikedList = mapMetaData.userLiked;
+
+      //check if the user has already liked this map
+      const existingUserIndex = userLikedList.findIndex(
+        (userId) => userId.toString() === req.userId.toString()
+      );
+
+      if (existingUserIndex !== -1) {
+        //remove the user from the array
+        userLikedList = userLikedList.filter(
+          (userId) => userId.toString() !== req.userId.toString()
+        );
+      } else userLikedList.push(body.field.userLiked[0]);
+      updateQuery = {
+        $set: {
+          userLiked: userLikedList,
+        },
+      };
+    }
+
+    //update document
     const updatedDocument = await MapMetaData.findOneAndUpdate(
       { _id: body.mapID },
       updateQuery,
@@ -308,8 +404,48 @@ deleteMap = async (req, res) => {
   }
 };
 
+isLikedMap = async (req, res) => {
+  try {
+    const mapMetaData = await MapMetaData.findOne({ _id: req.params.mapId });
+    console.log("meta data:", mapMetaData);
+    if (!mapMetaData) {
+      return res.status(404).json({ message: "Map not found!" });
+    }
+
+    const user = await User.findOne({ _id: req.userId });
+    if (user._id.toString() !== req.userId && !mapMetaData.isPublished) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Authentication error" });
+    }
+
+    let userLikedList = mapMetaData.userLiked;
+    let isLiked = false;
+    //check if the user has already liked this map
+    const existingUserIndex = userLikedList.findIndex(
+      (userId) => userId.toString() === user._id.toString()
+    );
+
+    if (existingUserIndex !== -1) {
+      //user has liked this map before
+      isLiked = true;
+    }
+
+    return res.status(201).json({
+      success: true,
+      isLiked: isLiked,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error,
+      message: "Unable to check if this user has liked this map",
+    });
+  }
+};
+
 module.exports = {
   createMap,
+  duplicateMap,
   deleteMap,
   updateMapMetaData,
   getUserMaps,
@@ -317,4 +453,5 @@ module.exports = {
   getMapMetaDataById,
   updateMapGraphicById,
   getMapGraphicById,
+  isLikedMap,
 };

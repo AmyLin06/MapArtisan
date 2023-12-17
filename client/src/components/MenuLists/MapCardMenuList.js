@@ -8,20 +8,35 @@ import {
   FavoriteBorder as FavoriteBorderIcon,
   ForkRight as ForkRightIcon,
 } from "@mui/icons-material";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import InputModal from "../Modals/InputModal";
 import ConfirmModal from "../Modals/ConfirmModal";
-import { InputModalTypes, ConfirmModalTypes } from "../Modals/ModalTypes";
+import {
+  InputModalTypes,
+  ConfirmModalTypes,
+  GuestModalTypes,
+} from "../Modals/ModalTypes";
+import GuestModal from "../Modals/GuestModal";
 import AuthContext from "../../auth";
+import EditMapContext from "../../store/EditMapStore";
 
 //menu that opens and displays options for the map card in home screen and community screen
 export default function MapCardMenuList(props) {
   const { isPublished, screen } = props;
-  const [anchorEl, setAnchorEl] = useState(null);
   const { store } = useContext(GlobalStoreContext);
+  const { editStore } = useContext(EditMapContext);
   const { auth } = useContext(AuthContext);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [likedMap, setLikedMap] = useState(false);
 
-  const handleOpen = (event) => {
+  const checkIsLiked = async () => {
+    const bool = await store.isLikedMap(store.currentMap?._id);
+    setLikedMap(bool);
+  };
+
+  const handleOpen = async (event) => {
     setAnchorEl(event.currentTarget);
+    await checkIsLiked();
   };
 
   const handleClose = (event) => {
@@ -39,14 +54,21 @@ export default function MapCardMenuList(props) {
     handleClose(event);
     event.stopPropagation();
   };
+
   const handleDuplicate = (event) => {
+    store.duplicateMap(store.currentMap._id);
     handleClose(event);
     event.stopPropagation();
   };
 
-  const handleLikes = (event) => {
-    handleClose(event);
+  const handleLikes = async (event) => {
     event.stopPropagation();
+    if (auth.guest) {
+      store.showGuestLikeModal();
+    } else {
+      await store.likeMap(editStore);
+      await checkIsLiked();
+    }
   };
   const open = Boolean(anchorEl);
 
@@ -81,12 +103,19 @@ export default function MapCardMenuList(props) {
         <MoreVertIcon style={{ marginTop: 10, fontSize: "2rem" }} />
       </IconButton>
       <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
-        {auth.guest ? null : (
-          <MenuItem onClick={handleLikes}>
+        <MenuItem onClick={handleLikes}>
+          {likedMap ? (
+            <FavoriteOutlinedIcon style={{ marginRight: 4, color: "246BAD" }} />
+          ) : (
             <FavoriteBorderIcon style={{ marginRight: 4 }} />
-            {"Like"}
-          </MenuItem>
-        )}
+          )}
+          {"Like"}
+        </MenuItem>
+        <GuestModal
+          modalType={GuestModalTypes.LIKE_MAP}
+          initialAnchorEl={anchorEl}
+          handleClose={handleClose}
+        />
         <MenuItem onClick={handleDuplicate}>
           <ForkRightIcon style={{ marginRight: 4 }} />
           {"Duplicate"}

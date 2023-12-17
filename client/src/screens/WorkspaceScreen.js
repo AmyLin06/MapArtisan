@@ -5,7 +5,11 @@ import LeafletMap from "../components/Leaflet/LeafletMap";
 import { Grid } from "@mui/material";
 import React from "react";
 import ConfirmModal from "../components/Modals/ConfirmModal";
-import { ConfirmModalTypes } from "../components/Modals/ModalTypes";
+import {
+  ConfirmModalTypes,
+  InputModalTypes,
+} from "../components/Modals/ModalTypes";
+import InputModal from "../components/Modals/InputModal";
 
 const WorkspaceScreen = () => {
   return (
@@ -21,6 +25,7 @@ const WorkspaceScreen = () => {
           </Grid>
         </Grid>
         <ConfirmModal modalType={ConfirmModalTypes.PUBLISH_MAP} />
+        <InputModal modalType={InputModalTypes.RENAME_MAP} />
       </div>
     </div>
   );
