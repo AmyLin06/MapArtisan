@@ -7,7 +7,7 @@ export const SmallCustomButton = ({
   icon,
   tooltipTitle,
   text,
-  disable,
+  disable = false,
 }) => {
   return (
     <Tooltip title={tooltipTitle}>
@@ -16,7 +16,7 @@ export const SmallCustomButton = ({
         variant="outlined"
         sx={{
           borderRadius: 32,
-          height: "50%",
+          height: "75%",
           opacity: disable ? 0.5 : 1,
           cursor: disable ? "not-allowed" : "pointer",
           backgroundColor: disable ? "lightgray" : "inherit",

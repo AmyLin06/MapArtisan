@@ -100,7 +100,7 @@ export default function ConfirmModal(props) {
               variant="h7"
               sx={{ fontStyle: "italic" }}
             >
-              {store.currentMap?.mapTitle}
+              {store.currentMap?.mapTitle || "Untitled"}
             </Typography>{" "}
           </Typography>
 

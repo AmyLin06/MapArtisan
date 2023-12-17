@@ -15,6 +15,7 @@ export const EditMapActionType = {
   PUBLISH_MAP: "PUBLISH_MAP",
   MARK_MAP_FOR_PUBLISH: "MARK_MAP_FOR_PUBLISH",
   UPDATE_MAP_COLOR: "UPDATE_MAP_COLOR",
+  SHOW_GUEST_MODAL: "SHOW_GUEST_MODAL",
 };
 
 const CurrentModal = {
@@ -23,6 +24,9 @@ const CurrentModal = {
   PUBLISH_MAP: "PUBLISH_MAP",
   PUBLISH_SUCCESS: "PUBLISH_SUCCESS",
   RENAME_MAP: "RENAME_MAP",
+  GUEST_SAVE_MAP: "GUEST_SAVE_MAP",
+  GUEST_RENAME_MAP: "GUEST_RENAME_MAP",
+  GUEST_PUBLISH_MAP: "GUEST_PUBLISH_MAP",
   ERROR: "ERROR",
 };
 
@@ -84,6 +88,15 @@ function EditMapContextProvider(props) {
       case EditMapActionType.MARK_MAP_FOR_PUBLISH: {
         return setEditStore({
           currentModal: CurrentModal.PUBLISH_MAP,
+          currentMapMetaData: editStore.currentMapMetaData,
+          currentMapGraphic: editStore.currentMapGraphic,
+          currentMapIndex: editStore.currentMapIndex,
+          activeTool: editStore.activeTool,
+        });
+      }
+      case EditMapActionType.SHOW_GUEST_MODAL: {
+        return setEditStore({
+          currentModal: payload.newModal,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
@@ -309,6 +322,27 @@ function EditMapContextProvider(props) {
     storeReducer({
       type: EditMapActionType.MARK_MAP_FOR_PUBLISH,
       // payload: { map },
+    });
+  };
+
+  editStore.showGuestSaveModal = () => {
+    storeReducer({
+      type: EditMapActionType.SHOW_GUEST_MODAL,
+      payload: { newModal: CurrentModal.GUEST_SAVE_MAP },
+    });
+  };
+
+  editStore.showGuestRenameModal = () => {
+    storeReducer({
+      type: EditMapActionType.SHOW_GUEST_MODAL,
+      payload: { newModal: CurrentModal.GUEST_RENAME_MAP },
+    });
+  };
+
+  editStore.showGuestPublishModal = () => {
+    storeReducer({
+      type: EditMapActionType.SHOW_GUEST_MODAL,
+      payload: { newModal: CurrentModal.GUEST_PUBLISH_MAP },
     });
   };
 

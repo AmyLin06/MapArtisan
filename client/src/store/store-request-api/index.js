@@ -34,6 +34,15 @@ export const createNewMap = (newMapName, template, userEmail) => {
     ownerEmail: userEmail,
   });
 };
+
+export const duplicateMap = (mapId, ownerEmail) => {
+  return api.post(`/duplicate/`, {
+    // SPECIFY THE PAYLOAD
+    mapId: mapId,
+    ownerEmail: ownerEmail,
+  });
+};
+
 export const updateMapMetaData = (mapID, field) => {
   return api.put(`/updatemetadata/`, {
     // SPECIFY THE PAYLOAD
@@ -55,10 +64,18 @@ export const getMapGraphicById = (mapId) => {
 };
 
 export const updateMapGraphicById = (id, mapgraphic) => {
-  return api.put(`/updategraphic/${id}`, {
-    //SPECIFY THE PAYLOAD
-    mapgraphic: mapgraphic,
-  });
+  return api.put(
+    `/updategraphic/${id}`,
+    {
+      //SPECIFY THE PAYLOAD
+      mapgraphic: mapgraphic,
+    }
+    // {
+    //   headers: {
+    //     "Content-Type": "application/octet-stream",
+    //   },
+    // }
+  );
 };
 
 export const getCommunityMaps = () => {
@@ -69,8 +86,13 @@ export const deleteMapById = (mapId) => {
   return api.delete(`/deletemap/${mapId}`);
 };
 
+export const isLikedMap = (mapId) => {
+  return api.get(`/likedmap/${mapId}`);
+};
+
 const apis = {
   createNewMap,
+  duplicateMap,
   updateMapMetaData,
   getUserMaps,
   getMapMetaDataById,
@@ -78,6 +100,7 @@ const apis = {
   getMapGraphicById,
   getCommunityMaps,
   deleteMapById,
+  isLikedMap,
 };
 
 export default apis;
