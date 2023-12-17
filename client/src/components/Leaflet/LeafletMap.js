@@ -1,22 +1,21 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import { Box } from "@mui/material";
 import "leaflet/dist/leaflet.css";
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { EditMapContext } from "../../store/EditMapStore";
 import RenderGeoJson from "./GeoJsonLayer";
 import LocationMarker from "./LocationMarker";
+// import RoutingTemplate from "./Template/RoutingTemplate";
 
 function LeafletMap() {
   const { editStore } = useContext(EditMapContext);
   const center = [40.902771, -73.13385];
-  const map_container_ref = useRef(null);
+  // const [map, setMap] = useState(null);
 
   let mapLayers = null;
-  if (editStore.currentMapGraphic) {
-    mapLayers = editStore.currentMapGraphic.layers.map((layer, index) => {
-      return <RenderGeoJson layer={layer} />;
-    });
-  }
+  mapLayers = editStore.currentMapGraphic?.layers.map((layer, index) => {
+    return <RenderGeoJson layer={layer} />;
+  });
 
   return (
     <Box>
@@ -24,7 +23,7 @@ function LeafletMap() {
         center={center}
         zoom={13}
         scrollWheelZoom={true}
-        ref={map_container_ref}
+        // ref={setMap}
       >
         <TileLayer
           noWrap
@@ -33,6 +32,7 @@ function LeafletMap() {
         />
         {mapLayers}
         <LocationMarker />
+        {/* <RoutingTemplate /> */}
       </MapContainer>
     </Box>
   );

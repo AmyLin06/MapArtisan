@@ -37,6 +37,7 @@ createMap = async (req, res) => {
     //create the map meta data object
     const map = new MapMetaData({
       ownerID: user._id,
+      template: body.template,
       ownerUsername: user.userName,
       mapTitle: body.name || "Untitled",
       lastOpened: new Date(),

@@ -26,11 +26,11 @@ const api = axios.create({
 // WE NEED TO PUT THINGS INTO THE DATABASE OR IF WE HAVE SOME
 // CUSTOM FILTERS FOR QUERIES
 
-export const createNewMap = (newMapName, newMap, userEmail) => {
+export const createNewMap = (newMapName, template, userEmail) => {
   return api.post(`/create/`, {
     // SPECIFY THE PAYLOAD
     name: newMapName,
-    map: newMap,
+    template: template,
     ownerEmail: userEmail,
   });
 };
