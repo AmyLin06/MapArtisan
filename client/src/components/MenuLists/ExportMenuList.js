@@ -23,7 +23,7 @@ export default function ExportMenuList() {
     <>
       <Tooltip title="Export Map" disableFocusListener disableTouchListener>
         <IconButton onClick={handleOpen}>
-          <ArrowUpwardIcon style={{ fontSize: "1rem" }} />
+          <ArrowUpwardIcon />
         </IconButton>
       </Tooltip>
 
