@@ -124,9 +124,10 @@ function GlobalStoreContextProvider(props) {
     });
   };
 
-  store.createNewMap = async function () {
+  store.createNewMap = async function (template) {
+    console.log(template);
     let mapName = "Untitled";
-    const response = await api.createNewMap(mapName, null, auth.user.email);
+    const response = await api.createNewMap(mapName, template, auth.user.email);
     if (response.status === 201) {
       // tps.clearAllTransactions();
       let newMap = response.data.map;

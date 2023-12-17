@@ -34,8 +34,8 @@ const HomeScreen = () => {
     setCurrentPage(currentPage - 1);
   };
 
-  const handleCreateBaseMap = () => {
-    auth.guest ? navigate("/edit") : store.createNewMap();
+  const handleCreateMap = (template) => {
+    auth.guest ? navigate("/edit") : store.createNewMap(template);
   };
 
   useEffect(() => {
@@ -82,7 +82,10 @@ const HomeScreen = () => {
                         alignItems="center"
                         sx={{ backgroundColor: "#195083" }}
                       >
-                        <IconButton size="large" onClick={handleCreateBaseMap}>
+                        <IconButton
+                          size="large"
+                          onClick={() => handleCreateMap("Regular")}
+                        >
                           <AddIcon fontSize="large" />
                         </IconButton>
                       </Box>
@@ -91,8 +94,8 @@ const HomeScreen = () => {
                   <Grid item xs={3}>
                     <TemplateCard templateName="Template1" />
                   </Grid>
-                  <Grid item xs={3}>
-                    <TemplateCard templateName="Template2" />
+                  <Grid item xs={3} onClick={() => handleCreateMap("Routing")}>
+                    <TemplateCard templateName="Plan Your Trip" />
                   </Grid>
                   <Grid item xs={3}>
                     <TemplateCard templateName="Template3" />
