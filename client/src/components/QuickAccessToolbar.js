@@ -1,4 +1,4 @@
-import { React, useContext, useState } from "react";
+import { React, useContext, useState, useEffect } from "react";
 import {
   Save as SaveIcon,
   Undo as UndoIcon,
@@ -28,11 +28,16 @@ import PanToolAltOutlinedIcon from "@mui/icons-material/PanToolAltOutlined";
 import GuestModal from "./Modals/GuestModal";
 import { GuestModalTypes } from "./Modals/ModalTypes";
 import AuthContext from "../auth";
+import GlobalStoreContext from "../store/GlobalStore";
 
 export default function QuickAccessToolbar() {
+  const { store } = useContext(GlobalStoreContext);
   const { editStore } = useContext(EditMapContext);
   const { auth } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [mapName, setMapName] = useState(
+    store.currentMap?.mapTitle || "Untitled"
+  );
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,6 +67,18 @@ export default function QuickAccessToolbar() {
     editStore.setScrolling();
   };
 
+  const handleRenameMap = (event) => {
+    if (auth.guest) {
+      handleOpen(event);
+      editStore.showGuestRenameModal();
+    } else store.showEditMapNameModal();
+  };
+
+  useEffect(() => {
+    setMapName(store.currentMap?.mapTitle || "Untitled");
+    // eslint-disable-next-line
+  }, [store.currentMap?.mapTitle]);
+
   return (
     <Stack
       direction="row"
@@ -69,9 +86,38 @@ export default function QuickAccessToolbar() {
       sx={{ height: "30px", backgroundColor: "#eaeff3" }}
     >
       <Box display="flex">
-        <Typography fontWeight="bold" sx={{ color: "#246BAD", paddingLeft: 1 }}>
-          {editStore.currentMapMetaData?.mapTitle || "Untitled"}
-        </Typography>
+        <Box>
+          <Tooltip title="Double-click to rename">
+            <Typography
+              fontWeight="bold"
+              onDoubleClick={(event) => {
+                handleRenameMap(event);
+              }}
+              sx={{ color: "#246BAD", paddingLeft: 1 }}
+            >
+              {mapName}
+            </Typography>
+          </Tooltip>
+          <Popover
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={() => setAnchorEl(null)}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+          >
+            <GuestModal
+              modalType={GuestModalTypes.RENAME_MAP}
+              initialAnchorEl={anchorEl}
+              handleClose={() => setAnchorEl(null)}
+            />
+          </Popover>
+        </Box>
         <Tooltip title="Publish">
           <IconButton aria-label="publish" onClick={handlePublish}>
             <ShareOutlinedIcon />
