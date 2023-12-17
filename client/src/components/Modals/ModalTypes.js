@@ -102,6 +102,7 @@ export const GuestModalTypes = {
     name: "GUEST_LIKE_MAP",
     text: "Login to like a map",
   },
+  //currently not being used - error implementing in CommendSection.js
   SUBMIT_COMMENT: {
     name: "GUEST_COMMENT_ON_MAP",
     text: "Login to write a comment",
