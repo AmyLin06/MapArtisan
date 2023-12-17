@@ -130,12 +130,6 @@ function GlobalStoreContextProvider(props) {
     });
   };
 
-  store.showGuestCommentModal = () => {
-    storeReducer({
-      type: GlobalStoreActionType.SHOW_GUEST_LIKE_MODAL,
-    });
-  };
-
   store.hideModals = () => {
     storeReducer({
       type: GlobalStoreActionType.HIDE_MODALS,
