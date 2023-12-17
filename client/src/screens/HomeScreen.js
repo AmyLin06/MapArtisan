@@ -89,7 +89,10 @@ const HomeScreen = () => {
                     </Card>
                   </Grid>
                   <Grid item xs={3}>
-                    <TemplateCard templateName="Template1" />
+                    <TemplateCard
+                      templateName="Choropleth Map"
+                      type={"choropleth"}
+                    />
                   </Grid>
                   <Grid item xs={3}>
                     <TemplateCard templateName="Template2" />

@@ -16,6 +16,8 @@ export const EditMapActionType = {
   PUBLISH_MAP: "PUBLISH_MAP",
   MARK_MAP_FOR_PUBLISH: "MARK_MAP_FOR_PUBLISH",
   UPDATE_MAP_COLOR: "UPDATE_MAP_COLOR",
+  CREATE_CHOROPLETH_MAP: "CREATE_CHOROPLETH_MAP",
+  UPDATE_CHOROPLETH_MAP: "UPDATE_CHOROPLETH_MAP",
 };
 
 const CurrentModal = {
@@ -25,6 +27,7 @@ const CurrentModal = {
   PUBLISH_SUCCESS: "PUBLISH_SUCCESS",
   RENAME_MAP: "RENAME_MAP",
   ERROR: "ERROR",
+  CREATE_CHOROPLETH_FORM: "CREATE_CHOROPLETH_FORM",
 };
 
 const LeafletTool = {
@@ -32,6 +35,10 @@ const LeafletTool = {
   MARKER: "MARKER",
   BORDER: "BORDER",
   FILLIN: "FILLIN",
+};
+
+const Templates = {
+  CHOROPLETH: "CHOROPLETH",
 };
 
 function EditMapContextProvider(props) {
@@ -43,6 +50,8 @@ function EditMapContextProvider(props) {
     currentcoloredPolygon: [],
     currentMapIndex: -1,
     activeTool: { tool: LeafletTool.SCROLL, detail: "NONE" },
+    currentTemplate: null,
+    templateData: [],
   });
 
   const storeReducer = (action) => {
@@ -50,23 +59,51 @@ function EditMapContextProvider(props) {
     switch (type) {
       case EditMapActionType.UPDATE_MAP_GRAPHIC: {
         return setEditStore({
-          currentModel: editStore.currentModal,
+          currentModal: editStore.currentModal,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
           currentcoloredPolygon: editStore.currentcoloredPolygon,
+          currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
+        });
+      }
+      case EditMapActionType.CREATE_CHOROPLETH_MAP: {
+        console.log("creating a template");
+        return setEditStore({
+          currentModal: CurrentModal.CREATE_CHOROPLETH_FORM,
+          currentMapMetaData: editStore.currentMapMetaData,
+          currentMapGraphic: editStore.currentMapGraphic,
+          currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: editStore.currentcoloredPolygon,
+          currentTemplate: Templates.CHOROPLETH,
+          activeTool: editStore.activeTool,
+          templateData: editStore.templateData,
+        });
+      }
+      case EditMapActionType.UPDATE_CHOROPLETH_MAP: {
+        return setEditStore({
+          currentModal: editStore.currentModal,
+          currentMapMetaData: editStore.currentMapMetaData,
+          currentMapGraphic: editStore.currentMapGraphic,
+          currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: editStore.currentcoloredPolygon,
+          currentTemplate: editStore.currentTemplate,
+          activeTool: editStore.activeTool,
+          templateData: payload.templateData,
         });
       }
       case EditMapActionType.UPDATE_MAP_COLOR: {
         console.log("inside case: ", payload);
         return setEditStore({
-          currentModel: editStore.currentModal,
+          currentModal: editStore.currentModal,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
           currentcoloredPolygon: editStore.currentcoloredPolygon,
+          currentTemplate: editStore.currentTemplate,
           activeTool: payload,
+          templateData: editStore.templateData,
         });
       }
       case EditMapActionType.SET_MAP_NAME_EDIT_ACTIVE: {
@@ -76,7 +113,9 @@ function EditMapContextProvider(props) {
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
           currentcoloredPolygon: editStore.currentcoloredPolygon,
+          currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
+          templateData: editStore.templateData,
         });
       }
       case EditMapActionType.HIDE_MODALS: {
@@ -86,7 +125,9 @@ function EditMapContextProvider(props) {
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
           currentcoloredPolygon: editStore.currentcoloredPolygon,
+          currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
+          templateData: editStore.templateData,
         });
       }
       case EditMapActionType.MARK_MAP_FOR_PUBLISH: {
@@ -96,7 +137,9 @@ function EditMapContextProvider(props) {
           currentMapGraphic: editStore.currentMapGraphic,
           currentMapIndex: editStore.currentMapIndex,
           currentcoloredPolygon: editStore.currentcoloredPolygon,
+          currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
+          templateData: editStore.templateData,
         });
       }
       case EditMapActionType.SET_CURRENT_MAP: {
@@ -105,8 +148,9 @@ function EditMapContextProvider(props) {
           currentMapMetaData: payload.mapMetaData,
           currentMapGraphic: payload.mapGraphic,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: [],
+          currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
+          templateData: editStore.templateData,
         });
       }
       case EditMapActionType.CLOSE_CURRENT_MAP: {
@@ -115,7 +159,10 @@ function EditMapContextProvider(props) {
           currentMapMetaData: null,
           currentMapGraphic: null,
           currentMapIndex: -1,
+          currentcoloredPolygon: [],
+          currentTemplate: null,
           activeTool: { tool: LeafletTool.SCROLL, detail: "NONE" },
+          templateData: editStore.templateData,
         });
       }
       default:
@@ -125,11 +172,12 @@ function EditMapContextProvider(props) {
 
   //add a layer to the current map
   editStore.addLayer = (name, data, type) => {
+    console.log(data);
     let mapGraphic = editStore.currentMapGraphic;
-    console.log(mapGraphic.layers);
+    // console.log(mapGraphic.layers);
     let newLayer = { layerName: name, layerType: type, data: data };
     mapGraphic.layers.push(newLayer);
-    console.log(mapGraphic.layers);
+    // console.log(mapGraphic.layers);
     storeReducer({
       type: EditMapActionType.UPDATE_MAP_GRAPHIC,
       payload: {},
@@ -240,6 +288,23 @@ function EditMapContextProvider(props) {
     }
   };
 
+  editStore.createChoroplethMap = () => {
+    console.log("Triggered handle on click");
+    storeReducer({
+      type: EditMapActionType.CREATE_CHOROPLETH_MAP,
+      payload: {
+        currentTemplate: Templates.CHOROPLETH,
+      },
+    });
+  };
+
+  editStore.setTemplateData = (data) => {
+    storeReducer({
+      type: EditMapActionType.UPDATE_CHOROPLETH_MAP,
+      payload: { templateData: data },
+    });
+  };
+
   //set the current leaflet tool to scrolling
   editStore.setScrolling = () => {
     editStore.activeTool = { tool: LeafletTool.SCROLL, detail: "NONE" };
@@ -262,6 +327,7 @@ function EditMapContextProvider(props) {
       type: EditMapActionType.MARK_MAP_FOR_PUBLISH,
       // payload: { map },
     });
+    console.log(editStore.currentModal);
   };
 
   editStore.hideModals = () => {

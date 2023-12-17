@@ -5,6 +5,7 @@ import { useContext, useRef } from "react";
 import { EditMapContext } from "../../store/EditMapStore";
 import RenderGeoJson from "./GeoJsonLayer";
 import LocationMarker from "./LocationMarker";
+import ChoroplethMap from "./ChoroplethMap";
 
 function LeafletMap() {
   const { editStore } = useContext(EditMapContext);
@@ -12,9 +13,16 @@ function LeafletMap() {
   const map_container_ref = useRef(null);
 
   let mapLayers = null;
+  console.log(editStore.currentTemplate);
+  console.log(editStore.currentMapGraphic);
+
   if (editStore.currentMapGraphic) {
     mapLayers = editStore.currentMapGraphic.layers.map((layer, index) => {
-      return <RenderGeoJson mapData={layer.data} />;
+      if (layer.layerType == "CHOROPLETH") {
+        return <ChoroplethMap mapData={layer.data} />;
+      } else {
+        return <RenderGeoJson mapData={layer.data} />;
+      }
     });
   }
 

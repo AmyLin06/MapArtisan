@@ -7,6 +7,7 @@ import { EditMapContext } from "../store/EditMapStore";
 import React, { useContext } from "react";
 import ConfirmModal from "../components/Modals/ConfirmModal";
 import { ConfirmModalTypes } from "../components/Modals/ModalTypes";
+import ChoroplethForm from "../components/Modals/ChoroplethForm";
 
 const WorkspaceScreen = () => {
   const { editStore } = useContext(EditMapContext);
@@ -31,6 +32,7 @@ const WorkspaceScreen = () => {
             <LeafletMap />
           </Grid>
         </Grid>
+        <ChoroplethForm />
         <ConfirmModal modalType={ConfirmModalTypes.PUBLISH_MAP} />
       </div>
     </div>
