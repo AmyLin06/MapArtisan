@@ -3,6 +3,8 @@ import api from "./store-request-api";
 import AuthContext from "../auth";
 import EditMapContext from "./EditMapStore";
 import { useNavigate } from "react-router-dom";
+import { ref, deleteObject, listAll } from "firebase/storage";
+import storage from "../firebaseConfig";
 
 export const GlobalStoreContext = createContext({});
 
@@ -197,6 +199,13 @@ function GlobalStoreContextProvider(props) {
   store.likeMap = async function () {};
 
   store.deleteMap = async function () {
+    const directoryRef = ref(
+      storage,
+      `/geo-json-datas/map-id-${store.currentMap._id}`
+    );
+    const fileRefs = await listAll(directoryRef);
+    await Promise.all(fileRefs.items.map((fileRef) => deleteObject(fileRef)));
+
     let response = await api.deleteMapById(store.currentMap._id);
     if (response.status === 200) {
       store.getHomeMapMetaData();

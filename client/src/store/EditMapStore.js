@@ -49,13 +49,12 @@ function EditMapContextProvider(props) {
         return setEditStore({
           currentModel: editStore.currentModal,
           currentMapMetaData: editStore.currentMapMetaData,
-          currentMapGraphic: editStore.currentMapGraphic,
+          currentMapGraphic: payload,
           currentMapIndex: editStore.currentMapIndex,
           activeTool: editStore.activeTool,
         });
       }
       case EditMapActionType.UPDATE_MAP_COLOR: {
-        console.log("inside case: ", payload);
         return setEditStore({
           currentModel: editStore.currentModal,
           currentMapMetaData: editStore.currentMapMetaData,
@@ -125,17 +124,66 @@ function EditMapContextProvider(props) {
     mapGraphic.layers.push(newLayer);
     storeReducer({
       type: EditMapActionType.UPDATE_MAP_GRAPHIC,
-      payload: {},
+      payload: mapGraphic,
+    });
+  };
+
+  editStore.removeLayer = (index) => {
+    let mapGraphic = editStore.currentMapGraphic;
+    console.log(mapGraphic.layers);
+    mapGraphic.layers.splice(index, 1);
+    console.log(mapGraphic.layers);
+    storeReducer({
+      type: EditMapActionType.UPDATE_MAP_GRAPHIC,
+      payload: mapGraphic,
     });
   };
 
   //add a marker coordinate to the current map
-  editStore.addMarker = (coord) => {
+  editStore.addMarker = (marker) => {
     let mapGraphic = editStore.currentMapGraphic;
-    mapGraphic.markers.push(coord);
+    mapGraphic.markers.push(marker);
     storeReducer({
       type: EditMapActionType.UPDATE_MAP_GRAPHIC,
-      payload: {},
+      payload: mapGraphic,
+    });
+  };
+
+  editStore.updateMarkerMessage = (index, updatedMessage) => {
+    let mapGraphic = editStore.currentMapGraphic;
+    mapGraphic.markers[index].message = updatedMessage;
+    storeReducer({
+      type: EditMapActionType.UPDATE_MAP_GRAPHIC,
+      payload: mapGraphic,
+    });
+  };
+
+  editStore.updateMarkerCoords = (index, updatedCoords) => {
+    let mapGraphic = editStore.currentMapGraphic;
+    mapGraphic.markers[index].coordinates = updatedCoords;
+    storeReducer({
+      type: EditMapActionType.UPDATE_MAP_GRAPHIC,
+      payload: mapGraphic,
+    });
+  };
+
+  editStore.updateMarkerDraggable = (index) => {
+    let mapGraphic = editStore.currentMapGraphic;
+    console.log(mapGraphic.markers[index].draggable);
+    mapGraphic.markers[index].draggable = !mapGraphic.markers[index].draggable;
+    console.log(mapGraphic.markers[index].draggable);
+    storeReducer({
+      type: EditMapActionType.UPDATE_MAP_GRAPHIC,
+      payload: mapGraphic,
+    });
+  };
+
+  editStore.deleteMarker = (index) => {
+    let mapGraphic = editStore.currentMapGraphic;
+    mapGraphic.markers.splice(index, 1);
+    storeReducer({
+      type: EditMapActionType.UPDATE_MAP_GRAPHIC,
+      payload: mapGraphic,
     });
   };
 
@@ -143,8 +191,8 @@ function EditMapContextProvider(props) {
   editStore.setActiveMarker = (key) => {
     editStore.activeTool = { tool: LeafletTool.MARKER, detail: key };
     storeReducer({
-      type: EditMapActionType.UPDATE_MAP_GRAPHIC,
-      payload: {},
+      type: EditMapActionType.UPDATE_MAP_COLOR,
+      payload: editStore.activeTool,
     });
   };
 
@@ -244,8 +292,8 @@ function EditMapContextProvider(props) {
   editStore.setScrolling = () => {
     editStore.activeTool = { tool: LeafletTool.SCROLL, detail: "NONE" };
     storeReducer({
-      type: EditMapActionType.UPDATE_MAP_GRAPHIC,
-      payload: {},
+      type: EditMapActionType.UPDATE_MAP_COLOR,
+      payload: editStore.activeTool,
     });
   };
 

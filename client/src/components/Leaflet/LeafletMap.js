@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import { Box } from "@mui/material";
 import "leaflet/dist/leaflet.css";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { EditMapContext } from "../../store/EditMapStore";
 import RenderGeoJson from "./GeoJsonLayer";
 import LocationMarker from "./LocationMarker";
@@ -12,11 +12,9 @@ function LeafletMap() {
   const map_container_ref = useRef(null);
 
   let mapLayers = null;
-  if (editStore.currentMapGraphic) {
-    mapLayers = editStore.currentMapGraphic.layers.map((layer, index) => {
-      return <RenderGeoJson layer={layer} />;
-    });
-  }
+  mapLayers = editStore.currentMapGraphic?.layers.map((layer, index) => {
+    return <RenderGeoJson layer={layer} />;
+  });
 
   return (
     <Box>
