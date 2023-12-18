@@ -10,6 +10,7 @@ import {
   InputModalTypes,
 } from "../components/Modals/ModalTypes";
 import InputModal from "../components/Modals/InputModal";
+import ChoroplethForm from "../components/Modals/ChoroplethForm";
 
 const WorkspaceScreen = () => {
   return (
@@ -24,6 +25,7 @@ const WorkspaceScreen = () => {
             <LeafletMap />
           </Grid>
         </Grid>
+        <ChoroplethForm />
         <ConfirmModal modalType={ConfirmModalTypes.PUBLISH_MAP} />
         <InputModal modalType={InputModalTypes.RENAME_MAP} />
       </div>

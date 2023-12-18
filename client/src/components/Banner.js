@@ -47,6 +47,11 @@ export default function Banner(props) {
     auth.guestLogin();
   };
 
+  const handleLogo = () => {
+    editStore.closeMap();
+    store.closeMap();
+  };
+
   switch (screen) {
     case "WELCOME":
       rightOfBanner = (
@@ -196,7 +201,7 @@ export default function Banner(props) {
       sx={{ paddingBottom: 3, backgroundColor: bannerColor }}
     >
       <Grid item xs={2}>
-        <Link to={logoTo} onClick={editStore.closeMap}>
+        <Link to={logoTo} onClick={handleLogo}>
           <CustomButton text="MapArtisan" />
         </Link>
       </Grid>

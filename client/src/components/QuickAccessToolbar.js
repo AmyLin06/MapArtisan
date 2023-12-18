@@ -71,7 +71,9 @@ export default function QuickAccessToolbar() {
     if (auth.guest) {
       handleOpen(event);
       editStore.showGuestRenameModal();
-    } else store.showEditMapNameModal();
+    } else {
+      store.showEditMapNameModal();
+    }
   };
 
   useEffect(() => {

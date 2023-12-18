@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { EditMapContext } from "../../store/EditMapStore";
 import RenderGeoJson from "./GeoJsonLayer";
 import LocationMarker from "./LocationMarker";
-// import RoutingTemplate from "./Template/RoutingTemplate";
+import ChoroplethMap from "./ChoroplethMap";
 
 function LeafletMap() {
   const { editStore } = useContext(EditMapContext);
@@ -14,7 +14,13 @@ function LeafletMap() {
 
   let mapLayers = null;
   mapLayers = editStore.currentMapGraphic?.layers.map((layer, index) => {
-    return <RenderGeoJson layer={layer} />;
+    console.log(layer);
+    if (layer.filename == "ChoroplethMap") {
+      console.log(layer);
+      return <ChoroplethMap mapData={layer} />;
+    } else {
+      return <RenderGeoJson layer={layer} />;
+    }
   });
 
   return (
@@ -25,13 +31,13 @@ function LeafletMap() {
         scrollWheelZoom={true}
         // ref={setMap}
       >
+        <LocationMarker />
         <TileLayer
           noWrap
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {mapLayers}
-        <LocationMarker />
         {/* <RoutingTemplate /> */}
       </MapContainer>
     </Box>
