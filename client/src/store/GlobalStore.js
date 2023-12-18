@@ -3,6 +3,8 @@ import api from "./store-request-api";
 import AuthContext from "../auth";
 import EditMapContext from "./EditMapStore";
 import { useNavigate } from "react-router-dom";
+import { ref, deleteObject, listAll } from "firebase/storage";
+import storage from "../firebaseConfig";
 
 export const GlobalStoreContext = createContext({});
 
@@ -23,6 +25,7 @@ const CurrentModal = {
   RENAME_MAP: "RENAME_MAP",
   MESSAGE_MODAL: "MESSAGE_MODAL",
   MESSAGE_SUCCESS: "MESSAGE_SUCCESS",
+  GUEST_LIKE_MAP: "GUEST_LIKE_MAP",
   ERROR: "ERROR",
 };
 
@@ -49,6 +52,14 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
         });
       }
+      case GlobalStoreActionType.SHOW_GUEST_LIKE_MODAL: {
+        return setStore({
+          currentModal: CurrentModal.GUEST_LIKE_MAP,
+          currentMap: store.currentMap,
+          homeMapList: store.homeMapList,
+          communityMapList: store.communityMapList,
+        });
+      }
       case GlobalStoreActionType.MARK_MAP_FOR_DELETION: {
         return setStore({
           currentModal: CurrentModal.DELETE_MAP,
@@ -60,7 +71,7 @@ function GlobalStoreContextProvider(props) {
       case GlobalStoreActionType.HIDE_MODALS: {
         return setStore({
           currentModal: CurrentModal.NONE,
-          currentMap: null,
+          currentMap: store.currentMap,
           homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
         });
@@ -97,6 +108,14 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
         });
       }
+      case GlobalStoreActionType.CLEAR_STORE: {
+        return setStore({
+          currentModal: CurrentModal.NONE,
+          currentMap: null,
+          homeMapList: store.homeMapList,
+          communityMapList: store.communityMapList,
+        });
+      }
       default:
         return store;
     }
@@ -115,28 +134,42 @@ function GlobalStoreContextProvider(props) {
     });
   };
 
-  store.hideModals = () => {
+  store.showGuestLikeModal = () => {
     storeReducer({
-      type: GlobalStoreActionType.HIDE_MODALS,
-      payload: {},
+      type: GlobalStoreActionType.SHOW_GUEST_LIKE_MODAL,
     });
   };
 
-  store.createNewMap = async function () {
-    let mapName = "Untitled";
-    const response = await api.createNewMap(mapName, null, auth.user.email);
-    if (response.status === 201) {
-      // tps.clearAllTransactions();
-      let newMap = response.data.map;
-      storeReducer({
-        type: GlobalStoreActionType.CREATE_NEW_MAP,
-        payload: newMap,
-      });
-      editStore.setMap(response.data.map);
-      // IF IT'S A VALID MAP THEN LET'S START EDITING IT
-      navigate("/edit");
-      store.getHomeMapMetaData();
-    } else console.log("API FAILED TO CREATE A NEW MAP");
+  store.hideModals = () => {
+    storeReducer({
+      type: GlobalStoreActionType.HIDE_MODALS,
+    });
+  };
+
+  store.createNewMap = function (template) {
+    async function createMap(template) {
+      console.log(template);
+      let mapName = "Untitled";
+      const response = await api.createNewMap(
+        mapName,
+        template,
+        auth.user.email
+      );
+      if (response.status === 201) {
+        // tps.clearAllTransactions();
+        let newMap = response.data.map;
+        console.log(newMap);
+
+        editStore.setMap(response.data.map);
+        storeReducer({
+          type: GlobalStoreActionType.CREATE_NEW_MAP,
+          payload: newMap,
+        });
+        // IF IT'S A VALID MAP THEN LET'S START EDITING IT
+        // store.getHomeMapMetaData();
+      } else console.log("API FAILED TO CREATE A NEW MAP");
+    }
+    createMap(template);
   };
 
   store.getHomeMapMetaData = async function () {
@@ -175,6 +208,7 @@ function GlobalStoreContextProvider(props) {
   };
 
   store.renameMap = async function (newMapName) {
+    // store.currentMap.mapTitle = newMapName;
     const updatingField = {
       mapTitle: newMapName,
     };
@@ -187,22 +221,92 @@ function GlobalStoreContextProvider(props) {
       // tps.clearAllTransactions();
       let newMapMetaData = response.data.map;
       storeReducer({
-        type: GlobalStoreActionType.UPDATE_MAP_META_DATA,
+        type: GlobalStoreActionType.SET_CURRENT_MAP,
         payload: newMapMetaData,
       });
-      store.getHomeMapMetaData();
+      console.log(newMapMetaData);
+      // store.getHomeMapMetaData();
     } else console.log("API FAILED TO RENAME MAP");
   };
 
-  store.likeMap = async function () {};
+  store.likeMap = async function (editStore) {
+    console.log("in like map");
+    console.log(auth.user);
+    const updatingField = {
+      userLiked: [auth.user.id],
+    };
 
-  store.deleteMap = async function () {
-    let response = await api.deleteMapById(store.currentMap._id);
-    if (response.status === 200) {
-      store.getHomeMapMetaData();
-    } else {
-      console.log("Map failed to delete");
+    const response = await api.updateMapMetaData(
+      store.currentMap._id,
+      updatingField
+    );
+    console.log("renameMap response: " + response.data);
+    if (response.status === 201) {
+      // tps.clearAllTransactions();
+      let newMapMetaData = response.data.map;
+      console.log(newMapMetaData);
+      storeReducer({
+        type: GlobalStoreActionType.SET_CURRENT_MAP,
+        payload: newMapMetaData,
+      });
+      editStore.setMap(newMapMetaData);
+    } else console.log("API FAILED TO RENAME MAP");
+  };
+
+  store.deleteMap = function () {
+    async function deleteMap() {
+      const directoryRef = ref(
+        storage,
+        `/geo-json-datas/map-id-${store.currentMap._id}`
+      );
+      const fileRefs = await listAll(directoryRef);
+      await Promise.all(fileRefs.items.map((fileRef) => deleteObject(fileRef)));
+
+      let response = await api.deleteMapById(store.currentMap._id);
+      if (response.status === 200) {
+        storeReducer({
+          type: GlobalStoreActionType.SET_CURRENT_MAP,
+          payload: null,
+        });
+        // store.getHomeMapMetaData();
+      } else {
+        console.log("Map failed to delete");
+      }
     }
+    deleteMap();
+  };
+
+  //this function checks if the user has liked this before before
+  store.isLikedMap = async function (mapId) {
+    console.log(mapId);
+    if (auth.guest) return false;
+
+    const response = await api.isLikedMap(mapId);
+    if (response.status === 201) {
+      return response.data.isLiked;
+    } else console.log("Failed to check if map has been already liked");
+  };
+
+  store.duplicateMap = async function (mapId) {
+    const response = await api.duplicateMap(mapId, auth.user.email);
+    if (response.status === 201) {
+      // tps.clearAllTransactions();
+      let newMap = response.data.map;
+      storeReducer({
+        type: GlobalStoreActionType.SET_CURRENT_MAP,
+        payload: newMap,
+      });
+      editStore.setMap(response.data.map);
+      // IF IT'S A VALID MAP THEN LET'S START EDITING IT
+      navigate("/edit");
+    } else console.log("Failed to duplicate map");
+  };
+
+  store.closeMap = () => {
+    storeReducer({
+      type: GlobalStoreActionType.SET_CURRENT_MAP,
+      payload: null,
+    });
   };
 
   return (

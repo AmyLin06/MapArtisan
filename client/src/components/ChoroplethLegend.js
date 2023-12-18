@@ -6,14 +6,11 @@ export const choroplethLegend = (upper, lower, colors) => {
 
   const step = (upper - lower) / 5;
   const colorList = colors;
-  console.log(colorList);
   const firstTile = lower == 0 ? lower + 1 : lower;
   const secondTile = firstTile + step;
   const thirdTile = secondTile + step;
   const fourthTile = thirdTile + step;
   const fifthTile = fourthTile + step;
-
-  console.log(colorList[4]);
 
   const legendList = [
     new LegendTile(

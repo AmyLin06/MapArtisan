@@ -12,6 +12,8 @@ import ChoroplethLegend, { choroplethLegend } from "../ChoroplethLegend";
 import { EditMapContext } from "../../store/EditMapStore";
 import { red } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import storage from "../../firebaseConfig";
 
 const ChoroplethForm = () => {
   const navigate = useNavigate();
@@ -31,7 +33,6 @@ const ChoroplethForm = () => {
   const [upperBound, setUpperBound] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [colorList, setColorList] = useState([]);
-  console.log(editStore.currentTemplate);
 
   function readJsonFile(event) {
     event.preventDefault();
@@ -39,6 +40,16 @@ const ChoroplethForm = () => {
     const fileReader = new FileReader();
     fileReader.onload = (event) => {
       const text = JSON.parse(event.target.result);
+      if (text && text.features) {
+        // Loop through the features array and rename the column
+        text.features.forEach((feature) => {
+          if (feature.properties && feature.properties[polygonLabel]) {
+            feature.properties["indexColumn"] =
+              feature.properties[polygonLabel];
+            delete feature.properties[polygonLabel];
+          }
+        });
+      }
       setUploadedGeoJsonFile(text);
       readDataFile(csvFile, text.features);
       console.log(text);
@@ -55,7 +66,17 @@ const ChoroplethForm = () => {
       const text = event.target.result;
       const data = Papa.parse(text, {
         header: true,
-        complete: (result) => processData(result.data, features),
+        complete: (result) => {
+          console.log(result.meta.fields);
+          if (result.meta.fields.includes(polygonLabel)) {
+            result.data.forEach((row) => {
+              row.indexColumn = row.polygonLabel;
+              delete row.polygonName;
+            });
+          }
+          processData(result.data, features);
+          console.log(result);
+        },
         error: (error) => {
           console.error("Error parsing CSV:", error);
         },
@@ -89,7 +110,8 @@ const ChoroplethForm = () => {
 
     setUpdatedGeoJsonFile(features);
     const list = choroplethLegend(upperBound, lowerBound, colorList);
-    editStore.addLayer("Choropleth Template", features, "CHOROPLETH");
+    uploadToFirebase(features, "ChoroplethMap");
+    // editStore.addLayer("Choropleth Template", features, "CHOROPLETH");
   };
 
   const setColor = (polygon) => {
@@ -208,7 +230,25 @@ const ChoroplethForm = () => {
     }
   };
 
-  console.log(colorList);
+  const uploadToFirebase = (data, fileName) => {
+    const storageRef = ref(
+      storage,
+      `/geo-json-datas/map-id-${editStore.currentMapMetaData._id}/${fileName}`
+    );
+    uploadString(storageRef, JSON.stringify(data), "raw", {
+      contentType: "application/json",
+    })
+      .then((snapshot) => {
+        console.log("Upload complete.");
+        return getDownloadURL(snapshot.ref);
+      })
+      .then((url) => {
+        editStore.addLayer(fileName, url);
+      })
+      .catch((error) => {
+        console.error("Error uploading", error);
+      });
+  };
   return (
     <React.Fragment>
       <Dialog open={open} onClose={handleClose}>
