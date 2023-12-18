@@ -2,11 +2,10 @@
     width: 100vw;
     height: 100vh;
     background-color: #FFFDF3;
-    background-image: url("../assets/SplashScreenMap.png");
+    background-image: url("../assets/MapArtisanLogo.png");
     background-repeat: no-repeat;
-    background-position-x:  85%;
-    background-position-y: -30%;
-    background-size: 57%;
+    background-position: right center; 
+    background-size: 75% 150%;  
 }
 .sloganText{
     width: 340px;

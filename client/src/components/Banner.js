@@ -10,6 +10,7 @@ import { useContext } from "react";
 import AuthContext from "../auth";
 import EditMapContext from "../store/EditMapStore";
 import GlobalStoreContext from "../store/GlobalStore";
+import MapArtisanLogo from "../assets/MapArtisanLogo.png";
 
 //need to pass a "screen" prop to Banner, note that ACCOUNT_DETAIL, PROFILE, and MAP_DETAIL have the same banner
 //Example: <Banner screen={"COMMUNITY"} />
@@ -45,6 +46,11 @@ export default function Banner(props) {
   const handleGuestLogin = () => {
     console.log("Guest Login");
     auth.guestLogin();
+  };
+
+  const handleLogo = () => {
+    editStore.closeMap();
+    store.closeMap();
   };
 
   switch (screen) {
@@ -174,7 +180,7 @@ export default function Banner(props) {
           <ProfileMenuList />
         </Stack>
       );
-      bannerColor = "#246BAD";
+      // bannerColor = "#246BAD";
       break;
     default:
       break;
@@ -193,11 +199,15 @@ export default function Banner(props) {
     <Grid
       container
       spacing={2}
-      sx={{ paddingBottom: 3, backgroundColor: bannerColor }}
+      sx={{ paddingBottom: 1, backgroundColor: bannerColor }}
     >
       <Grid item xs={2}>
         <Link to={logoTo} onClick={editStore.closeMap}>
-          <CustomButton text="MapArtisan" />
+          <Avatar
+            src={MapArtisanLogo}
+            alt="mapartisan-logo"
+            sx={{ width: 60, height: 60 }}
+          />
         </Link>
       </Grid>
       <Grid item xs={6}>

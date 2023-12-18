@@ -3,11 +3,13 @@ import { IconButton, Popover, MenuItem, Avatar } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../auth";
-import { GlobalStoreContext } from "../../store/GlobalStore";
+import EditMapContext from "../../store/EditMapStore";
+import GlobalStoreContext from "../../store/GlobalStore";
 
 export default function ProfileMenuList() {
-  const { store } = useContext(GlobalStoreContext);
   const { auth } = useContext(AuthContext);
+  const { editStore } = useContext(EditMapContext);
+  const { store } = useContext(GlobalStoreContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -33,6 +35,8 @@ export default function ProfileMenuList() {
   function handleLogout() {
     handleClose();
     auth.logoutUser();
+    editStore.closeMap();
+    store.closeMap();
     navigate("/");
   }
 

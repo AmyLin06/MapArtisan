@@ -5,8 +5,10 @@ import MenuItem from "@mui/material/MenuItem";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Paper, Tooltip } from "@mui/material";
 import { EditMapContext } from "../../store/EditMapStore";
-import { read } from "shapefile";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import storage from "../../firebaseConfig";
 import toGeoJSON from "togeojson";
+import { read } from "shapefile";
 
 //menu that opens and displays options for data formats the user can import
 export default function ImportMenuList() {
@@ -34,45 +36,63 @@ export default function ImportMenuList() {
 
   const handleFileChange = (event) => {
     event.preventDefault();
-    const selectedFile = event.target.files[0];
+    const file = event.target.files[0];
     const fileReader = new FileReader();
-
+    let data = null;
     if (
-      getFileExtension(selectedFile.name) === "json" ||
-      getFileExtension(selectedFile.name) === "geojson"
+      getFileExtension(file.name) === "json" ||
+      getFileExtension(file.name) === "geojson"
     ) {
-      // Add the GeoJSON file as a layer to the current map
       fileReader.onload = (event) => {
-        const data = JSON.parse(event.target.result);
-        editStore.addLayer(selectedFile.name, data, "GEOJSON");
+        data = JSON.parse(event.target.result);
+        uploadToFirebase(data, file.name);
       };
-      fileReader.readAsText(event.target.files[0]);
-    } else if (getFileExtension(selectedFile.name) === "kml") {
+      fileReader.readAsText(file);
+    } else if (getFileExtension(file.name) === "kml") {
       fileReader.onload = (event) => {
         const parser = new DOMParser();
         const text = parser.parseFromString(event.target.result, "text/xml");
-        const data = toGeoJSON.kml(text);
-        editStore.addLayer(selectedFile.name, data, "GEOJSON");
+        data = toGeoJSON.kml(text);
+        uploadToFirebase(data, file.name);
       };
-      fileReader.readAsText(event.target.files[0]);
-    } else if (getFileExtension(selectedFile.name) === "shp") {
+      fileReader.readAsText(file);
+    } else if (getFileExtension(file.name) === "shp") {
       fileReader.onload = async (event) => {
         const arrayBuffer = event.target.result; // ArrayBuffer from FileReader
-
         try {
           const { features } = await read(arrayBuffer);
-          const geoJson = {
+          data = {
             type: "FeatureCollection",
             features: features || [],
           };
-          editStore.addLayer(selectedFile.name, geoJson, "SHAPEFILE");
+          uploadToFirebase(data, file.name);
         } catch (error) {
           console.error("Error parsing shapefile SAD:", error);
         }
       };
-      fileReader.readAsArrayBuffer(event.target.files[0]);
+      fileReader.readAsArrayBuffer(file);
     }
     handleClose();
+  };
+
+  const uploadToFirebase = (data, fileName) => {
+    const storageRef = ref(
+      storage,
+      `/geo-json-datas/map-id-${editStore.currentMapMetaData._id}/${fileName}`
+    );
+    uploadString(storageRef, JSON.stringify(data), "raw", {
+      contentType: "application/json",
+    })
+      .then((snapshot) => {
+        console.log("Upload complete.");
+        return getDownloadURL(snapshot.ref);
+      })
+      .then((url) => {
+        editStore.addLayer(fileName, url);
+      })
+      .catch((error) => {
+        console.error("Error uploading", error);
+      });
   };
 
   return (
@@ -86,7 +106,7 @@ export default function ImportMenuList() {
 
       <Tooltip title="Import File" disableFocusListener disableTouchListener>
         <IconButton onClick={handleOpen}>
-          <ArrowDownwardIcon style={{ fontSize: "1rem" }} />
+          <ArrowDownwardIcon />
         </IconButton>
       </Tooltip>
 
@@ -129,7 +149,7 @@ export default function ImportMenuList() {
           >
             {"Shapefile"}
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             onClick={handleClose}
             sx={{
               "&:hover": {
@@ -138,7 +158,7 @@ export default function ImportMenuList() {
             }}
           >
             {"Custom JSON"}
-          </MenuItem>
+          </MenuItem> */}
         </Paper>
       </Popover>
     </>

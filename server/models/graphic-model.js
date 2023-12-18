@@ -14,11 +14,26 @@ const GraphicSchema = new Schema(
       required: true,
     },
     layers: {
-      type: [{ layerName: String, layerType: String, data: Buffer }],
+      type: [
+        {
+          filename: String,
+          fileRef: String,
+          polygonColorStyle: [
+            { layerKey: Number, color: String, border: String },
+          ],
+        },
+      ],
       default: [],
     },
     markers: {
-      type: [{ iconKey: String, coordinates: { lat: Number, lng: Number } }],
+      type: [
+        {
+          iconKey: String,
+          coordinates: { lat: Number, lng: Number },
+          message: String,
+          draggable: Boolean,
+        },
+      ],
       default: [],
     },
   },

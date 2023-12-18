@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "../styles/MapDetailsScreen.css";
 import CommentSection from "../components/CommentSection";
-import { Avatar, Box, Typography, Divider, Grid, Button } from "@mui/material";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import { Avatar, Box, Typography, Divider, Grid, Button, Popover } from "@mui/material";
 import ForkRightIcon from "@mui/icons-material/ForkRight";
 import sampleMap from "../assets/currentMap.json";
 import Banner from "../components/Banner";
@@ -12,11 +11,17 @@ import LeafletMap from "../components/Leaflet/LeafletMap";
 import { SmallCustomButton } from "../components/SmallCustomButton";
 import GlobalStoreContext from "../store/GlobalStore";
 import { useNavigate } from "react-router-dom";
+import GuestModal from "../components/Modals/GuestModal";
+import { GuestModalTypes } from "../components/Modals/ModalTypes";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
-function MapDetailsScreen() {
+export default function MapDetailsScreen() {
   const { auth } = useContext(AuthContext);
   const { editStore } = useContext(EditMapContext);
   const { store } = useContext(GlobalStoreContext);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [likedMap, setLikedMap] = useState(false);
   const navigate = useNavigate();
 
   const shortMonthDate = (dateObj) => {
@@ -29,11 +34,27 @@ function MapDetailsScreen() {
       .replace(/(\w{3}) (\d+), (\d+)/, "$1 $2, $3");
   };
 
-  const handleLike = () => {
-    store.likeMap();
+  const handleOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
+
+  const handleLike = async (event) => {
+    if (auth.guest) {
+      handleOpen(event);
+      store.showGuestLikeModal();
+    } else {
+      await store.likeMap(editStore);
+      await checkIsLiked();
+    }
+  };
+
   const handleDuplicate = () => {
-    console.log("handle duplicate - not implemented");
+    auth.guest ? navigate("/edit") : store.duplicateMap(store.currentMap._id);
+  };
+
+  const checkIsLiked = async () => {
+    const bool = await store.isLikedMap(store.currentMap?._id);
+    setLikedMap(bool);
   };
 
   async function handleProfile() {
@@ -41,14 +62,19 @@ function MapDetailsScreen() {
     navigate("/profile");
   }
 
+  useEffect(() => {
+    checkIsLiked();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <>
       <Banner screen={"MAP_DETAIL"} />
       <>
         <Grid container>
-          <Grid item xs={4} sx={{ overflow: "hidden" }}>
+          <Grid item xs={8} sx={{ overflow: "hidden" }}>
             <Typography fontWeight="bold" sx={{ color: "#246BAD" }}>
-              {editStore.currentMapMetaData?.mapTitle || ""}
+              {store.currentMap?.mapTitle || ""}
             </Typography>
             <Box display="flex">
               <Avatar
@@ -77,29 +103,49 @@ function MapDetailsScreen() {
               </Typography>
             </Box>
           </Grid>
-          <Grid item xs={6} />
-          <Grid item xs={2}>
-            <Box sx={{ display: "flex", gap: "3%" }}>
-              <SmallCustomButton
-                onClick={handleLike}
-                icon={ThumbUpOffAltIcon}
-                tooltipTitle="Like"
-                text={editStore.currentMapMetaData?.userLiked.length}
-                disable={auth?.guest}
+          <Grid
+            item
+            xs={4}
+            sx={{ display: "flex", justifyContent: "flex-end", gap: "1%" }}
+          >
+            <SmallCustomButton
+              onClick={(event) => {
+                handleLike(event);
+              }}
+              icon={
+                likedMap ? FavoriteOutlinedIcon : FavoriteBorderOutlinedIcon
+              }
+              tooltipTitle="Like"
+              text={editStore.currentMapMetaData?.userLiked.length}
+            />
+            <Popover
+              open={Boolean(anchorEl)}
+              anchorEl={anchorEl}
+              onClose={() => setAnchorEl(null)}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+            >
+              <GuestModal
+                modalType={GuestModalTypes.LIKE_MAP}
+                initialAnchorEl={anchorEl}
+                handleClose={() => {
+                  setAnchorEl(null);
+                }}
               />
-              <SmallCustomButton
-                onClick={handleDuplicate}
-                icon={ForkRightIcon}
-                tooltipTitle="Duplicate"
-                text={editStore.currentMapMetaData?.forks}
-                disable={false}
-              />
-              <CommentSection
-                comments={sampleMap.comments}
-                currentUser={auth.user}
-              />
-            </Box>
-            <Box />
+            </Popover>
+            <SmallCustomButton
+              onClick={handleDuplicate}
+              icon={ForkRightIcon}
+              tooltipTitle="Duplicate"
+              text={editStore.currentMapMetaData?.forks}
+            />
+            <CommentSection comments={sampleMap.comments} />
           </Grid>
           <Grid item xs={12}>
             <LeafletMap />
@@ -109,5 +155,3 @@ function MapDetailsScreen() {
     </>
   );
 }
-
-export default MapDetailsScreen;

@@ -19,7 +19,7 @@ const LayerList = (props) => {
   if (layers && layers.length > 0) {
     layercards = layers.map((layer, index) => (
       <MenuItem key={index}>
-        <LayerCard layerName={layer.layerName} />
+        <LayerCard layerIndex={index} layerName={layer.filename} />
       </MenuItem>
     ));
   } else {

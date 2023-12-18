@@ -23,7 +23,7 @@ export default function ExportMenuList() {
     <>
       <Tooltip title="Export Map" disableFocusListener disableTouchListener>
         <IconButton onClick={handleOpen}>
-          <ArrowUpwardIcon style={{ fontSize: "1rem" }} />
+          <ArrowUpwardIcon />
         </IconButton>
       </Tooltip>
 
@@ -36,7 +36,7 @@ export default function ExportMenuList() {
         }}
       >
         <Paper style={{ background: "#FFFDF3" }}>
-          <MenuItem
+          {/* <MenuItem
             onClick={handleClose}
             sx={{
               "&:hover": {
@@ -45,7 +45,7 @@ export default function ExportMenuList() {
             }}
           >
             {"Custom JSON"}
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             onClick={handleClose}
             sx={{

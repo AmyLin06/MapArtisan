@@ -34,14 +34,15 @@ const HomeScreen = () => {
     setCurrentPage(currentPage - 1);
   };
 
-  const handleCreateBaseMap = () => {
-    auth.guest ? navigate("/edit") : store.createNewMap();
+  const handleCreateMap = (template) => {
+    auth.guest ? navigate("/edit") : store.createNewMap(template);
+    navigate("/edit");
   };
 
   useEffect(() => {
-    if (auth.user) store.getHomeMapMetaData();
+    if (auth.user && !auth.guest) store.getHomeMapMetaData();
     // eslint-disable-next-line
-  }, [auth.loggedIn]);
+  }, [auth.loggedIn, store.currentMap]);
 
   useEffect(() => {
     setMaps(store.homeMapList);
@@ -52,19 +53,18 @@ const HomeScreen = () => {
       <div>
         <Banner screen={"HOME"} />
       </div>
-      <br></br>
+
       <div className="content-container">
         <div className="blue-area">
-          <Box sx={{ paddingTop: 2 }}>
+          <Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="h5" fontWeight="bold">
                 Templates
               </Typography>
               <Link to="/community">
                 <Box display="flex" justifyContent="flex-end">
-                  <Button>
-                    {" "}
-                    Community Inspiration <ArrowForwardIcon />{" "}
+                  <Button onClick={store.getCommunityMapMetaData}>
+                    Community Inspiration <ArrowForwardIcon />
                   </Button>
                 </Box>
               </Link>
@@ -82,17 +82,23 @@ const HomeScreen = () => {
                         alignItems="center"
                         sx={{ backgroundColor: "#195083" }}
                       >
-                        <IconButton size="large" onClick={handleCreateBaseMap}>
+                        <IconButton
+                          size="large"
+                          onClick={() => handleCreateMap("Regular")}
+                        >
                           <AddIcon fontSize="large" />
                         </IconButton>
                       </Box>
                     </Card>
                   </Grid>
                   <Grid item xs={3}>
-                    <TemplateCard templateName="Template1" />
+                    <TemplateCard
+                      templateName="Choropleth Map"
+                      type={"choropleth"}
+                    />
                   </Grid>
-                  <Grid item xs={3}>
-                    <TemplateCard templateName="Template2" />
+                  <Grid item xs={3} onClick={() => handleCreateMap("Routing")}>
+                    <TemplateCard templateName="Plan Your Trip" />
                   </Grid>
                   <Grid item xs={3}>
                     <TemplateCard templateName="Template3" />

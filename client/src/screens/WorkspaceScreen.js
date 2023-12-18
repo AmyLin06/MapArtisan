@@ -2,36 +2,32 @@ import Banner from "../components/Banner";
 import "../styles/WorkspaceScreen.css";
 import QuickAccessToolbar from "../components/QuickAccessToolbar";
 import LeafletMap from "../components/Leaflet/LeafletMap";
-import { Typography, Grid } from "@mui/material";
-import { EditMapContext } from "../store/EditMapStore";
-import React, { useContext } from "react";
+import { Grid } from "@mui/material";
+import React from "react";
 import ConfirmModal from "../components/Modals/ConfirmModal";
-import { ConfirmModalTypes } from "../components/Modals/ModalTypes";
+import {
+  ConfirmModalTypes,
+  InputModalTypes,
+} from "../components/Modals/ModalTypes";
+import InputModal from "../components/Modals/InputModal";
+import ChoroplethForm from "../components/Modals/ChoroplethForm";
 
 const WorkspaceScreen = () => {
-  const { editStore } = useContext(EditMapContext);
-
   return (
     <div className="workspace-main">
       <Banner screen={"EDIT"} />
       <div className="workspace-content">
         <Grid container>
-          <Grid item className="name-name" xs={2}>
-            <Typography
-              fontWeight="bold"
-              sx={{ color: "#246BAD", paddingLeft: 1 }}
-            >
-              {editStore.currentMapMetaData?.mapTitle || ""}
-            </Typography>
-          </Grid>
-          <Grid item className="map-editing" xs={10}>
+          <Grid item className="map-editing" xs={12}>
             <QuickAccessToolbar />
           </Grid>
           <Grid item xs={12}>
             <LeafletMap />
           </Grid>
         </Grid>
+        <ChoroplethForm />
         <ConfirmModal modalType={ConfirmModalTypes.PUBLISH_MAP} />
+        <InputModal modalType={InputModalTypes.RENAME_MAP} />
       </div>
     </div>
   );

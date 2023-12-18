@@ -1,4 +1,4 @@
-import { CirclePicker } from "react-color";
+import { SketchPicker } from "react-color";
 import { FormatColorFill as FormatColorFillIcon } from "@mui/icons-material";
 import React, { useState, useContext } from "react";
 import { IconButton, Popover, Tooltip } from "@mui/material";
@@ -26,8 +26,6 @@ export default function ExportMenuList() {
   const handleColorChange = (color) => {
     setSelectedColor(color.hex);
     editStore.setActiveFillin(color);
-    // You can perform additional actions on color change if needed
-    handleClose();
   };
 
   const open = Boolean(anchorEl);
@@ -60,16 +58,11 @@ export default function ExportMenuList() {
           vertical: "bottom",
           horizontal: "left",
         }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        sx={{ width: "60%" }}
       >
-        <CirclePicker
+        <SketchPicker
           color={selectedFillColor}
           onChangeComplete={handleColorChange}
-          width={"100%"}
+          disableAlpha
         />
       </Popover>
     </>

@@ -87,9 +87,10 @@ export default function MapCard(props) {
       navigate("/edit");
     }
   }
-  async function handleKebabClick() {
+  async function handleKebabClick(event) {
     //get and set the map so that when the user later selects a kebab option, it operates on the correct map
     await store.getMapMetaDataById(id);
+    console.log(store.currentMap);
   }
 
   return (

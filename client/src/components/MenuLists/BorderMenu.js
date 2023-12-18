@@ -1,4 +1,4 @@
-import { CirclePicker } from "react-color";
+import { SketchPicker } from "react-color";
 import { BorderColor as BorderColorIcon } from "@mui/icons-material";
 import React, { useState, useContext } from "react";
 import { IconButton, Popover, Tooltip } from "@mui/material";
@@ -7,7 +7,7 @@ import { EditMapContext } from "../../store/EditMapStore";
 export default function BorderMenu() {
   const { editStore } = useContext(EditMapContext);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedBorderColor, setSelectedColor] = useState(""); // Set a default color
+  const [selectedBorderColor, setSelectedColor] = useState("");
 
   // useEffect(() => {
   //   console.log(editStore.activeTool);
@@ -26,8 +26,6 @@ export default function BorderMenu() {
   const handleColorChange = (color) => {
     setSelectedColor(color.hex);
     editStore.setActiveBorder(color);
-    // You can perform additional actions on color change if needed
-    handleClose();
   };
 
   const open = Boolean(anchorEl);
@@ -58,18 +56,13 @@ export default function BorderMenu() {
         onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left",
+          horizontal: "right",
         }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        sx={{ width: "60%" }}
       >
-        <CirclePicker
+        <SketchPicker
           color={selectedBorderColor}
           onChangeComplete={handleColorChange}
-          width={"100%"}
+          disableAlpha
         />
       </Popover>
     </>
