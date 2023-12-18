@@ -38,7 +38,6 @@ export default function MapDetailsScreen() {
   const { editStore } = useContext(EditMapContext);
   const { store } = useContext(GlobalStoreContext);
   const [user, setUser] = useState(store.currentUser);
-  const [user, setUser] = useState(store.currentUser);
   const [anchorEl, setAnchorEl] = useState(null);
   const [likedMap, setLikedMap] = useState(false);
   const navigate = useNavigate();
