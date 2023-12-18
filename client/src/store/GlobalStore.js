@@ -258,7 +258,7 @@ function GlobalStoreContextProvider(props) {
 
   //this function checks if the user has liked this before before
   store.isLikedMap = async function (mapId) {
-    if (auth.guest) return false;
+    if (auth.guest || !mapId) return false;
 
     const response = await api.isLikedMap(mapId);
     if (response.status === 201) {

@@ -75,8 +75,48 @@ const RegisterScreen = () => {
     <>
       <div className="register-container">
         <Banner className="banner" loginMenu={false} screen="REGISTER" />
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Stack className="loginBox" spacing={2} direction="column">
+        <Box component="form" noValidate onSubmit={handleSubmit}>
+          <Stack className="loginBox" direction="column">
+            <Box display="flex" gap="10px">
+              <Box>
+                <div className="label">First Name</div>
+                <TextField
+                  className="textfield"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="firstname"
+                  label="Firstname"
+                  name="Firstname"
+                  autoComplete="firstname"
+                  autoFocus
+                  InputProps={{
+                    style: {
+                      borderRadius: "50px",
+                    },
+                  }}
+                />
+              </Box>
+              <Box>
+                <div className="label">Last Name</div>
+                <TextField
+                  className="textfield"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="lastname"
+                  label="Lastname"
+                  name="Lastname"
+                  autoComplete="lastname"
+                  autoFocus
+                  InputProps={{
+                    style: {
+                      borderRadius: "50px",
+                    },
+                  }}
+                />
+              </Box>
+            </Box>
             <div className="label">Username</div>
             <TextField
               className="textfield"
@@ -84,43 +124,9 @@ const RegisterScreen = () => {
               required
               fullWidth
               id="username"
-              label="username"
+              label="Username"
               name="username"
               autoComplete="username"
-              autoFocus
-              InputProps={{
-                style: {
-                  borderRadius: "50px",
-                },
-              }}
-            />
-            <div className="label">Firstname</div>
-            <TextField
-              className="textfield"
-              margin="normal"
-              required
-              fullWidth
-              id="firstname"
-              label="firstname"
-              name="firstname"
-              autoComplete="firstname"
-              autoFocus
-              InputProps={{
-                style: {
-                  borderRadius: "50px",
-                },
-              }}
-            />
-            <div className="label">Lastname</div>
-            <TextField
-              className="textfield"
-              margin="normal"
-              required
-              fullWidth
-              id="lastname"
-              label="lastname"
-              name="lastname"
-              autoComplete="lastname"
               autoFocus
               InputProps={{
                 style: {
@@ -152,7 +158,7 @@ const RegisterScreen = () => {
               required
               fullWidth
               name="password"
-              label="password"
+              label="Password"
               type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
@@ -170,14 +176,14 @@ const RegisterScreen = () => {
                 ),
               }}
             />
-            <div className="label">PasswordVerified</div>
+            <div className="label">Verify Password</div>
             <TextField
               className="textfield"
               margin="normal"
               required
               fullWidth
               name="passwordverified"
-              label="passwordverified"
+              label="Verify Password"
               type={showPassword ? "text" : "password"}
               id="passwordverified"
               autoComplete="current-password"

@@ -9,6 +9,7 @@ export const EditMapActionType = {
   SET_MAP_NAME_EDIT_ACTIVE: "SET_MAP_NAME_EDIT_ACTIVE",
   UPDATE_MAP_GRAPHIC: "UPDATE_MAP_GRAPHIC",
   UPDATE_MAP_META_DATA: "UPDATE_MAP_META_DATA",
+  UPDATE_MAP_COMMENTS: "UPDATE_MAP_COMMENTS",
   SAVE_MAP: "SAVE_MAP",
   REMOVE_MAP: "REMOVE_MAP",
   HIDE_MODALS: "HIDE_MODALS",
@@ -42,6 +43,7 @@ function EditMapContextProvider(props) {
     currentModal: CurrentModal.NONE,
     currentMapMetaData: null,
     currentMapGraphic: null,
+    currentMapComments: null,
     currentMapIndex: -1,
     activeTool: { tool: LeafletTool.SCROLL, detail: "NONE" },
   });
@@ -54,6 +56,17 @@ function EditMapContextProvider(props) {
           currentModel: editStore.currentModal,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: payload,
+          currentMapComments: editStore.currentMapComments,
+          currentMapIndex: editStore.currentMapIndex,
+          activeTool: editStore.activeTool,
+        });
+      }
+      case EditMapActionType.UPDATE_MAP_COMMENTS: {
+        return setEditStore({
+          currentModel: editStore.currentModal,
+          currentMapMetaData: editStore.currentMapMetaData,
+          currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: payload,
           currentMapIndex: editStore.currentMapIndex,
           activeTool: editStore.activeTool,
         });
@@ -63,6 +76,7 @@ function EditMapContextProvider(props) {
           currentModel: editStore.currentModal,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
           activeTool: payload,
         });
@@ -72,6 +86,7 @@ function EditMapContextProvider(props) {
           currentModal: CurrentModal.RENAME_MAP,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
           activeTool: editStore.activeTool,
         });
@@ -81,6 +96,7 @@ function EditMapContextProvider(props) {
           currentModal: CurrentModal.NONE,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
           activeTool: editStore.activeTool,
         });
@@ -90,6 +106,7 @@ function EditMapContextProvider(props) {
           currentModal: CurrentModal.PUBLISH_MAP,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
           activeTool: editStore.activeTool,
         });
@@ -99,6 +116,7 @@ function EditMapContextProvider(props) {
           currentModal: payload.newModal,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
           activeTool: editStore.activeTool,
         });
@@ -108,6 +126,7 @@ function EditMapContextProvider(props) {
           currentModal: CurrentModal.NONE,
           currentMapMetaData: payload.mapMetaData,
           currentMapGraphic: payload.mapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
           activeTool: editStore.activeTool,
         });
@@ -117,6 +136,7 @@ function EditMapContextProvider(props) {
           currentModal: CurrentModal.NONE,
           currentMapMetaData: null,
           currentMapGraphic: null,
+          currentMapComments: null,
           currentMapIndex: -1,
           activeTool: { tool: LeafletTool.SCROLL, detail: "NONE" },
         });
@@ -370,7 +390,7 @@ function EditMapContextProvider(props) {
   editStore.closeMap = () => {
     storeReducer({
       type: EditMapActionType.CLOSE_CURRENT_MAP,
-      // payload: {},
+      payload: {},
     });
   };
 
@@ -410,6 +430,8 @@ function EditMapContextProvider(props) {
       console.log(response.data.message);
     } else console.log("Failed to save map graphics");
   };
+
+  editStore.loadMapComments = async function () {};
 
   return (
     <EditMapContext.Provider

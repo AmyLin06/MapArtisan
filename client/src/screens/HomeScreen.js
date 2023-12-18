@@ -52,10 +52,10 @@ const HomeScreen = () => {
       <div>
         <Banner screen={"HOME"} />
       </div>
-      <br></br>
+
       <div className="content-container">
         <div className="blue-area">
-          <Box sx={{ paddingTop: 2 }}>
+          <Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="h5" fontWeight="bold">
                 Templates

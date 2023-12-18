@@ -10,10 +10,11 @@ export default function SearchBar() {
       component="form"
       sx={{
         p: "2px 4px",
+        marginTop: 1,
         display: "flex",
         alignItems: "center",
         width: "100%",
-        height: "75%",
+        height: "50%",
         backgroundColor: "#FFFDF3",
         border: "1px solid #246BAD",
         borderRadius: "25px",
