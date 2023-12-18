@@ -18,6 +18,7 @@ export const EditMapActionType = {
   SHOW_GUEST_MODAL: "SHOW_GUEST_MODAL",
   CREATE_CHOROPLETH_MAP: "CREATE_CHOROPLETH_MAP",
   UPDATE_CHOROPLETH_MAP: "UPDATE_CHOROPLETH_MAP",
+  CREATE_ROUTING_MAP: "CREATE_ROUTING_MAP",
 };
 
 const CurrentModal = {
@@ -31,6 +32,7 @@ const CurrentModal = {
   GUEST_PUBLISH_MAP: "GUEST_PUBLISH_MAP",
   ERROR: "ERROR",
   CREATE_CHOROPLETH_FORM: "CREATE_CHOROPLETH_FORM",
+  CREATE_ROUTING_FORM: "CREATE_ROUTING_FORM",
 };
 
 const LeafletTool = {
@@ -42,6 +44,7 @@ const LeafletTool = {
 
 const Templates = {
   CHOROPLETH: "CHOROPLETH",
+  ROUTING: "ROUTING",
 };
 
 function EditMapContextProvider(props) {
@@ -92,6 +95,19 @@ function EditMapContextProvider(props) {
           currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
           templateData: payload.templateData,
+        });
+      }
+      case EditMapActionType.CREATE_ROUTING_MAP: {
+        console.log("creating a template");
+        return setEditStore({
+          currentModal: CurrentModal.CREATE_ROUTING_FORM,
+          currentMapMetaData: editStore.currentMapMetaData,
+          currentMapGraphic: editStore.currentMapGraphic,
+          currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: editStore.currentcoloredPolygon,
+          currentTemplate: Templates.ROUTING,
+          activeTool: editStore.activeTool,
+          templateData: editStore.templateData,
         });
       }
       case EditMapActionType.CREATE_CHOROPLETH_MAP: {
@@ -381,6 +397,15 @@ function EditMapContextProvider(props) {
     }
   };
 
+  editStore.createRoutingMap = () => {
+    console.log("Triggered handle on click");
+    storeReducer({
+      type: EditMapActionType.CREATE_ROUTING_MAP,
+      payload: {
+        currentTemplate: Templates.ROUTING,
+      },
+    });
+  };
   editStore.createChoroplethMap = () => {
     console.log("Triggered handle on click");
     storeReducer({
@@ -454,6 +479,7 @@ function EditMapContextProvider(props) {
 
   editStore.setMap = function (mapMetaData) {
     async function set(mapMetaData) {
+      console.log(mapMetaData);
       const response = await api.getMapGraphicById(mapMetaData._id);
       if (response.status === 200) {
         const mapGraphic = response.data.mapgraphic;

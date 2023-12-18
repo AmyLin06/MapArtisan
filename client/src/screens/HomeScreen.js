@@ -98,7 +98,10 @@ const HomeScreen = () => {
                     />
                   </Grid>
                   <Grid item xs={3} onClick={() => handleCreateMap("Routing")}>
-                    <TemplateCard templateName="Plan Your Trip" />
+                    <TemplateCard
+                      templateName="Plan Your Trip"
+                      type={"routing"}
+                    />
                   </Grid>
                   <Grid item xs={3}>
                     <TemplateCard templateName="Template3" />

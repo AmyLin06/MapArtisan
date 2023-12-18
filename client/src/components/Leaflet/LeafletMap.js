@@ -6,7 +6,7 @@ import { EditMapContext } from "../../store/EditMapStore";
 import RenderGeoJson from "./GeoJsonLayer";
 import LocationMarker from "./LocationMarker";
 import ChoroplethMap from "./ChoroplethMap";
-
+import RoutingTemplate from "./Template/RoutingTemplate";
 function LeafletMap() {
   const { editStore } = useContext(EditMapContext);
   const center = [40.902771, -73.13385];
@@ -23,6 +23,9 @@ function LeafletMap() {
     }
   });
 
+  console.log(editStore.currentMapMetaData);
+  console.log(editStore.currentMapGraphic);
+
   return (
     <Box>
       <MapContainer
@@ -38,7 +41,15 @@ function LeafletMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {mapLayers}
-        {/* <RoutingTemplate /> */}
+        {!!(
+          editStore.currentMapMetaData?.template == "Routing" &&
+          editStore.currentMapGraphic?.markers.length != 0
+        ) && (
+          <RoutingTemplate
+            pt1={editStore.currentMapGraphic?.markers[0]}
+            pt2={editStore.currentMapGraphic?.markers[1]}
+          />
+        )}
       </MapContainer>
     </Box>
   );

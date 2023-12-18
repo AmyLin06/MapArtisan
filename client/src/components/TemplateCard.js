@@ -23,6 +23,8 @@ export default function MapCard(props) {
     store.createNewMap();
     if (type == "choropleth") {
       editStore.createChoroplethMap();
+    } else if (type == "routing") {
+      editStore.createRoutingMap();
     }
     console.log(editStore.currentModal);
   };
