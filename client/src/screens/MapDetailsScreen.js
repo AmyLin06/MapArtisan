@@ -10,15 +10,6 @@ import {
   Button,
   Popover,
 } from "@mui/material";
-import {
-  Avatar,
-  Box,
-  Typography,
-  Divider,
-  Grid,
-  Button,
-  Popover,
-} from "@mui/material";
 import ForkRightIcon from "@mui/icons-material/ForkRight";
 import sampleMap from "../assets/currentMap.json";
 import Banner from "../components/Banner";
