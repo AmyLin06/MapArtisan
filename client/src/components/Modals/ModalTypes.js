@@ -24,7 +24,6 @@ export const SuccessModalTypes = {
     name: "MESSAGE_SUCCESS",
     text: "Sucessfully Send Out Message",
     subtext: "",
-    close: close,
   },
   PUBLISH_SUCCESS: {
     name: "PUBLISH_SUCCESS",
