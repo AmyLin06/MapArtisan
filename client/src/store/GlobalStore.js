@@ -17,7 +17,10 @@ export const GlobalStoreActionType = {
   MARK_MAP_FOR_DELETION: "MARK_MAP_FOR_DELETION",
   SHOW_RENAME_MODAL: "SHOW_RENAME_MODAL",
   SHOW_MESSAGE_MODAL: "SHOW_MESSAGE_MODAL",
+  SHOW_MESSAGE_MODAL: "SHOW_MESSAGE_MODAL",
   SET_CURRENT_MAP: "SET_CURRENT_MAP",
+  LOAD_PROFILE_MAPS: "LOAD_PROFILE_MAPS",
+  MESSAGE: "MESSAGE",
   LOAD_PROFILE_MAPS: "LOAD_PROFILE_MAPS",
   MESSAGE: "MESSAGE",
 };
@@ -44,6 +47,8 @@ function GlobalStoreContextProvider(props) {
     communityMapList: [],
     profileMapList: [],
     currentUser: null,
+    profileMapList: [],
+    currentUser: null,
   });
 
   const storeReducer = (action) => {
@@ -57,8 +62,21 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
           profileMapList: store.profileMapList,
           currentUser: store.currentUser,
+          profileMapList: store.profileMapList,
+          currentUser: store.currentUser,
         });
       }
+      case GlobalStoreActionType.SHOW_MESSAGE_MODAL: {
+        return setStore({
+          currentModal: CurrentModal.MESSAGE_MODAL,
+          currentMap: store.currentMap,
+          homeMapList: store.homeMapList,
+          communityMapList: store.communityMapList,
+          profileMapList: store.profileMapList,
+          currentUser: store.currentUser,
+        });
+      }
+
       case GlobalStoreActionType.SHOW_MESSAGE_MODAL: {
         return setStore({
           currentModal: CurrentModal.MESSAGE_MODAL,
@@ -98,6 +116,8 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
           profileMapList: store.profileMapList,
           currentUser: store.currentUser,
+          profileMapList: store.profileMapList,
+          currentUser: store.currentUser,
         });
       }
       case GlobalStoreActionType.CREATE_NEW_MAP: {
@@ -106,6 +126,8 @@ function GlobalStoreContextProvider(props) {
           currentMap: payload,
           homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
+          profileMapList: store.profileMapList,
+          currentUser: store.currentUser,
           profileMapList: store.profileMapList,
           currentUser: store.currentUser,
         });
@@ -118,6 +140,8 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
           profileMapList: store.profileMapList,
           currentUser: store.currentUser,
+          profileMapList: store.profileMapList,
+          currentUser: store.currentUser,
         });
       }
       case GlobalStoreActionType.LOAD_COMMUNITY_MAPS: {
@@ -126,6 +150,8 @@ function GlobalStoreContextProvider(props) {
           currentMap: store.currentMap,
           homeMapList: store.homeMapList,
           communityMapList: payload,
+          profileMapList: store.profileMapList,
+          currentUser: store.currentUser,
           profileMapList: store.profileMapList,
           currentUser: store.currentUser,
         });
@@ -180,6 +206,12 @@ function GlobalStoreContextProvider(props) {
   store.showEditMapNameModal = () => {
     storeReducer({
       type: GlobalStoreActionType.SHOW_RENAME_MODAL,
+    });
+  };
+
+  store.showMessageModal = () => {
+    storeReducer({
+      type: GlobalStoreActionType.SHOW_MESSAGE_MODAL,
     });
   };
 
@@ -259,6 +291,21 @@ function GlobalStoreContextProvider(props) {
     } else console.log("API FAILED TO LOAD PROFILE MAPS");
   };
 
+  store.getProfileMapMetaData = async function (id) {
+    const response = await api.getProfileMaps(id);
+    if (response.status === 201) {
+      console.log(response.data.currentUser);
+      // tps.clearAllTransactions();
+      storeReducer({
+        type: GlobalStoreActionType.LOAD_PROFILE_MAPS,
+        payload: {
+          currentUser: response.data.currentUser,
+          profileMapList: response.data.profileMapList,
+        },
+      });
+    } else console.log("API FAILED TO LOAD PROFILE MAPS");
+  };
+
   store.getCommunityMapMetaData = async function () {
     const response = await api.getCommunityMaps();
     if (response.status === 201) {
@@ -281,6 +328,27 @@ function GlobalStoreContextProvider(props) {
       });
       return newMapMetaData;
     } else console.log("API FAILED TO GET AND SET MAP");
+  };
+
+  store.message = async function (message) {
+    const updatingField = {
+      message: message,
+    };
+    const response = await api.message(
+      auth.user.email,
+      store.currentUser.email,
+      updatingField
+    );
+    console.log("message response: " + response.data);
+    if (response.status === 200) {
+      // tps.clearAllTransactions();
+      storeReducer({
+        type: GlobalStoreActionType.MESSAGE,
+        payload: { currentModal: CurrentModal.MESSAGE_SUCCESS },
+      });
+    } else {
+      console.log("API FAILED TO RENAME MAP");
+    }
   };
 
   store.message = async function (message) {

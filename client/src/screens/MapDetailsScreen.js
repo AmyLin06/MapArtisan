@@ -10,6 +10,15 @@ import {
   Button,
   Popover,
 } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Typography,
+  Divider,
+  Grid,
+  Button,
+  Popover,
+} from "@mui/material";
 import ForkRightIcon from "@mui/icons-material/ForkRight";
 import sampleMap from "../assets/currentMap.json";
 import Banner from "../components/Banner";
@@ -28,6 +37,7 @@ export default function MapDetailsScreen() {
   const { auth } = useContext(AuthContext);
   const { editStore } = useContext(EditMapContext);
   const { store } = useContext(GlobalStoreContext);
+  const [user, setUser] = useState(store.currentUser);
   const [user, setUser] = useState(store.currentUser);
   const [anchorEl, setAnchorEl] = useState(null);
   const [likedMap, setLikedMap] = useState(false);
@@ -65,6 +75,11 @@ export default function MapDetailsScreen() {
     const bool = await store.isLikedMap(store.currentMap?._id);
     setLikedMap(bool);
   };
+
+  async function handleProfile() {
+    await store.getProfileMapMetaData(editStore.currentMapMetaData?.ownerID);
+    navigate("/profile");
+  }
 
   async function handleProfile() {
     await store.getProfileMapMetaData(editStore.currentMapMetaData?.ownerID);

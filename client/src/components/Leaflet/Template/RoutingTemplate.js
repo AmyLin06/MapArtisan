@@ -1,34 +1,27 @@
-import { useEffect } from "react";
 import L from "leaflet";
-import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import { createControlComponent } from "@react-leaflet/core";
 import "leaflet-routing-machine";
+import React from "react";
 import { useMap } from "react-leaflet/hooks";
-// import { EditMapContext } from "../../../store/EditMapStore";
 
 L.Marker.prototype.options.icon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
 });
 
-function RoutingTemplate() {
-  const map = useMap();
+const createRoutingMachineLayer = ({ pt1, pt2 }) => {
+  const instance = L.Routing.control({
+    waypoints: [
+      L.latLng(pt1.coordinates.lat, pt1.coordinates.lng),
+      L.latLng(pt2.coordinates.lat, pt2.coordinates.lng),
+    ],
+    show: false,
+    addWaypoints: false,
+    routeWhileDragging: true,
+    draggableWaypoints: false,
+  });
+  return instance;
+};
 
-  //   const waypoints = editStore.currentMapGraphic.markers.map((marker) => {
-  //     return L.latLng(marker.coordinates.lat, marker.coordinates.lng);
-  //   });
-
-  useEffect(() => {
-    if (!map) return;
-
-    const routingControl = L.Routing.control({
-      waypoints: [L.latLng(57.74, 11.94), L.latLng(57.6792, 11.949)],
-      routeWhileDragging: true,
-      //   geocoder: L.Control.Geocoder.nominatim(),
-    }).addTo(map);
-
-    return () => map.removeControl(routingControl);
-  }, [map]);
-
-  return null;
-}
+const RoutingTemplate = createControlComponent(createRoutingMachineLayer);
 
 export default RoutingTemplate;
