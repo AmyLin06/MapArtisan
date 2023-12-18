@@ -29,6 +29,7 @@ import GuestModal from "./Modals/GuestModal";
 import { GuestModalTypes } from "./Modals/ModalTypes";
 import AuthContext from "../auth";
 import GlobalStoreContext from "../store/GlobalStore";
+import CanvasDataProvider from "../store/ContextProviders/CanvasDataProvider";
 
 export default function QuickAccessToolbar() {
   const { store } = useContext(GlobalStoreContext);

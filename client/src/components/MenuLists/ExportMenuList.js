@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { Paper, Tooltip } from "@mui/material";
+import CanvasDataContext from "../../store/ContextProviders/CanvasDataContext";
+import EditMapContext from "../../store/EditMapStore";
 
 //menu that opens and displays options for data formats the user can export the map in
 export default function ExportMenuList() {
   const [anchorEl, setAnchorEl] = useState(null);
+  const { editStore } = useContext(EditMapContext);
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -17,6 +20,14 @@ export default function ExportMenuList() {
     setAnchorEl(null);
   };
 
+  const handlePNGExport = () => {
+    console.log(editStore.mapImageUrl);
+    const link = document.createElement("a");
+    link.href = editStore.mapImageUrl;
+    link.download = "exported-map.png";
+    link.click();
+    handleClose();
+  };
   const open = Boolean(anchorEl);
 
   return (
@@ -57,7 +68,7 @@ export default function ExportMenuList() {
             {"JPG"}
           </MenuItem>
           <MenuItem
-            onClick={handleClose}
+            onClick={handlePNGExport}
             sx={{
               "&:hover": {
                 background: "#246BAD",
