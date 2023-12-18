@@ -87,7 +87,7 @@ const RegisterScreen = () => {
                   fullWidth
                   id="firstname"
                   label="Firstname"
-                  name="Firstname"
+                  name="firstname"
                   autoComplete="firstname"
                   autoFocus
                   InputProps={{
@@ -106,7 +106,7 @@ const RegisterScreen = () => {
                   fullWidth
                   id="lastname"
                   label="Lastname"
-                  name="Lastname"
+                  name="lastname"
                   autoComplete="lastname"
                   autoFocus
                   InputProps={{
@@ -202,7 +202,7 @@ const RegisterScreen = () => {
               }}
             />
             <div>
-              {"By signing up, you agree to our and "}
+              {"By signing up, you agree to our "}
               <Button
                 onClick={handleClickOpen(
                   "paper",

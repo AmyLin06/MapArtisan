@@ -11,8 +11,11 @@ import {
 } from "../components/Modals/ModalTypes";
 import InputModal from "../components/Modals/InputModal";
 import ChoroplethForm from "../components/Modals/ChoroplethForm";
+import { useState } from "react";
+import CanvasDataProvider from "../store/ContextProviders/CanvasDataProvider";
 
 const WorkspaceScreen = () => {
+  const [canvasDataURL, setCanvasDataURL] = useState(null);
   return (
     <div className="workspace-main">
       <Banner screen={"EDIT"} />
