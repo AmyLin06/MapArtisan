@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import GlobalStoreContext from "../store/GlobalStore";
 import EditMapContext from "../store/EditMapStore";
+import { Button } from "@mui/material";
 
 //Example (currentMap is mock data for a map)
 //  (screen is either "HOME" by default or "COMMMUNITY", representing which screen the map card is for):
@@ -42,11 +43,20 @@ export default function MapCard(props) {
     </Grid>
   );
 
+  async function handleProfile(event) {
+    await store.getProfileMapMetaData(currentMap?.ownerID);
+    navigate("/profile");
+  }
+
   if (screen === "COMMUNITY") {
     subtextArea = (
       <Grid item container alignItems="center">
         <Typography variant="h7" color="textSecondary">
-          @{currentMap.ownerUsername}
+          <Button className="username" onClick={handleProfile}>
+            <Typography variant="h9" color="textSecondary">
+              @{currentMap.ownerUsername}
+            </Typography>
+          </Button>
           <br />
           <Grid item container alignContent="center">
             {currentMap.isPublished && (
@@ -62,6 +72,9 @@ export default function MapCard(props) {
   async function handleCardClick(event) {
     event.preventDefault();
     if (event.target.closest(".kebab")) {
+      return;
+    }
+    if (event.target.closest(".username")) {
       return;
     }
     //set the current map in the edit store by getting mapByID

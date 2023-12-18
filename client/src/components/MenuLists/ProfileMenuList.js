@@ -26,10 +26,12 @@ export default function ProfileMenuList() {
     handleClose();
     navigate("/account-setting");
   }
-  function handleProfile() {
+  async function handleProfile() {
     handleClose();
+    await store.getProfileMapMetaData(auth.user.id);
     navigate("/profile");
   }
+
   function handleLogout() {
     handleClose();
     auth.logoutUser();
@@ -42,7 +44,7 @@ export default function ProfileMenuList() {
     <>
       <IconButton onClick={handleOpen} sx={{ padding: 0 }}>
         <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-          R
+          {auth.getUserInitials()}
         </Avatar>
       </IconButton>
       <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>

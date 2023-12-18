@@ -15,6 +15,7 @@ export default function InputModal(props) {
   const { store } = useContext(GlobalStoreContext);
   const { editStore } = useContext(EditMapContext);
   const [mapName, setMapName] = useState(store.currentMap?.mapTitle);
+  const [message, setMessage] = useState("hi");
 
   useEffect(() => {
     setMapName(store.currentMap?.mapTitle);
@@ -48,11 +49,20 @@ export default function InputModal(props) {
     event.stopPropagation();
     setMapName(event.target.value);
   };
+
+  const handleMessageChange = (event) => {
+    event.stopPropagation();
+    setMessage(event.target.value);
+  };
+
   const handleConfirm = (event) => {
     event.stopPropagation();
     switch (modalType) {
       case InputModalTypes.RENAME_MAP:
         store.renameMap(mapName);
+        break;
+      case InputModalTypes.MESSAGE_MODAL:
+        store.message(message);
         break;
       default:
         break;
@@ -85,7 +95,9 @@ export default function InputModal(props) {
           multiline
           rows={10}
           placeholder="Hi, I'm Bob and I just wanted to say that the map you created was awesome..."
+          onChange={handleMessageChange}
           onClick={handleInputClick}
+          value={message}
           style={{
             "& fieldset": { border: "none" },
             width: "100%",
