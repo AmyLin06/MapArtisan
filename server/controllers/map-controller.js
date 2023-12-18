@@ -81,7 +81,6 @@ message = async (req, res) => {
     console.log(body.sender);
     console.log(body.receiver);
     console.log(body.field.message);
-    console.log("EXisting User" + existingUser);
     const existingSender = await User.findOne({ email: body.sender });
     if (!existingSender) {
       return res.status(401).json({

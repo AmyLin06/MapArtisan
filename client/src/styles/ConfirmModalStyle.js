@@ -4,7 +4,7 @@ export const ConfirmModalStyle = {
   left: "45%",
   transform: "translate(-50%, -50%)",
   width: 300,
-  height: 150,
+  height: 175,
   backgroundSize: "contain",
   backgroundColor: "#FFFDF3",
   border: "none",
