@@ -69,7 +69,7 @@ export default function MapDetailsScreen() {
         <Grid container>
           <Grid item xs={8} sx={{ overflow: "hidden" }}>
             <Typography fontWeight="bold" sx={{ color: "#246BAD" }}>
-              {editStore.currentMapMetaData?.mapTitle || ""}
+              {store.currentMap?.mapTitle || ""}
             </Typography>
             <Box display="flex">
               <Avatar
