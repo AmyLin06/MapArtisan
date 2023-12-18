@@ -44,9 +44,8 @@ export default function MapCard(props) {
   );
 
   async function handleProfile(event) {
-    navigate("/profile", {
-      state: { id: currentMap?.ownerID },
-    });
+    await store.getProfileMapMetaData(currentMap?.ownerID);
+    navigate("/profile");
   }
 
   if (screen === "COMMUNITY") {

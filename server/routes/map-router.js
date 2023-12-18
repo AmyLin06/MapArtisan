@@ -17,6 +17,7 @@ const auth = require("../auth");
 
 router.post("/create", auth.verify, MapController.createMap);
 router.put("/updatemetadata", auth.verify, MapController.updateMapMetaData);
+router.post("/message", auth.verify, MapController.message);
 router.put(
   "/updategraphic/:id",
   auth.verify,

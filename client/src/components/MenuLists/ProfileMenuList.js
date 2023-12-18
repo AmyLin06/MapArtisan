@@ -3,8 +3,10 @@ import { IconButton, Popover, MenuItem, Avatar } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../auth";
+import { GlobalStoreContext } from "../../store/GlobalStore";
 
 export default function ProfileMenuList() {
+  const { store } = useContext(GlobalStoreContext);
   const { auth } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -22,10 +24,12 @@ export default function ProfileMenuList() {
     handleClose();
     navigate("/account-setting");
   }
-  function handleProfile() {
+  async function handleProfile() {
     handleClose();
-    navigate("/profile", { state: { id: auth.user.id } });
+    await store.getProfileMapMetaData(auth.user.id);
+    navigate("/profile");
   }
+
   function handleLogout() {
     handleClose();
     auth.logoutUser();

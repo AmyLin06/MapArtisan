@@ -19,7 +19,9 @@ export default function SuccessModal(props) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      auth.hideModals();
+      if (modalType.name !== SuccessModalTypes.MESSAGE_SUCCESS) {
+        auth.hideModals();
+      }
     }, 5000);
 
     return () => clearTimeout(timer);
@@ -38,6 +40,31 @@ export default function SuccessModal(props) {
   }
   if (modalType === SuccessModalTypes.PASSWORD_RESET_SUCCESS) {
     text = modalType.text;
+  }
+  if (modalType === SuccessModalTypes.MESSAGE_SUCCESS) {
+    text = modalType.text;
+  }
+
+  if (modalType === SuccessModalTypes.MESSAGE_SUCCESS) {
+    return (
+      <Snackbar
+        open={store.currentModal === modalType.name}
+        autoHideDuration={5000}
+        onClose={() => {
+          store.hideModals();
+        }}
+      >
+        <Alert
+          onClose={() => {
+            store.hideModals();
+          }}
+          severity="success"
+        >
+          {text}
+          {". " + modalType.subtext}
+        </Alert>
+      </Snackbar>
+    );
   }
 
   return (

@@ -36,10 +36,9 @@ function MapDetailsScreen() {
     console.log("handle duplicate - not implemented");
   };
 
-  function handleProfile() {
-    navigate("/profile", {
-      state: { id: editStore.currentMapMetaData?.ownerID },
-    });
+  async function handleProfile() {
+    await store.getProfileMapMetaData(editStore.currentMapMetaData?.ownerID);
+    navigate("/profile");
   }
 
   return (

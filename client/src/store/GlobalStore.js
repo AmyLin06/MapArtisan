@@ -17,6 +17,7 @@ export const GlobalStoreActionType = {
   SHOW_MESSAGE_MODAL: "SHOW_MESSAGE_MODAL",
   SET_CURRENT_MAP: "SET_CURRENT_MAP",
   LOAD_PROFILE_MAPS: "LOAD_PROFILE_MAPS",
+  MESSAGE: "MESSAGE",
 };
 
 const CurrentModal = {
@@ -129,12 +130,22 @@ function GlobalStoreContextProvider(props) {
       case GlobalStoreActionType.LOAD_PROFILE_MAPS: {
         console.log(payload.currentUser);
         return setStore({
-          currentModal: CurrentModal.NONE,
+          currentModal: store.currentModal,
           currentMap: store.currentMap,
           homeMapList: store.homeMapList,
           communityMapList: store.communityMapList,
           profileMapList: payload.profileMapList,
           currentUser: payload.currentUser,
+        });
+      }
+      case GlobalStoreActionType.MESSAGE: {
+        return setStore({
+          currentModal: payload.currentModal,
+          currentMap: store.currentMap,
+          homeMapList: store.homeMapList,
+          communityMapList: store.communityMapList,
+          profileMapList: store.profileMapList,
+          currentUser: store.currentUser,
         });
       }
       default:
@@ -233,6 +244,27 @@ function GlobalStoreContextProvider(props) {
       });
       return newMapMetaData;
     } else console.log("API FAILED TO GET AND SET MAP");
+  };
+
+  store.message = async function (message) {
+    const updatingField = {
+      message: message,
+    };
+    const response = await api.message(
+      auth.user.email,
+      store.currentUser.email,
+      updatingField
+    );
+    console.log("message response: " + response.data);
+    if (response.status === 200) {
+      // tps.clearAllTransactions();
+      storeReducer({
+        type: GlobalStoreActionType.MESSAGE,
+        payload: { currentModal: CurrentModal.MESSAGE_SUCCESS },
+      });
+    } else {
+      console.log("API FAILED TO RENAME MAP");
+    }
   };
 
   store.renameMap = async function (newMapName) {

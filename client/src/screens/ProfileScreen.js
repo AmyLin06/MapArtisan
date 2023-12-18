@@ -7,33 +7,31 @@ import AuthContext from "../auth";
 import { useState, useContext, useEffect } from "react";
 import DrawIcon from "@mui/icons-material/Draw";
 import GlobalStoreContext from "../store/GlobalStore";
-import { useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import InputModal from "../components/Modals/InputModal";
-import { InputModalTypes } from "../components/Modals/ModalTypes";
+import {
+  InputModalTypes,
+  SuccessModalTypes,
+} from "../components/Modals/ModalTypes";
+import SuccessModal from "../components/Modals/SuccessModal";
 
 function ProfileScreen() {
-  const [maps, setMaps] = useState([]);
-  const [user, setUser] = useState({
-    firstName: "",
-    lastName: "",
-    userName: "",
-    email: "",
-  });
   const { auth } = useContext(AuthContext);
   const { store } = useContext(GlobalStoreContext);
-  const location = useLocation();
-  const passedProp = location.state?.id;
-
+  const [user, setUser] = useState(store.currentUser);
+  const [maps, setMaps] = useState([]);
+  // const location = useLocation();
+  // const passedProp = location.state?.id;
+  const isDisabled = auth.user?.email === store.currentUser?.email;
   function getRandomColor() {
     const colors = ["#4db6ac"]; // add more colors as needed
     return colors[Math.floor(Math.random() * colors.length)];
   }
 
-  useEffect(() => {
-    if (auth.user) store.getProfileMapMetaData(passedProp);
-    // eslint-disable-next-line
-  }, [auth.loggedIn]);
+  // useEffect(() => {
+  //   if (auth.user) store.getProfileMapMetaData(passedProp);
+  //   // eslint-disable-next-line
+  // }, [auth.loggedIn]);
 
   useEffect(() => {
     setMaps(store.profileMapList);
@@ -89,6 +87,7 @@ function ProfileScreen() {
               startIcon={<ForumIcon />}
               onClick={handleMessage}
               variant="outlined"
+              disabled={isDisabled}
             >
               Message
             </Button>
@@ -129,6 +128,7 @@ function ProfileScreen() {
         </Box>
       </Box>
       <InputModal modalType={InputModalTypes.MESSAGE_MODAL} />
+      <SuccessModal modalType={SuccessModalTypes.MESSAGE_SUCCESS} />
     </>
   );
 }

@@ -42,6 +42,15 @@ export const updateMapMetaData = (mapID, field) => {
   });
 };
 
+export const message = (sender, receiver, field) => {
+  return api.post(`/message/`, {
+    // SPECIFY THE PAYLOAD
+    sender: sender,
+    receiver: receiver,
+    field: field,
+  });
+};
+
 export const getUserMaps = (userEmail) => {
   return api.get(`/usermaps/${userEmail}`);
 };
@@ -83,6 +92,7 @@ const apis = {
   getCommunityMaps,
   deleteMapById,
   getProfileMaps,
+  message,
 };
 
 export default apis;

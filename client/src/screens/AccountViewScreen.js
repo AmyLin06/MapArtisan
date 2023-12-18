@@ -26,14 +26,7 @@ const AccountViewScreen = () => {
   const [showPasswordPart, setShowPasswordPart] = useState(false);
 
   function getRandomColor() {
-    const colors = [
-      "#e57373",
-      "#64b5f6",
-      "#aed581",
-      "#ffb74d",
-      "#ba68c8",
-      "#4db6ac",
-    ]; // add more colors as needed
+    const colors = ["#4db6ac"]; // add more colors as needed
     return colors[Math.floor(Math.random() * colors.length)];
   }
 

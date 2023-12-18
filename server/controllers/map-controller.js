@@ -2,7 +2,10 @@ const MapMetaData = require("../models/map-model");
 const MapGraphic = require("../models/graphic-model");
 const User = require("../models/user-model");
 const auth = require("../auth");
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
 
+dotenv.config();
 createMap = async (req, res) => {
   console.log("in server create map");
   if (auth.verifyUser(req) === null) {
@@ -65,6 +68,70 @@ createMap = async (req, res) => {
     return res.status(400).json({
       errorMessage: "Error creating map",
     });
+  }
+};
+message = async (req, res) => {
+  try {
+    if (auth.verifyUser(req) === null) {
+      return res.status(400).json({
+        errorMessage: "UNAUTHORIZED",
+      });
+    }
+    const body = req.body;
+    console.log(body.sender);
+    console.log(body.receiver);
+    console.log(body.field.message);
+    console.log("EXisting User" + existingUser);
+    const existingSender = await User.findOne({ email: body.sender });
+    if (!existingSender) {
+      return res.status(401).json({
+        errorMessage: "Cannot find the sender.",
+      });
+    }
+    const existingReceiver = await User.findOne({ email: body.receiver });
+    if (!existingReceiver) {
+      return res.status(401).json({
+        errorMessage: "Cannot find the Receiver.",
+      });
+    }
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "mapartisannavy@gmail.com",
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+    const mailOptions = {
+      from: body.sender,
+      to: body.receiver,
+      subject: "MAPARTISAN MESSAGE",
+      text: body.field.message + "\nfrom " + body.sender,
+    };
+
+    const sendMailAsync = async () => {
+      return new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error("Email send error:", error);
+            reject(error);
+          } else {
+            console.log("Email sent: %s", info.messageId);
+            resolve(info);
+          }
+        });
+      });
+    };
+    await sendMailAsync();
+    return res.status(200).json({
+      loggedIn: false,
+      user: null,
+      errorMessage: "?",
+    });
+  } catch (err) {
+    console.log("132");
+    return res
+      .status(400)
+      .json({ errorMessage: "We cannot message this user" });
   }
 };
 
@@ -363,4 +430,5 @@ module.exports = {
   getMapMetaDataById,
   updateMapGraphicById,
   getMapGraphicById,
+  message,
 };
