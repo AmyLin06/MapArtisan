@@ -7,3 +7,7 @@
     height: 85vh;
     z-index: 1;
 }
+
+.blue-area{
+    border-radius: 10px;
+}

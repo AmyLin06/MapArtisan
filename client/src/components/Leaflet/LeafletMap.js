@@ -21,6 +21,13 @@ function LeafletMap() {
     } else {
       return <RenderGeoJson layer={layer} />;
     }
+    console.log(layer);
+    if (layer.filename == "ChoroplethMap") {
+      console.log(layer);
+      return <ChoroplethMap mapData={layer} />;
+    } else {
+      return <RenderGeoJson layer={layer} />;
+    }
   });
 
   console.log(editStore.currentMapMetaData);

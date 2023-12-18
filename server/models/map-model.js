@@ -14,6 +14,7 @@ const mapMetaData = new Schema(
       default: [],
     },
     forks: { type: Number, default: 0 },
+    // ownerEmail: { type: String, required: true },
     ownerUsername: { type: String, required: true },
     publishedDate: { type: Date, required: false },
     isPublished: { type: Boolean, default: false },

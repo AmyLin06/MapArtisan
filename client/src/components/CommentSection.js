@@ -14,6 +14,11 @@ const CommentSection = (props) => {
   const { comments } = props;
   const [open, setOpen] = useState(false);
 
+  const handleCommentClick = () => {
+    // editStore.loadMapComments();
+    setOpen(true);
+  };
+
   let JSX = "";
   JSX = comments.map((c, index) => (
     <CommentCard key={"comment" + index} comment={c} />
@@ -24,7 +29,7 @@ const CommentSection = (props) => {
       {["right"].map((anchor) => (
         <>
           <SmallCustomButton
-            onClick={() => setOpen(true)}
+            onClick={handleCommentClick}
             tooltipTitle="View/Write comments"
             text={"Comments"}
             disable={false}

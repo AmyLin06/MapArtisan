@@ -20,6 +20,11 @@ export const ConfirmModalTypes = {
 };
 
 export const SuccessModalTypes = {
+  MESSAGE_SUCCESS: {
+    name: "MESSAGE_SUCCESS",
+    text: "Sucessfully Send Out Message",
+    subtext: "",
+  },
   PUBLISH_SUCCESS: {
     name: "PUBLISH_SUCCESS",
     text: "Successfully published ",
@@ -46,6 +51,7 @@ export const SuccessModalTypes = {
     subtext: "",
   },
 };
+
 export const FailModalTypes = {
   ACCOUNT_UPDATE_FAIL: {
     name: "ACCOUNT_UPDATE_FAIL",
