@@ -70,6 +70,7 @@ createMap = async (req, res) => {
     });
   }
 };
+
 message = async (req, res) => {
   try {
     if (auth.verifyUser(req) === null) {
@@ -78,9 +79,6 @@ message = async (req, res) => {
       });
     }
     const body = req.body;
-    console.log(body.sender);
-    console.log(body.receiver);
-    console.log(body.field.message);
     const existingSender = await User.findOne({ email: body.sender });
     if (!existingSender) {
       return res.status(401).json({
