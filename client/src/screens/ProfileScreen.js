@@ -22,7 +22,8 @@ function ProfileScreen() {
   const [maps, setMaps] = useState([]);
   // const location = useLocation();
   // const passedProp = location.state?.id;
-  const isDisabled = auth.user?.email === store.currentUser?.email;
+  const isDisabled =
+    auth.user?.email == store.currentUser?.email || auth.guest == true;
   function getRandomColor() {
     const colors = ["#4db6ac"]; // add more colors as needed
     return colors[Math.floor(Math.random() * colors.length)];
@@ -105,7 +106,7 @@ function ProfileScreen() {
           <Typography variant="h5" fontWeight="bold">
             Maps
           </Typography>
-          {auth.guest || maps.length === 0 ? (
+          {maps.length === 0 ? (
             <Box
               display="flex"
               flexDirection="row"
