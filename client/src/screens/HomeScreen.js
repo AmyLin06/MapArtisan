@@ -36,6 +36,7 @@ const HomeScreen = () => {
 
   const handleCreateMap = (template) => {
     auth.guest ? navigate("/edit") : store.createNewMap(template);
+    navigate("/edit");
   };
 
   useEffect(() => {
