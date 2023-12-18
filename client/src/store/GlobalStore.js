@@ -108,6 +108,14 @@ function GlobalStoreContextProvider(props) {
           communityMapList: store.communityMapList,
         });
       }
+      case GlobalStoreActionType.CLEAR_STORE: {
+        return setStore({
+          currentModal: CurrentModal.NONE,
+          currentMap: null,
+          homeMapList: store.homeMapList,
+          communityMapList: store.communityMapList,
+        });
+      }
       default:
         return store;
     }
@@ -138,22 +146,30 @@ function GlobalStoreContextProvider(props) {
     });
   };
 
-  store.createNewMap = async function (template) {
-    console.log(template);
-    let mapName = "Untitled";
-    const response = await api.createNewMap(mapName, template, auth.user.email);
-    if (response.status === 201) {
-      // tps.clearAllTransactions();
-      let newMap = response.data.map;
-      storeReducer({
-        type: GlobalStoreActionType.CREATE_NEW_MAP,
-        payload: newMap,
-      });
-      editStore.setMap(response.data.map);
-      // IF IT'S A VALID MAP THEN LET'S START EDITING IT
-      navigate("/edit");
-      store.getHomeMapMetaData();
-    } else console.log("API FAILED TO CREATE A NEW MAP");
+  store.createNewMap = function (template) {
+    async function createMap(template) {
+      console.log(template);
+      let mapName = "Untitled";
+      const response = await api.createNewMap(
+        mapName,
+        template,
+        auth.user.email
+      );
+      if (response.status === 201) {
+        // tps.clearAllTransactions();
+        let newMap = response.data.map;
+        console.log(newMap);
+
+        editStore.setMap(response.data.map);
+        storeReducer({
+          type: GlobalStoreActionType.CREATE_NEW_MAP,
+          payload: newMap,
+        });
+        // IF IT'S A VALID MAP THEN LET'S START EDITING IT
+        // store.getHomeMapMetaData();
+      } else console.log("API FAILED TO CREATE A NEW MAP");
+    }
+    createMap(template);
   };
 
   store.getHomeMapMetaData = async function () {
@@ -192,6 +208,7 @@ function GlobalStoreContextProvider(props) {
   };
 
   store.renameMap = async function (newMapName) {
+    // store.currentMap.mapTitle = newMapName;
     const updatingField = {
       mapTitle: newMapName,
     };
@@ -236,29 +253,33 @@ function GlobalStoreContextProvider(props) {
     } else console.log("API FAILED TO RENAME MAP");
   };
 
-  store.deleteMap = async function () {
-    const directoryRef = ref(
-      storage,
-      `/geo-json-datas/map-id-${store.currentMap._id}`
-    );
-    const fileRefs = await listAll(directoryRef);
-    await Promise.all(fileRefs.items.map((fileRef) => deleteObject(fileRef)));
+  store.deleteMap = function () {
+    async function deleteMap() {
+      const directoryRef = ref(
+        storage,
+        `/geo-json-datas/map-id-${store.currentMap._id}`
+      );
+      const fileRefs = await listAll(directoryRef);
+      await Promise.all(fileRefs.items.map((fileRef) => deleteObject(fileRef)));
 
-    let response = await api.deleteMapById(store.currentMap._id);
-    if (response.status === 200) {
-      storeReducer({
-        type: GlobalStoreActionType.SET_CURRENT_MAP,
-        payload: null,
-      });
-      store.getHomeMapMetaData();
-    } else {
-      console.log("Map failed to delete");
+      let response = await api.deleteMapById(store.currentMap._id);
+      if (response.status === 200) {
+        storeReducer({
+          type: GlobalStoreActionType.SET_CURRENT_MAP,
+          payload: null,
+        });
+        // store.getHomeMapMetaData();
+      } else {
+        console.log("Map failed to delete");
+      }
     }
+    deleteMap();
   };
 
   //this function checks if the user has liked this before before
   store.isLikedMap = async function (mapId) {
-    if (auth.guest || !mapId) return false;
+    console.log(mapId);
+    if (auth.guest) return false;
 
     const response = await api.isLikedMap(mapId);
     if (response.status === 201) {

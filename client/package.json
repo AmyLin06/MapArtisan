@@ -15,6 +15,7 @@
     "firebase": "^10.7.1",
     "leaflet": "^1.9.4",
     "leaflet-routing-machine": "^3.2.12",
+    "papaparse": "^5.4.1",
     "leaflet.bigimage": "^1.0.1",
     "react": "^18.2.0",
     "react-color": "^2.19.3",

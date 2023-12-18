@@ -48,6 +48,11 @@ export default function Banner(props) {
     auth.guestLogin();
   };
 
+  const handleLogo = () => {
+    editStore.closeMap();
+    store.closeMap();
+  };
+
   switch (screen) {
     case "WELCOME":
       rightOfBanner = (

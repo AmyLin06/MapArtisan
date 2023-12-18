@@ -36,7 +36,7 @@ export default function ExportMenuList() {
         }}
       >
         <Paper style={{ background: "#FFFDF3" }}>
-          <MenuItem
+          {/* <MenuItem
             onClick={handleClose}
             sx={{
               "&:hover": {
@@ -45,7 +45,7 @@ export default function ExportMenuList() {
             }}
           >
             {"Custom JSON"}
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             onClick={handleClose}
             sx={{
