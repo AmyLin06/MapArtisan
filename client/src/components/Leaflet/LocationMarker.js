@@ -95,32 +95,35 @@ const LocationMarker = () => {
                     {marker.message}
                   </Typography>
                 </Box>
-
-                <ButtonGroup>
-                  <Tooltip
-                    arrow
-                    title={marker.draggable ? "Disable Drag" : "Enable Drag"}
-                  >
-                    <Switch
-                      checked={marker.draggable}
-                      onChange={(event) => toggleMarkerDraggable(event, index)}
-                    />
-                  </Tooltip>
-                  <Tooltip arrow title="Edit Text">
-                    <IconButton
-                      onClick={() => handleMarkerEdit(index, marker.message)}
+                {!editStore.currentMapMetaData.isPublished ? (
+                  <ButtonGroup>
+                    <Tooltip
+                      arrow
+                      title={marker.draggable ? "Disable Drag" : "Enable Drag"}
                     >
-                      <DriveFileRenameOutline />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip arrow title="Delete Marker">
-                    <IconButton
-                      onClick={(event) => handleMarkerDelete(event, index)}
-                    >
-                      <DeleteOutlineIcon />
-                    </IconButton>
-                  </Tooltip>
-                </ButtonGroup>
+                      <Switch
+                        checked={marker.draggable}
+                        onChange={(event) =>
+                          toggleMarkerDraggable(event, index)
+                        }
+                      />
+                    </Tooltip>
+                    <Tooltip arrow title="Edit Text">
+                      <IconButton
+                        onClick={() => handleMarkerEdit(index, marker.message)}
+                      >
+                        <DriveFileRenameOutline />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip arrow title="Delete Marker">
+                      <IconButton
+                        onClick={(event) => handleMarkerDelete(event, index)}
+                      >
+                        <DeleteOutlineIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </ButtonGroup>
+                ) : null}
               </Popup>
             </Marker>
           ))

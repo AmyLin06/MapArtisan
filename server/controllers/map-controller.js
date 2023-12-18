@@ -1,5 +1,6 @@
 const MapMetaData = require("../models/map-model");
 const MapGraphic = require("../models/graphic-model");
+const Comments = require("../models/comments-model");
 const User = require("../models/user-model");
 const auth = require("../auth");
 
@@ -198,6 +199,23 @@ updateMapMetaData = async (req, res) => {
         },
       };
     }
+
+    // if (body.field.isPublished) {
+    //   const comments = new Comments({
+    //     mapID: body.mapID,
+    //     comments: [],
+    //   });
+
+    //   // Save the comments schema
+    //   comments
+    //     .save()
+    //     .then(() => {
+    //       console.log("Map's comments schema created successfully");
+    //     })
+    //     .catch((error) => {
+    //       console.error("Failed to create Map's comments schema");
+    //     });
+    // }
 
     //update document
     const updatedDocument = await MapMetaData.findOneAndUpdate(

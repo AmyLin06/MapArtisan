@@ -219,10 +219,10 @@ export default function QuickAccessToolbar() {
             </IconButton>
           </Tooltip>
           <MapPins />
-          <FontMenu />
+          {/* <FontMenu /> */}
           <FillInMenu />
           <BorderMenu />
-          <TextMenu />
+          {/* <TextMenu /> */}
         </ButtonGroup>
       </Stack>
     </Stack>

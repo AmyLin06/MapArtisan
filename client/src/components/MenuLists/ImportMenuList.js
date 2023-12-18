@@ -149,7 +149,7 @@ export default function ImportMenuList() {
           >
             {"Shapefile"}
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             onClick={handleClose}
             sx={{
               "&:hover": {
@@ -158,7 +158,7 @@ export default function ImportMenuList() {
             }}
           >
             {"Custom JSON"}
-          </MenuItem>
+          </MenuItem> */}
         </Paper>
       </Popover>
     </>

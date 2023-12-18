@@ -9,6 +9,7 @@ export const EditMapActionType = {
   SET_MAP_NAME_EDIT_ACTIVE: "SET_MAP_NAME_EDIT_ACTIVE",
   UPDATE_MAP_GRAPHIC: "UPDATE_MAP_GRAPHIC",
   UPDATE_MAP_META_DATA: "UPDATE_MAP_META_DATA",
+  UPDATE_MAP_COMMENTS: "UPDATE_MAP_COMMENTS",
   SAVE_MAP: "SAVE_MAP",
   REMOVE_MAP: "REMOVE_MAP",
   HIDE_MODALS: "HIDE_MODALS",
@@ -49,6 +50,7 @@ function EditMapContextProvider(props) {
     currentModal: CurrentModal.NONE,
     currentMapMetaData: null,
     currentMapGraphic: null,
+    currentMapComments: null,
     currentMapIndex: -1,
     activeTool: { tool: LeafletTool.SCROLL, detail: "NONE" },
     currentTemplate: null,
@@ -60,12 +62,11 @@ function EditMapContextProvider(props) {
     switch (type) {
       case EditMapActionType.UPDATE_MAP_GRAPHIC: {
         return setEditStore({
-          currentModal: editStore.currentModal,
+          currentModel: editStore.currentModal,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: payload,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: editStore.currentcoloredPolygon,
-          currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
         });
       }
@@ -94,27 +95,13 @@ function EditMapContextProvider(props) {
           templateData: payload.templateData,
         });
       }
-      case EditMapActionType.CREATE_CHOROPLETH_MAP: {
-        console.log("creating a template");
+      case EditMapActionType.UPDATE_MAP_COMMENTS: {
         return setEditStore({
-          currentModal: CurrentModal.CREATE_CHOROPLETH_FORM,
+          currentModel: editStore.currentModal,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: payload,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: editStore.currentcoloredPolygon,
-          currentTemplate: Templates.CHOROPLETH,
-          activeTool: editStore.activeTool,
-          templateData: editStore.templateData,
-        });
-      }
-      case EditMapActionType.UPDATE_CHOROPLETH_MAP: {
-        return setEditStore({
-          currentModal: editStore.currentModal,
-          currentMapMetaData: editStore.currentMapMetaData,
-          currentMapGraphic: editStore.currentMapGraphic,
-          currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: editStore.currentcoloredPolygon,
-          currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
           templateData: payload.templateData,
         });
@@ -124,6 +111,7 @@ function EditMapContextProvider(props) {
           currentModal: editStore.currentModal,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
           currentcoloredPolygon: editStore.currentcoloredPolygon,
           currentTemplate: editStore.currentTemplate,
@@ -136,6 +124,7 @@ function EditMapContextProvider(props) {
           currentModal: CurrentModal.RENAME_MAP,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
           currentcoloredPolygon: editStore.currentcoloredPolygon,
           currentTemplate: editStore.currentTemplate,
@@ -148,6 +137,7 @@ function EditMapContextProvider(props) {
           currentModal: CurrentModal.NONE,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
           currentcoloredPolygon: editStore.currentcoloredPolygon,
           currentTemplate: editStore.currentTemplate,
@@ -160,8 +150,8 @@ function EditMapContextProvider(props) {
           currentModal: CurrentModal.PUBLISH_MAP,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: editStore.currentcoloredPolygon,
           currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
         });
@@ -171,9 +161,8 @@ function EditMapContextProvider(props) {
           currentModal: payload.newModal,
           currentMapMetaData: editStore.currentMapMetaData,
           currentMapGraphic: editStore.currentMapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
-          currentcoloredPolygon: editStore.currentcoloredPolygon,
-          currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
           templateData: editStore.templateData,
         });
@@ -183,6 +172,7 @@ function EditMapContextProvider(props) {
           currentModal: CurrentModal.NONE,
           currentMapMetaData: payload.mapMetaData,
           currentMapGraphic: payload.mapGraphic,
+          currentMapComments: editStore.currentMapComments,
           currentMapIndex: editStore.currentMapIndex,
           currentTemplate: editStore.currentTemplate,
           activeTool: editStore.activeTool,
@@ -194,6 +184,7 @@ function EditMapContextProvider(props) {
           currentModal: CurrentModal.NONE,
           currentMapMetaData: null,
           currentMapGraphic: null,
+          currentMapComments: null,
           currentMapIndex: -1,
           currentcoloredPolygon: [],
           currentTemplate: null,
@@ -471,7 +462,7 @@ function EditMapContextProvider(props) {
   editStore.closeMap = () => {
     storeReducer({
       type: EditMapActionType.CLOSE_CURRENT_MAP,
-      // payload: {},
+      payload: {},
     });
   };
 
@@ -511,6 +502,8 @@ function EditMapContextProvider(props) {
       console.log(response.data.message);
     } else console.log("Failed to save map graphics");
   };
+
+  editStore.loadMapComments = async function () {};
 
   return (
     <EditMapContext.Provider
