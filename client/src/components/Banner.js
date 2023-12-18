@@ -202,7 +202,7 @@ export default function Banner(props) {
       sx={{ paddingBottom: 1, backgroundColor: bannerColor }}
     >
       <Grid item xs={2}>
-        <Link to={logoTo} onClick={editStore.closeMap}>
+        <Link to={logoTo} onClick={handleLogo}>
           <Avatar
             src={MapArtisanLogo}
             alt="mapartisan-logo"

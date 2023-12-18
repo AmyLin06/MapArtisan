@@ -171,6 +171,14 @@ function GlobalStoreContextProvider(props) {
           currentUser: store.currentUser,
         });
       }
+      case GlobalStoreActionType.CLEAR_STORE: {
+        return setStore({
+          currentModal: CurrentModal.NONE,
+          currentMap: null,
+          homeMapList: store.homeMapList,
+          communityMapList: store.communityMapList,
+        });
+      }
       default:
         return store;
     }

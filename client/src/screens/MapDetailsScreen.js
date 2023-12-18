@@ -121,9 +121,11 @@ export default function MapDetailsScreen() {
               />
               <Button disabled={true}>
                 <Typography variant="h9" color="textSecondary">
-                  {shortMonthDate(
-                    new Date(editStore.currentMapMetaData?.publishedDate)
-                  )}
+                  {editStore.currentMapMetaData?.publishedDate
+                    ? shortMonthDate(
+                        new Date(editStore.currentMapMetaData?.publishedDate)
+                      )
+                    : shortMonthDate(new Date())}
                 </Typography>
               </Button>
             </Box>
