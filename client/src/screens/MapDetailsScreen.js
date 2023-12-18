@@ -1,7 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import "../styles/MapDetailsScreen.css";
 import CommentSection from "../components/CommentSection";
-import { Avatar, Box, Typography, Divider, Grid, Button, Popover } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Typography,
+  Divider,
+  Grid,
+  Button,
+  Popover,
+} from "@mui/material";
 import ForkRightIcon from "@mui/icons-material/ForkRight";
 import sampleMap from "../assets/currentMap.json";
 import Banner from "../components/Banner";
@@ -20,6 +28,7 @@ export default function MapDetailsScreen() {
   const { auth } = useContext(AuthContext);
   const { editStore } = useContext(EditMapContext);
   const { store } = useContext(GlobalStoreContext);
+  const [user, setUser] = useState(store.currentUser);
   const [anchorEl, setAnchorEl] = useState(null);
   const [likedMap, setLikedMap] = useState(false);
   const navigate = useNavigate();
@@ -77,14 +86,28 @@ export default function MapDetailsScreen() {
               {store.currentMap?.mapTitle || ""}
             </Typography>
             <Box display="flex">
-              <Avatar
+              {/* <Avatar
                 src={sampleMap.profilePic}
                 sx={{
                   marginRight: 0.5,
                   width: "1.5rem",
                   height: "1.5rem",
                 }}
-              />
+              /> */}
+              {user && (
+                <Avatar
+                  alt="profile-pic"
+                  sx={{
+                    width: "1.75rem",
+                    height: "1.75rem",
+                    marginRight: 2,
+                    bgcolor: "#4db6ac", // Random background color
+                    fontSize: "0.8rem", // Larger text
+                  }}
+                >
+                  {user.firstName.charAt(0) + user.lastName.charAt(0)}
+                </Avatar>
+              )}
               <Button onClick={handleProfile}>
                 <Typography variant="h9" color="textSecondary">
                   @{editStore.currentMapMetaData?.ownerUsername}
@@ -96,11 +119,13 @@ export default function MapDetailsScreen() {
                 variant="h7"
                 sx={{ marginX: 1, marginY: 0.5 }}
               />
-              <Typography variant="h9" color="textSecondary">
-                {shortMonthDate(
-                  new Date(editStore.currentMapMetaData?.publishedDate)
-                )}
-              </Typography>
+              <Button disabled={true}>
+                <Typography variant="h9" color="textSecondary">
+                  {shortMonthDate(
+                    new Date(editStore.currentMapMetaData?.publishedDate)
+                  )}
+                </Typography>
+              </Button>
             </Box>
           </Grid>
           <Grid
