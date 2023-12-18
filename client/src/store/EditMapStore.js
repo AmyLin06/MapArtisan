@@ -70,6 +70,31 @@ function EditMapContextProvider(props) {
           activeTool: editStore.activeTool,
         });
       }
+      case EditMapActionType.CREATE_CHOROPLETH_MAP: {
+        console.log("creating a template");
+        return setEditStore({
+          currentModal: CurrentModal.CREATE_CHOROPLETH_FORM,
+          currentMapMetaData: editStore.currentMapMetaData,
+          currentMapGraphic: editStore.currentMapGraphic,
+          currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: editStore.currentcoloredPolygon,
+          currentTemplate: Templates.CHOROPLETH,
+          activeTool: editStore.activeTool,
+          templateData: editStore.templateData,
+        });
+      }
+      case EditMapActionType.UPDATE_CHOROPLETH_MAP: {
+        return setEditStore({
+          currentModal: editStore.currentModal,
+          currentMapMetaData: editStore.currentMapMetaData,
+          currentMapGraphic: editStore.currentMapGraphic,
+          currentMapIndex: editStore.currentMapIndex,
+          currentcoloredPolygon: editStore.currentcoloredPolygon,
+          currentTemplate: editStore.currentTemplate,
+          activeTool: editStore.activeTool,
+          templateData: payload.templateData,
+        });
+      }
       case EditMapActionType.UPDATE_MAP_COMMENTS: {
         return setEditStore({
           currentModel: editStore.currentModal,
