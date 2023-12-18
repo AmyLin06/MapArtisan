@@ -52,10 +52,8 @@ const ChoroplethForm = () => {
       }
       setUploadedGeoJsonFile(text);
       readDataFile(csvFile, text.features);
-      console.log(text);
     };
     fileReader.readAsText(event.target.files[0]);
-    console.log(editStore.currentTemplate);
   }
 
   function readDataFile(event, features) {
@@ -67,7 +65,6 @@ const ChoroplethForm = () => {
       const data = Papa.parse(text, {
         header: true,
         complete: (result) => {
-          console.log(result.meta.fields);
           if (result.meta.fields.includes(polygonLabel)) {
             result.data.forEach((row) => {
               row.indexColumn = row.polygonLabel;
@@ -75,7 +72,6 @@ const ChoroplethForm = () => {
             });
           }
           processData(result.data, features);
-          console.log(result);
         },
         error: (error) => {
           console.error("Error parsing CSV:", error);
@@ -85,7 +81,6 @@ const ChoroplethForm = () => {
     };
 
     fileReader.readAsText(event.target.files[0]);
-    console.log(editStore.currentTemplate);
   }
 
   const processData = (processingData, features) => {
@@ -106,7 +101,6 @@ const ChoroplethForm = () => {
       }
       setColor(polygon);
     }
-    console.log(editStore.currentTemplate);
 
     setUpdatedGeoJsonFile(features);
     const list = choroplethLegend(upperBound, lowerBound, colorList);
@@ -161,35 +155,26 @@ const ChoroplethForm = () => {
   const handleTile1 = (event) => {
     event.stopPropagation();
     colorList[0] = event.target.value;
-    // setColorList(colorList.push({ T1: event.target.value }));
   };
 
   const handleTile2 = (event) => {
     event.stopPropagation();
     colorList[1] = event.target.value;
-
-    // setColorList(colorList.push({ T2: event.target.value }));
   };
 
   const handleTile3 = (event) => {
     event.stopPropagation();
     colorList[2] = event.target.value;
-
-    // setColorList(colorList.push({ T3: event.target.value }));
   };
 
   const handleTile4 = (event) => {
     event.stopPropagation();
     colorList[3] = event.target.value;
-
-    // setColorList(colorList.push({ T4: event.target.value }));
   };
 
   const handleTile5 = (event) => {
     event.stopPropagation();
     colorList[4] = event.target.value;
-
-    // setColorList(colorList.push({ T5: event.target.value }));
   };
 
   const handleClose = () => {

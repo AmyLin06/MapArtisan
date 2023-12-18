@@ -11,7 +11,6 @@ const ChoroplethMap = ({ mapData }) => {
     color: "black",
     fillOpacity: 1,
   };
-  console.log(mapData);
 
   useEffect(() => {
     const downloadAndParseFile = async (layer) => {
@@ -32,7 +31,6 @@ const ChoroplethMap = ({ mapData }) => {
     layer.bindPopup(`${name} ${statInfo}`);
   };
 
-  console.log(mapData);
   return (
     <>
       {!!features && (

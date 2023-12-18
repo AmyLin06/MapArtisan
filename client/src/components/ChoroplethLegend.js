@@ -46,63 +46,9 @@ export const choroplethLegend = (upper, lower, colors) => {
     ),
     new LegendTile("<= 0.0", "#FFFFFF", (stat) => stat <= 0.0, "black"),
   ];
-  //   for (let i = 0; i < 5; i++) {
-  //     const currVal = lower + i * step;
-  //     const nextVal = lower + (i + 1) * step;
-  //     if (Math.abs(upper - nextVal) < 0.001) {
-  //       legendList.push(
-  //         new LegendTile(
-  //           upper + "+",
-  //           colorList[i],
-  //           (stat) => stat >= currVal,
-  //           "white"
-  //         )
-  //       );
-  //     } else {
-  //       legendList.push(
-  //         new LegendTile(
-  //           currVal + " - " + nextVal,
-  //           colorList[i],
-  //           (stat) => stat >= currVal && stat < nextVal,
-  //           "white"
-  //         )
-  //       );
-  //     }
-  //   }
-  //   legendList.push(
-  //     new LegendTile("<= 0.0", "#FFFFFF", (stat) => stat <= 0.0, "black")
-  //   );
+
   return legendList;
 };
-// export const choroplethLegend =
-// [
-//   new LegendTile("40.0 +", "#123456", (stat) => stat >= 40.0, "white"),
-//   new LegendTile(
-//     "30.0 - 40.0",
-//     "#29465B",
-//     (stat) => stat < 40.0 && stat >= 30.0,
-//     "white"
-//   ),
-//   new LegendTile(
-//     "25.0 - 30.0",
-//     "#36454F",
-//     (stat) => stat < 30.0 && stat >= 25.0,
-//     "white"
-//   ),
-//   new LegendTile(
-//     "15.0 - 25.0",
-//     "#566D7E",
-//     (stat) => stat < 25.0 && stat >= 15.0,
-//     "black"
-//   ),
-//   new LegendTile(
-//     "0.0 - 15.0",
-//     "#95B9C7",
-//     (stat) => stat < 15.0 && stat > 0.0,
-//     "black"
-//   ),
-//   new LegendTile("<= 0.0", "#FFFFFF", (stat) => stat <= 0.0, "black"),
-// ];
 
 const ChoroplethLegend = () => {
   return (
