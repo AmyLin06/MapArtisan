@@ -7,8 +7,7 @@ import { EditMapContext } from "../../store/EditMapStore";
 import RenderGeoJson from "./GeoJsonLayer";
 import LocationMarker from "./LocationMarker";
 import ChoroplethMap from "./ChoroplethMap";
-import leafletImage from "leaflet-image";
-import CanvasDataContext from "../../store/ContextProviders/CanvasDataContext";
+import RoutingTemplate from "./Template/RoutingTemplate";
 
 function LeafletMap() {
   const { editStore } = useContext(EditMapContext);
@@ -17,33 +16,17 @@ function LeafletMap() {
 
   let mapLayers = null;
   mapLayers = editStore.currentMapGraphic?.layers.map((layer, index) => {
+    console.log(layer);
     if (layer.filename == "ChoroplethMap") {
+      console.log(layer);
       return <ChoroplethMap mapData={layer} />;
     } else {
       return <RenderGeoJson layer={layer} />;
     }
   });
 
-  // const handleExport = () => {
-  //   if (map) {
-  //     leafletImage(map, function (err, canvas) {
-  //       // now you have canvas
-  //       // example thing to do with that canvas:
-  //       // var img = document.createElement("img");
-  //       // var dimensions = map.getSize();
-  //       // img.width = dimensions.x;
-  //       // img.height = dimensions.y;
-  //       // img.src = canvas.toDataURL();
-  //       // document.getElementById("images").innerHTML = "";
-  //       // document.getElementById("images").appendChild(img);
-  //       // editStore.exportMapImgUrl(canvas.toDataURL());
-  //       const link = document.createElement("a");
-  //       link.href = canvas.toDataURL();
-  //       link.download = "exported-map.png";
-  //       link.click();
-  //     });
-  //   }
-  // };
+  console.log(editStore.currentMapMetaData);
+  console.log(editStore.currentMapGraphic);
 
   return (
     <Box>
@@ -61,7 +44,15 @@ function LeafletMap() {
 
         {mapLayers}
         <LocationMarker />
-        {/* <RoutingTemplate /> */}
+        {!!(
+          editStore.currentMapMetaData?.template == "Routing" &&
+          editStore.currentMapGraphic?.markers.length != 0
+        ) && (
+          <RoutingTemplate
+            pt1={editStore.currentMapGraphic?.markers[0]}
+            pt2={editStore.currentMapGraphic?.markers[1]}
+          />
+        )}
       </MapContainer>
     </Box>
   );

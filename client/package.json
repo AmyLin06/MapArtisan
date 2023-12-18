@@ -17,6 +17,7 @@
     "leaflet-image": "^0.4.0",
     "leaflet-routing-machine": "^3.2.12",
     "papaparse": "^5.4.1",
+    "leaflet.bigimage": "^1.0.1",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",

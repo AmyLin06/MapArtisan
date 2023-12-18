@@ -3,7 +3,10 @@ const MapGraphic = require("../models/graphic-model");
 const Comments = require("../models/comments-model");
 const User = require("../models/user-model");
 const auth = require("../auth");
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
 
+dotenv.config();
 createMap = async (req, res) => {
   console.log("in server create map");
   if (auth.verifyUser(req) === null) {
@@ -40,6 +43,7 @@ createMap = async (req, res) => {
       ownerID: user._id,
       template: body.template,
       ownerUsername: user.userName,
+      // ownerEmail: user.email, //added to the meta
       mapTitle: body.name || "Untitled",
       lastOpened: new Date(),
     });
@@ -66,6 +70,67 @@ createMap = async (req, res) => {
     return res.status(400).json({
       errorMessage: "Error creating map",
     });
+  }
+};
+
+message = async (req, res) => {
+  try {
+    if (auth.verifyUser(req) === null) {
+      return res.status(400).json({
+        errorMessage: "UNAUTHORIZED",
+      });
+    }
+    const body = req.body;
+    const existingSender = await User.findOne({ email: body.sender });
+    if (!existingSender) {
+      return res.status(401).json({
+        errorMessage: "Cannot find the sender.",
+      });
+    }
+    const existingReceiver = await User.findOne({ email: body.receiver });
+    if (!existingReceiver) {
+      return res.status(401).json({
+        errorMessage: "Cannot find the Receiver.",
+      });
+    }
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "mapartisannavy@gmail.com",
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+    const mailOptions = {
+      from: body.sender,
+      to: body.receiver,
+      subject: "MAPARTISAN MESSAGE",
+      text: body.field.message + "\nfrom " + body.sender,
+    };
+
+    const sendMailAsync = async () => {
+      return new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error("Email send error:", error);
+            reject(error);
+          } else {
+            console.log("Email sent: %s", info.messageId);
+            resolve(info);
+          }
+        });
+      });
+    };
+    await sendMailAsync();
+    return res.status(200).json({
+      loggedIn: false,
+      user: null,
+      errorMessage: "?",
+    });
+  } catch (err) {
+    console.log("132");
+    return res
+      .status(400)
+      .json({ errorMessage: "We cannot message this user" });
   }
 };
 
@@ -327,6 +392,50 @@ getUserMaps = async (req, res) => {
   }
 };
 
+getProfileMaps = async (req, res) => {
+  console.log("in server getProfileMaps");
+
+  try {
+    const user = await User.findOne({ _id: req.userId });
+    const listUser = await User.findOne({ _id: req.params.id }); //other users list
+    console.log("listUser:" + listUser);
+    if (!user) {
+      return res.status(404).json({
+        errorMessage: "User not found",
+      });
+    }
+
+    //user is asking for their own published maps
+    let detailedMapMetaDataList;
+    if (user.email == req.params.userEmail) {
+      detailedMapMetaDataList = await MapMetaData.find({
+        $and: [{ ownerUsername: listUser.userName }, { isPublished: true }],
+      });
+    } else {
+      //asking for another user's maps -> can only view their published maps
+      detailedMapMetaDataList = await MapMetaData.find({
+        $and: [{ ownerUsername: listUser.userName }, { isPublished: true }],
+      });
+    }
+    // console.log(listUser);
+    return res.status(201).json({
+      currentUser: {
+        firstName: listUser.firstName,
+        lastName: listUser.lastName,
+        email: listUser.email,
+        userName: listUser.userName,
+      },
+      profileMapList: detailedMapMetaDataList,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      errorMessage: "Error finding profile's maps",
+    });
+  }
+};
+
 getCommunityMaps = async (req, res) => {
   console.log("in server getCommunityMaps");
 
@@ -468,9 +577,11 @@ module.exports = {
   deleteMap,
   updateMapMetaData,
   getUserMaps,
+  getProfileMaps,
   getCommunityMaps,
   getMapMetaDataById,
   updateMapGraphicById,
   getMapGraphicById,
+  message,
   isLikedMap,
 };

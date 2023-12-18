@@ -11,6 +11,7 @@ import {
 } from "../components/Modals/ModalTypes";
 import InputModal from "../components/Modals/InputModal";
 import ChoroplethForm from "../components/Modals/ChoroplethForm";
+import RoutingForm from "../components/Modals/RoutingForm";
 import { useState } from "react";
 import CanvasDataProvider from "../store/ContextProviders/CanvasDataProvider";
 
@@ -29,6 +30,7 @@ const WorkspaceScreen = () => {
           </Grid>
         </Grid>
         <ChoroplethForm />
+        <RoutingForm />
         <ConfirmModal modalType={ConfirmModalTypes.PUBLISH_MAP} />
         <InputModal modalType={InputModalTypes.RENAME_MAP} />
       </div>
